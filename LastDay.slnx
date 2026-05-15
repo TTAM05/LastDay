@@ -1,24 +1,4 @@
 ﻿<Solution>
-  <Project Path="Unity.Timeline.csproj" />
-  <Project Path="Unity.PlasticSCM.Editor.csproj" />
-  <Project Path="Unity.Mathematics.csproj" />
-  <Project Path="Unity.Timeline.Editor.csproj" />
-  <Project Path="Unity.Collections.csproj" />
-  <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
-  <Project Path="Unity.PerformanceTesting.Editor.csproj" />
-  <Project Path="Unity.Burst.csproj" />
-  <Project Path="Unity.VisualScripting.Flow.Editor.csproj" />
-  <Project Path="Unity.VisualStudio.Editor.csproj" />
-  <Project Path="Unity.InputSystem.csproj" />
-  <Project Path="Unity.Searcher.Editor.csproj" />
-  <Project Path="Unity.VisualScripting.Core.csproj" />
-  <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
-  <Project Path="Unity.VisualScripting.State.Editor.csproj" />
-  <Project Path="Unity.Burst.CodeGen.csproj" />
-  <Project Path="Unity.VisualScripting.Flow.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="OpalStudio.CodePreview.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
-  <Project Path="VoxelLabs.UltimateThumbnails.Lib.csproj" />
-  <Project Path="VoxelLabs.UltimateThumbnails.UIElements.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
 </Solution>
