@@ -18,7 +18,7 @@ public class GunData : ScriptableObject
     public float range = 100f;
 
     [Header("Reload")]
-    public float reloadSpeed = 2f;
+    // public float reloadSpeed = 2f;
     public float reloadTime = 2f;
 
     [Header("Stability")]
@@ -30,6 +30,7 @@ public class GunData : ScriptableObject
 
     [Header("Ammo")]
     public int maxAmmo = 30;
+    public int maxReserveAmmo = 200;  // đạn dự trữ tối đa
 
     [Header("Bullet")]
     public float bulletSpeed = 100f;
@@ -38,4 +39,5 @@ public class GunData : ScriptableObject
     public AudioClip singleShotClip;
 
     public AudioClip autoShotClip;
+    public AudioClip reloadclip;
 }
