@@ -15,12 +15,14 @@ MonoBehaviour:
   gunName: 
   damage: 20
   fireRate: 0.1
-  isAutomatic: 1
+  isAutomatic: 0
   range: 100
-  reloadSpeed: 2
+  reloadTime: 3
   stability: 80
   moveSpeed: 5
   maxAmmo: 30
+  maxReserveAmmo: 200
   bulletSpeed: 100
-  singleShotClip: {fileID: 0}
+  singleShotClip: {fileID: 8300000, guid: de97c5f09dabaa94abacdaa8853624e8, type: 3}
   autoShotClip: {fileID: 0}
+  reloadclip: {fileID: 8300000, guid: 7e9876368f2e0364d8ce33e8ec59e8f1, type: 3}

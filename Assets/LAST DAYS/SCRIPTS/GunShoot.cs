@@ -39,6 +39,11 @@ public class GunSystem : MonoBehaviour
     [Header("Gun Data")]
     public GunData gunData;
     public int currentAmmo;
+    private int reserveAmmo;
+    [Header("Animation")]
+    public AnimationClip reloadClip;
+
+
     void Start()
     {
         if (gunAudio != null)
@@ -47,6 +52,8 @@ public class GunSystem : MonoBehaviour
         }
 
         currentAmmo = gunData.maxAmmo;
+        // ví dụ spawn full ammo
+        reserveAmmo = gunData.maxReserveAmmo;
     }
 
 
@@ -105,14 +112,13 @@ public class GunSystem : MonoBehaviour
                 {
                     Shoot();
                 }
-                else
-                {
-                    StartCoroutine(Reload());
-                }
 
                 nextFireTime = Time.time + gunData.fireRate;
             }
         }
+
+        //đạn chỉ đc giới hạn trong range của gundata
+
     }
 
     // =========================================================
@@ -222,28 +228,57 @@ public class GunSystem : MonoBehaviour
     //Nạp đạn
     IEnumerator Reload()
     {
-        // nếu đầy đạn thì không reload
-        if (currentAmmo == gunData.maxAmmo)
+        if (isReloading)
+            yield break;
+
+        // đầy băng
+        if (currentAmmo >= gunData.maxAmmo)
+            yield break;
+
+        // hết đạn dự trữ
+        if (reserveAmmo <= 0)
             yield break;
 
         isReloading = true;
 
-        // anim reload
-        if (animator != null)
-        {
-            animator.SetTrigger("Reload");
-        }
+        // =================================================
+        // TÍNH TỐC ĐỘ ANIMATION
+        // =================================================
 
-        Debug.Log("Đang thay đạn...");
+        float animLength = reloadClip.length;
 
-        // chờ theo thời gian reload
+        // tốc độ anim
+        float reloadSpeed = animLength / gunData.reloadTime;
+
+        // set speed vào animator
+        animator.SetFloat("ReloadSpeed", reloadSpeed);
+
+        // play anim
+        animator.SetTrigger("Reload");
+
+        // =================================================
+
+        // chờ đúng reloadTime
         yield return new WaitForSeconds(gunData.reloadTime);
 
-        // nạp đạn
-        currentAmmo = gunData.maxAmmo;
+        // số đạn cần nạp
+        int needAmmo = gunData.maxAmmo - currentAmmo;
+
+        // số đạn thực sự có thể nạp
+        int ammoToLoad = Mathf.Min(needAmmo, reserveAmmo);
+
+        currentAmmo += ammoToLoad;
+
+        reserveAmmo -= ammoToLoad;
 
         isReloading = false;
+    }
 
-        Debug.Log("Reload xong");
+    public void PlayReloadSound()
+    {
+        if (gunAudio != null && gunData.reloadclip != null)
+        {
+            gunAudio.PlayOneShot(gunData.reloadclip);
+        }
     }
 }
