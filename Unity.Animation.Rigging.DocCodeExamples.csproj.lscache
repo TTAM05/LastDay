@@ -306,9 +306,7 @@ Temp/obj/Unity.Animation.Rigging.DocCodeExamples/.NETStandard,Version=v2.1.Assem
 Library/ScriptAssemblies/
  UnityEditor.UI.dll
  UnityEngine.UI.dll
-Temp/bin/Debug/
- Unity.Animation.Rigging.dll
- Unity.Burst.dll
+Temp/bin/Debug/Unity.Animation.Rigging.dll
 
 [analyzerReferences]
 ../6000.0.61f1/Editor/Data/Tools/Unity.SourceGenerators/

@@ -332,10 +332,7 @@ Library/ScriptAssemblies/
  UnityEditor.UI.dll
  UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
-Temp/bin/Debug/
- Unity.Burst.dll
- Unity.Collections.dll
- Unity.Mathematics.dll
+Temp/bin/Debug/Unity.Collections.dll
 
 [analyzerReferences]
 ../6000.0.61f1/Editor/Data/Tools/Unity.SourceGenerators/

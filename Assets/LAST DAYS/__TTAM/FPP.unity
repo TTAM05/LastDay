@@ -6208,14 +6208,11 @@ MonoBehaviour:
   aimSystem: {fileID: 4516581815216380029}
   animator: {fileID: 4516581815216380026}
   muzzleFlash: {fileID: 1009528909}
-  fireRate: 0.1
-  isAutomatic: 1
   gunAudio: {fileID: 4516581815216380028}
-  gunSingleClip: {fileID: 8300000, guid: de97c5f09dabaa94abacdaa8853624e8, type: 3}
-  gunAutoClip: {fileID: 8300000, guid: 9329cdb87a59f6a468a6fa6ec5990eb2, type: 3}
   bulletPrefab: {fileID: 5824776450096212737, guid: 01508d88d28021a489717448a4509efc, type: 3}
   muzzle: {fileID: 1634991628}
-  bulletSpeed: 100
+  gunData: {fileID: 11400000, guid: 1940c4fa39da3f940acc20bc0f9c31b5, type: 2}
+  currentAmmo: 0
 --- !u!82 &4516581815216380028
 AudioSource:
   m_ObjectHideFlags: 0

@@ -473,11 +473,9 @@ Library/ScriptAssemblies/
  UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
 Temp/bin/Debug/
- Unity.Burst.dll
  Unity.Cinemachine.dll
  Unity.InputSystem.dll
  Unity.Mathematics.dll
- Unity.Settings.Editor.dll
  Unity.Splines.dll
  Unity.Splines.Editor.dll
  Unity.Timeline.dll

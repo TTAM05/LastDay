@@ -333,13 +333,8 @@ Library/ScriptAssemblies/
  UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
 Temp/bin/Debug/
- Unity.Burst.dll
  Unity.Cinemachine.dll
- Unity.InputSystem.dll
- Unity.Mathematics.dll
- Unity.Splines.dll
  Unity.StarterAssets.dll
- Unity.Timeline.dll
 
 [analyzerReferences]
 ../6000.0.61f1/Editor/Data/Tools/Unity.SourceGenerators/

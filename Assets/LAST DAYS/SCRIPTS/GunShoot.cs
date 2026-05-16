@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,26 +16,19 @@ public class GunSystem : MonoBehaviour
     // muzzle flash
     public ParticleSystem muzzleFlash;
 
-    [Header("Gun Settings")]
-
-    // tốc độ bắn
-    public float fireRate = 0.1f;
-
-    // true = auto
-    // false = single
-    public bool isAutomatic = true;
-
+   
     // input system
     private PlayerInputActions input;
 
     // đang giữ chuột
     private bool isFiring;
 
+    //đang thay đạn
+    private bool isReloading;
+
     // cooldown bắn
     private float nextFireTime;
     public AudioSource gunAudio;
-    public AudioClip gunSingleClip;
-    public AudioClip gunAutoClip;
 
     [Header("Bullet")]
 
@@ -42,13 +36,17 @@ public class GunSystem : MonoBehaviour
 
     public Transform muzzle;
 
-    public float bulletSpeed = 100f;
+    [Header("Gun Data")]
+    public GunData gunData;
+    public int currentAmmo;
     void Start()
     {
         if (gunAudio != null)
         {
             gunAudio.playOnAwake = false;
         }
+
+        currentAmmo = gunData.maxAmmo;
     }
 
 
@@ -69,9 +67,12 @@ public class GunSystem : MonoBehaviour
 
         // nhấn chuột
         input.Player.Fire.performed += OnFirePressed;
+        input.Player.Reload.performed += OnReloadPressed;
 
         // thả chuột
         input.Player.Fire.canceled += OnFireReleased;
+
+
     }
 
     // =========================================================
@@ -80,9 +81,8 @@ public class GunSystem : MonoBehaviour
     void OnDisable()
     {
         input.Player.Fire.performed -= OnFirePressed;
-
+        input.Player.Reload.performed -= OnReloadPressed;
         input.Player.Fire.canceled -= OnFireReleased;
-
         input.Disable();
     }
 
@@ -91,15 +91,26 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void Update()
     {
+        if(isReloading)
+        {
+            return; // không làm gì khi đang nạp đạn
+        }
+        
         // bắn liên thanh
-        if (isAutomatic && isFiring)
+        if (gunData.isAutomatic && isFiring)
         {
             if (Time.time >= nextFireTime)
             {
-                Shoot();
+                if (currentAmmo > 0)
+                {
+                    Shoot();
+                }
+                else
+                {
+                    StartCoroutine(Reload());
+                }
 
-                nextFireTime =
-                    Time.time + fireRate;
+                nextFireTime = Time.time + gunData.fireRate;
             }
         }
     }
@@ -109,12 +120,22 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void OnFirePressed(InputAction.CallbackContext ctx)
     {
+        if (isReloading) return;
+
         isFiring = true;
 
         // single fire
-        if (!isAutomatic)
+        if (!gunData.isAutomatic && currentAmmo > 0)
         {
             Shoot();
+        }
+    }
+
+    void OnReloadPressed(InputAction.CallbackContext ctx)
+    {
+        if (currentAmmo < gunData.maxAmmo && !isReloading)
+        {
+            StartCoroutine(Reload());
         }
     }
 
@@ -132,23 +153,33 @@ public class GunSystem : MonoBehaviour
         }
     }
 
+
+
     // =========================================================
     // SHOOT
     // =========================================================
-     void Shoot()
+    void Shoot()
     {
+        //- arrmor
+        currentAmmo--;
         // muzzle flash
         if (muzzleFlash != null) muzzleFlash.Play();
 
         // âm thanh
         if (gunAudio != null)
-            gunAudio.PlayOneShot(isAutomatic ? gunAutoClip : gunSingleClip);
+            gunAudio.PlayOneShot(gunData.isAutomatic ? gunData.autoShotClip : gunData.singleShotClip);
 
         // animation
         if (animator != null)
         {
-            if (isAutomatic) animator.SetBool("Auto", true);
-            else             animator.SetTrigger("Fire");
+            if (gunData.isAutomatic) 
+            {
+                animator.SetBool("Auto", true);
+            }
+            else
+            {
+                animator.SetTrigger("Fire");
+            }
         }
 
         // =====================================================
@@ -184,6 +215,35 @@ public class GunSystem : MonoBehaviour
         );
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = fireDirection * bulletSpeed;
+        rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+    }
+
+    // =========================================================
+    //Nạp đạn
+    IEnumerator Reload()
+    {
+        // nếu đầy đạn thì không reload
+        if (currentAmmo == gunData.maxAmmo)
+            yield break;
+
+        isReloading = true;
+
+        // anim reload
+        if (animator != null)
+        {
+            animator.SetTrigger("Reload");
+        }
+
+        Debug.Log("Đang thay đạn...");
+
+        // chờ theo thời gian reload
+        yield return new WaitForSeconds(gunData.reloadTime);
+
+        // nạp đạn
+        currentAmmo = gunData.maxAmmo;
+
+        isReloading = false;
+
+        Debug.Log("Reload xong");
     }
 }
