@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/LAST DAYS/__NTAM/Start.unity
+    guid: d0f04cbc9faab05439db7bddb2bfa269
+  - enabled: 1
     path: Assets/Scenes/Test.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/LAST DAYS/__NTAM/Login.unity
+    guid: 6d7e7af72483fe04a85edbf4e147a024
+  - enabled: 1
+    path: Assets/LAST DAYS/__NTAM/Settings.unity
+    guid: 46e8e141e3416f84d90ce0a30e1be509
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
