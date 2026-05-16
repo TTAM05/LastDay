@@ -7,6 +7,7 @@ public class GunSystem : MonoBehaviour
 
     // camera FPS
     public Camera cam;
+    public AimSystem aimSystem;
 
     // animator súng
     public Animator animator;
@@ -134,84 +135,55 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     // SHOOT
     // =========================================================
-    void Shoot()
+     void Shoot()
     {
         // muzzle flash
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.Play();
-        }
+        if (muzzleFlash != null) muzzleFlash.Play();
 
-        // âm thanh bắn
+        // âm thanh
         if (gunAudio != null)
-        {
-            if (isAutomatic)
-            {
-                gunAudio.PlayOneShot(gunAutoClip);
-            }
-            else
-            {
-                gunAudio.PlayOneShot(gunSingleClip);
-            }
-        }
+            gunAudio.PlayOneShot(isAutomatic ? gunAutoClip : gunSingleClip);
 
         // animation
         if (animator != null)
         {
-            // auto fire
-            if (isAutomatic)
-            {
-                animator.SetBool("Auto", true);
-            }
-
-            // single fire
-            else
-            {
-                animator.SetTrigger("Fire");
-            }
+            if (isAutomatic) animator.SetBool("Auto", true);
+            else             animator.SetTrigger("Fire");
         }
 
-        // debug
-        Debug.Log("Bang!");
+        // =====================================================
+        // HƯỚNG BẮN — lấy từ AimSystem
+        // =====================================================
+        Vector3 fireOrigin;
+        Vector3 fireDirection;
 
-        // ray từ giữa màn hình
-        Ray ray = cam.ViewportPointToRay(
-            new Vector3(0.5f, 0.5f, 0f)
-        );
-
-        Vector3 targetPoint;
-
-        // nếu ray trúng vật
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000f))
+        if (aimSystem != null)
         {
-            targetPoint = hit.point;
+            // AimSystem đã tính sẵn cho cả hip và ADS
+            fireOrigin    = aimSystem.FirePoint;
+            fireDirection = aimSystem.FireDirection;
         }
         else
         {
-            targetPoint = ray.GetPoint(1000f);
+            // fallback nếu không có AimSystem
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            Vector3 target = Physics.Raycast(ray, out RaycastHit hit, 1000f)
+                ? hit.point
+                : ray.GetPoint(1000f);
+
+            fireOrigin    = muzzle.position;
+            fireDirection = (target - muzzle.position).normalized;
         }
-
-        // hướng bắn
-        Vector3 shootDirection =
-            (targetPoint - muzzle.position).normalized;
-
-        // rotation đạn
-        Quaternion bulletRotation =
-            Quaternion.LookRotation(shootDirection);
+        // =====================================================
 
         // tạo đạn
         GameObject bullet = Instantiate(
             bulletPrefab,
-            muzzle.position,
-            bulletRotation
+            fireOrigin,
+            Quaternion.LookRotation(fireDirection)
         );
 
-        // rigidbody
-        Rigidbody rb =
-            bullet.GetComponent<Rigidbody>();
-
-        // velocity đạn
-        rb.linearVelocity =
-            shootDirection * bulletSpeed;
-     }
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        rb.linearVelocity = fireDirection * bulletSpeed;
+    }
 }

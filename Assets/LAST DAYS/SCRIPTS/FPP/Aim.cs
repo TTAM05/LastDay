@@ -1,25 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AimSystem : MonoBehaviour
 {
     [Header("References")]
-
     public Camera cam;
-
     public Animator animator;
+    public Transform muzzle;           // đầu nòng súng
+    public Image crosshairImage;       // UI crosshair
 
-    [Header("FOV")]
-
-    public float normalFOV = 60f;
-
-    public float aimFOV = 40f;
-
-    public float smoothSpeed = 10f;
+    [Header("Settings")]
+    public float range = 1000f;
 
     private PlayerInputActions input;
-
     private bool isAiming;
+
+    // điểm bắn — các script khác lấy từ đây
+    public Vector3 FirePoint { get; private set; }
+    public Vector3 FireDirection { get; private set; }
 
     // =====================================================
     // AWAKE
@@ -30,26 +29,19 @@ public class AimSystem : MonoBehaviour
     }
 
     // =====================================================
-    // ENABLE
+    // ENABLE / DISABLE
     // =====================================================
     void OnEnable()
     {
         input.Enable();
-
         input.Player.Aim.performed += StartAim;
-
-        input.Player.Aim.canceled += StopAim;
+        input.Player.Aim.canceled  += StopAim;
     }
 
-    // =====================================================
-    // DISABLE
-    // =====================================================
     void OnDisable()
     {
         input.Player.Aim.performed -= StartAim;
-
-        input.Player.Aim.canceled -= StopAim;
-
+        input.Player.Aim.canceled  -= StopAim;
         input.Disable();
     }
 
@@ -58,7 +50,35 @@ public class AimSystem : MonoBehaviour
     // =====================================================
     void Update()
     {
-        // UpdateFOV();
+        UpdateFireData();
+    }
+
+    // =====================================================
+    // FIRE DATA
+    // tính điểm bắn theo chế độ hip / aim
+    // =====================================================
+    void UpdateFireData()
+    {
+        if (isAiming)
+        {
+            // ADS — bắn theo hướng nòng súng
+            FirePoint     = muzzle.position;
+            FireDirection = muzzle.forward;
+        }
+        else
+        {
+            // Hip fire — bắn theo hướng camera
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+            Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, range)
+                ? hit.point
+                : ray.GetPoint(range);
+
+            FirePoint     = muzzle.position;
+            FireDirection = (targetPoint - muzzle.position).normalized;
+        }
+        // ← thêm dòng này để thấy hướng bắn trong Scene view
+        Debug.DrawRay(FirePoint, FireDirection * 10f, Color.red);
     }
 
     // =====================================================
@@ -68,10 +88,12 @@ public class AimSystem : MonoBehaviour
     {
         isAiming = true;
 
+        // ẩn crosshair khi ADS
+        if (crosshairImage != null)
+            crosshairImage.enabled = false;
+
         if (animator != null)
-        {
             animator.SetBool("Aim", true);
-        }
     }
 
     // =====================================================
@@ -81,24 +103,13 @@ public class AimSystem : MonoBehaviour
     {
         isAiming = false;
 
+        // hiện crosshair khi thôi ADS
+        if (crosshairImage != null)
+            crosshairImage.enabled = true;
+
         if (animator != null)
-        {
             animator.SetBool("Aim", false);
-        }
     }
 
-    // // =====================================================
-    // // UPDATE FOV
-    // // =====================================================
-    // void UpdateFOV()
-    // {
-    //     float targetFOV =
-    //         isAiming ? aimFOV : normalFOV;
 
-    //     cam.fieldOfView = Mathf.Lerp(
-    //         cam.fieldOfView,
-    //         targetFOV,
-    //         Time.deltaTime * smoothSpeed
-    //     );
-    // }
 }

@@ -55,6 +55,7 @@ Assets/LAST DAYS/SCRIPTS/
  Bullet.cs
  FPP/
   Aim.cs
+  Crosshair.cs
   FppController.cs
   GunAim.cs
  GunShoot.cs
