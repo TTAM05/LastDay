@@ -34,6 +34,10 @@ public class FPSController : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     private float xRotation;
+    private float yRotation;
+
+    public float wantedCameraXRotation;
+    public float wantedYRotation;
     private Vector2 currentLook;
     private Vector2 lookVelocity;
 
@@ -50,6 +54,10 @@ public class FPSController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // khởi tạo góc nhìn
+        wantedYRotation = transform.eulerAngles.y;
+        wantedCameraXRotation = xRotation;
     }
 
     void OnEnable()
@@ -112,23 +120,63 @@ public class FPSController : MonoBehaviour
         controller.Move(finalMove * Time.deltaTime);
     }
 
+    // void Look()
+    // {
+    //     currentLook = Vector2.SmoothDamp(
+    //         currentLook, lookInput,
+    //         ref lookVelocity, smoothTime
+    //     );
+
+    //     float mouseX = currentLook.x * mouseSensitivity;
+    //     float mouseY = currentLook.y * mouseSensitivity;
+
+    //     xRotation -= mouseY;
+    //     xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+    //     playerCamera.transform.localRotation =
+    //         Quaternion.Euler(xRotation, 0f, 0f);
+
+    //     transform.Rotate(Vector3.up * mouseX);
+    // }
+
     void Look()
     {
         currentLook = Vector2.SmoothDamp(
-            currentLook, lookInput,
-            ref lookVelocity, smoothTime
+            currentLook,
+            lookInput,
+            ref lookVelocity,
+            smoothTime
         );
 
         float mouseX = currentLook.x * mouseSensitivity;
         float mouseY = currentLook.y * mouseSensitivity;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        // INPUT
+        wantedYRotation += mouseX;
+
+        wantedCameraXRotation += -mouseY;
+
+        wantedCameraXRotation =
+            Mathf.Clamp(wantedCameraXRotation, -90f, 90f);
+
+        // APPLY
+        xRotation = Mathf.Lerp(
+            xRotation,
+            wantedCameraXRotation,
+            20f * Time.deltaTime
+        );
+
+        yRotation = Mathf.Lerp(
+            yRotation,
+            wantedYRotation,
+            20f * Time.deltaTime
+        );
 
         playerCamera.transform.localRotation =
             Quaternion.Euler(xRotation, 0f, 0f);
 
-        transform.Rotate(Vector3.up * mouseX);
+        transform.rotation =
+            Quaternion.Euler(0f, yRotation, 0f);
     }
 
     void Jump()
