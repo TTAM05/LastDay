@@ -1677,8 +1677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fps: {fileID: 1658637304}
-  recoilX: 2
-  recoilY: 1
 --- !u!1001 &926112344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3065,6 +3063,10 @@ PrefabInstance:
       propertyPath: impactPrefab
       value: 
       objectReference: {fileID: 6578728761545931037, guid: 1132fa606779e87448479d5ae9f6c86c, type: 3}
+    - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: impactLifetime
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2074441492429213840, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: crosshairImage
       value: 
@@ -3073,6 +3075,14 @@ PrefabInstance:
       propertyPath: gunRecoil
       value: 
       objectReference: {fileID: 887468614}
+    - target: {fileID: 4101910516082351885, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: impactPrefab
+      value: 
+      objectReference: {fileID: 6578728761545931037, guid: 1132fa606779e87448479d5ae9f6c86c, type: 3}
+    - target: {fileID: 4101910516082351885, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: impactLifetime
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4417869976065876600, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: m_Name
       value: Player

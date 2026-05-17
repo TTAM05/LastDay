@@ -35,4 +35,8 @@ public class GunData : ScriptableObject
 
     public AudioClip autoShotClip;
     public AudioClip reloadclip;
+
+    [Header("Recoil")]
+    public float recoilX = 1f;
+    public float recoilY = 1f;
 }

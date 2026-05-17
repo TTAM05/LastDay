@@ -4,17 +4,12 @@ public class GunRecoil : MonoBehaviour
 {
     public FPSController fps;
 
-    [Header("Recoil")]
-
-    public float recoilX = 2f;
-    public float recoilY = 1f;
-
-    public void Fire()
+    public void Fire(GunData gunData)
     {
         float recoilHorizontal =
-            Random.Range(-recoilY, recoilY);
+            Random.Range(-gunData.recoilY, gunData.recoilY);
 
-        fps.wantedCameraXRotation -= recoilX;
+        fps.wantedCameraXRotation -= gunData.recoilX;
 
         fps.wantedYRotation += recoilHorizontal;
 

@@ -211,7 +211,7 @@ public class GunSystem : MonoBehaviour
             }
         }
         // recoil
-        gunRecoil.Fire();
+        gunRecoil.Fire(gunData);
 
         // =====================================================
         // HƯỚNG BẮN — lấy từ AimSystem
