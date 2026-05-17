@@ -1676,11 +1676,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2aaa148380d21a479d23345fc615757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fps: {fileID: 1658637304}
   recoilX: 2
   recoilY: 1
-  recoilZ: 0.5
-  returnSpeed: 10
-  recoilSpeed: 20
 --- !u!1001 &926112344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2542,6 +2540,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 437890, guid: de989d50c4fd676479d25b597fc65314, type: 3}
   m_PrefabInstance: {fileID: 1630109999}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1658637304 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7948139352836609934, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+  m_PrefabInstance: {fileID: 1977625442}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac1408637e04f34fb52697abcb13400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1749432751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3052,6 +3061,10 @@ PrefabInstance:
       propertyPath: gunRecoil
       value: 
       objectReference: {fileID: 887468614}
+    - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: impactPrefab
+      value: 
+      objectReference: {fileID: 6578728761545931037, guid: 1132fa606779e87448479d5ae9f6c86c, type: 3}
     - target: {fileID: 2074441492429213840, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: crosshairImage
       value: 
