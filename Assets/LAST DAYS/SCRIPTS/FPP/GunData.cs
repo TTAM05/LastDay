@@ -14,9 +14,6 @@ public class GunData : ScriptableObject
 
     public bool isAutomatic = true;
 
-    [Header("Range")]
-    public float range = 100f;
-
     [Header("Reload")]
     // public float reloadSpeed = 2f;
     public float reloadTime = 2f;
@@ -24,9 +21,6 @@ public class GunData : ScriptableObject
     [Header("Stability")]
     [Range(0, 100)]
     public float stability = 80f;
-
-    [Header("Movement")]
-    public float moveSpeed = 5f;
 
     [Header("Ammo")]
     public int maxAmmo = 30;
