@@ -1050,6 +1050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9187814428276540602}
   - component: {fileID: 127226171098091051}
+  - component: {fileID: 7690049907769655974}
   m_Layer: 0
   m_Name: Birch_2
   m_TagString: Untagged
@@ -1096,22 +1097,44 @@ LODGroup:
     - renderer: {fileID: 7821543034090940104}
     - renderer: {fileID: 4519503973950468961}
     - renderer: {fileID: 4597951040903188111}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.25
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5228186419788108349}
     - renderer: {fileID: 1271624301543454342}
     - renderer: {fileID: 2135928864743221018}
-  - screenRelativeHeight: 0.0625
+  - screenRelativeHeight: 0.12
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8842838979923879918}
     - renderer: {fileID: 1128020043733141779}
     - renderer: {fileID: 4147732342142947457}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.06
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7513034663414427018}
     - renderer: {fileID: 1869279959873269209}
     - renderer: {fileID: 2871651036455881550}
   m_Enabled: 1
+--- !u!64 &7690049907769655974
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9132324267549094486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5644042180038801215, guid: 6da9fd099a5f0f744917f484a65d82e4, type: 3}
