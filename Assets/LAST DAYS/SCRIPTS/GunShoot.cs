@@ -29,6 +29,7 @@ public class GunSystem : MonoBehaviour
     // cooldown bắn
     private float nextFireTime;
     public AudioSource gunAudio;
+    public GunRecoil gunRecoil;
 
     [Header("Bullet")]
 
@@ -42,6 +43,10 @@ public class GunSystem : MonoBehaviour
     private int reserveAmmo;
     [Header("Animation")]
     public AnimationClip reloadClip;
+
+    [Header("Impact")]
+    public GameObject impactPrefab;   // kéo Prefab Quad vào đây
+    public float impactLifetime = 2f; // biến mất sau bao giây
 
 
     void Start()
@@ -63,6 +68,7 @@ public class GunSystem : MonoBehaviour
     void Awake()
     {
         input = new PlayerInputActions();
+        gunRecoil = GetComponent<GunRecoil>();
     }
 
     // =========================================================
@@ -166,6 +172,22 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void Shoot()
     {
+        // hiện vết đạn
+        RaycastHit hit;
+
+        if (Physics.Raycast(cam.position, cam.forward, out hit, range))
+        {
+            // spawn impact tại điểm bắn trúng
+            GameObject impact = Instantiate(
+                impactPrefab,
+                hit.point,                          // vị trí chạm
+                Quaternion.LookRotation(hit.normal) // xoay theo mặt phẳng
+            );
+
+            // tự xóa sau vài giây
+            Destroy(impact, impactLifetime);
+        }
+
         //- arrmor
         currentAmmo--;
         // muzzle flash
@@ -187,6 +209,9 @@ public class GunSystem : MonoBehaviour
                 animator.SetTrigger("Fire");
             }
         }
+        // recoil
+        if(gunRecoil != null)
+            gunRecoil.Fire();
 
         // =====================================================
         // HƯỚNG BẮN — lấy từ AimSystem

@@ -1659,6 +1659,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 490552, guid: 48a907058000acc4da8ac9293b565679, type: 3}
   m_PrefabInstance: {fileID: 873913594}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &887468611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3805742755969102576, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+  m_PrefabInstance: {fileID: 1977625442}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &887468614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887468611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2aaa148380d21a479d23345fc615757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recoilX: 2
+  recoilY: 1
+  recoilZ: 0.5
+  returnSpeed: 10
+  recoilSpeed: 20
 --- !u!1001 &926112344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3026,10 +3048,18 @@ PrefabInstance:
       propertyPath: crosshairImage
       value: 
       objectReference: {fileID: 617790809}
+    - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: gunRecoil
+      value: 
+      objectReference: {fileID: 887468614}
     - target: {fileID: 2074441492429213840, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: crosshairImage
       value: 
       objectReference: {fileID: 617790809}
+    - target: {fileID: 4101910516082351885, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: gunRecoil
+      value: 
+      objectReference: {fileID: 887468614}
     - target: {fileID: 4417869976065876600, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3074,10 +3104,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7369321667136565618, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 56d0539a3d5bcaf4db4a0f94c9f3035f, type: 2}
     - target: {fileID: 7398130717762833595, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: crosshairRect
       value: 
@@ -3086,14 +3112,13 @@ PrefabInstance:
       propertyPath: crosshairRect
       value: 
       objectReference: {fileID: 567055446}
-    - target: {fileID: 7948139352836609934, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
-      propertyPath: groundMask.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3805742755969102576, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 887468614}
   m_SourcePrefab: {fileID: 100100000, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
 --- !u!1001 &1995455355
 PrefabInstance:
