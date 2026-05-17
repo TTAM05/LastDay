@@ -181,6 +181,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""57bc6e17-d2e9-41e5-9539-feedc29c40a9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -253,7 +262,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""e2d88141-1a7b-4698-bcb4-906d08482f73"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -348,6 +357,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""704135b6-7736-4c60-869e-0b3dcf3a7592"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -366,6 +386,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Weapon1 = m_Player.FindAction("Weapon1", throwIfNotFound: true);
         m_Player_Weapon2 = m_Player.FindAction("Weapon2", throwIfNotFound: true);
         m_Player_ScrollWeapon = m_Player.FindAction("ScrollWeapon", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -456,6 +477,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Weapon1;
     private readonly InputAction m_Player_Weapon2;
     private readonly InputAction m_Player_ScrollWeapon;
+    private readonly InputAction m_Player_Sprint;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -507,6 +529,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ScrollWeapon".
         /// </summary>
         public InputAction @ScrollWeapon => m_Wrapper.m_Player_ScrollWeapon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Sprint".
+        /// </summary>
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -563,6 +589,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollWeapon.started += instance.OnScrollWeapon;
             @ScrollWeapon.performed += instance.OnScrollWeapon;
             @ScrollWeapon.canceled += instance.OnScrollWeapon;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
         }
 
         /// <summary>
@@ -604,6 +633,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollWeapon.started -= instance.OnScrollWeapon;
             @ScrollWeapon.performed -= instance.OnScrollWeapon;
             @ScrollWeapon.canceled -= instance.OnScrollWeapon;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
         }
 
         /// <summary>
@@ -714,5 +746,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScrollWeapon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Sprint" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

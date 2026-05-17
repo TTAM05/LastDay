@@ -615,6 +615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4104404824513045158}
   - component: {fileID: 3902041577755827365}
+  - component: {fileID: 819956381007590336}
   m_Layer: 0
   m_Name: Willow_8
   m_TagString: Untagged
@@ -660,22 +661,44 @@ LODGroup:
     renderers:
     - renderer: {fileID: 5182146920477241909}
     - renderer: {fileID: 5225510563531989368}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.25
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8052296543026079640}
     - renderer: {fileID: 1033651336029698827}
-  - screenRelativeHeight: 0.0625
+  - screenRelativeHeight: 0.12
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3853611546669362652}
     - renderer: {fileID: 4424225069883422759}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.06
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7033531621579030222}
     - renderer: {fileID: 515479993086704694}
   m_Enabled: 1
+--- !u!64 &819956381007590336
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271399899545557173}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4120825433684285517, guid: 8a494c8aa994f3d4bbb033b576a828b0, type: 3}
 --- !u!1 &8414432402035173366
 GameObject:
   m_ObjectHideFlags: 0

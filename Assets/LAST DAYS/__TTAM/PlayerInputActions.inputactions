@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "57bc6e17-d2e9-41e5-9539-feedc29c40a9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -167,7 +176,7 @@
                 {
                     "name": "down",
                     "id": "e2d88141-1a7b-4698-bcb4-906d08482f73",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -260,6 +269,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ScrollWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "704135b6-7736-4c60-869e-0b3dcf3a7592",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
