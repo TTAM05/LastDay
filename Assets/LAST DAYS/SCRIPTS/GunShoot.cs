@@ -40,7 +40,9 @@ public class GunSystem : MonoBehaviour
     [Header("Gun Data")]
     public GunData gunData;
     public int currentAmmo;
-    private int reserveAmmo;
+    // private int reserveAmmo;
+
+    private AmmoInventory inventory;
     [Header("Animation")]
     public AnimationClip reloadClip;
 
@@ -57,8 +59,10 @@ public class GunSystem : MonoBehaviour
         }
 
         currentAmmo = gunData.maxAmmo;
-        // ví dụ spawn full ammo
-        reserveAmmo = gunData.maxReserveAmmo;
+        // // ví dụ spawn full ammo
+        // reserveAmmo = gunData.maxReserveAmmo;
+
+        inventory = GetComponentInParent<AmmoInventory>();
     }
 
 
@@ -261,7 +265,7 @@ public class GunSystem : MonoBehaviour
             yield break;
 
         // hết đạn dự trữ
-        if (reserveAmmo <= 0)
+        if (inventory.reserveAmmo <= 0)
             yield break;
 
         isReloading = true;
@@ -290,11 +294,13 @@ public class GunSystem : MonoBehaviour
         int needAmmo = gunData.maxAmmo - currentAmmo;
 
         // số đạn thực sự có thể nạp
-        int ammoToLoad = Mathf.Min(needAmmo, reserveAmmo);
+        int ammoToLoad = Mathf.Min(needAmmo, inventory.reserveAmmo);
 
         currentAmmo += ammoToLoad;
 
-        reserveAmmo -= ammoToLoad;
+        inventory.reserveAmmo -= ammoToLoad;
+
+        Debug.Log("Reserve ammo: " +  inventory.reserveAmmo);
 
         isReloading = false;
     }
@@ -306,4 +312,16 @@ public class GunSystem : MonoBehaviour
             gunAudio.PlayOneShot(gunData.reloadclip);
         }
     }
+
+    // public void AddAmmo(int amount)
+    // {
+    //     reserveAmmo += amount;
+
+    //     reserveAmmo = Mathf.Min(
+    //         reserveAmmo,
+    //         gunData.maxReserveAmmo
+    //     );
+
+    //     Debug.Log("Reserve Ammo: " + reserveAmmo);
+    // }
 }
