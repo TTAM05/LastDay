@@ -68,6 +68,7 @@ public class GunSystem : MonoBehaviour
     void Awake()
     {
         input = new PlayerInputActions();
+        gunRecoil = GetComponent<GunRecoil>();
     }
 
     // =========================================================
@@ -171,22 +172,20 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void Shoot()
     {
-        //hiện vêt đạn bắn trúng
-        if (aimSystem != null)
-        {
-            Ray ray = new Ray(aimSystem.FirePoint, aimSystem.FireDirection);
-            if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
-            {
-                // tạo impact tại điểm trúng
-                GameObject impact = Instantiate(
-                    impactPrefab,
-                    hit.point + hit.normal * 0.01f, // đẩy ra một chút để tránh z-fighting
-                    Quaternion.LookRotation(hit.normal) // quay theo mặt phẳng va chạm
-                );
+        // hiện vết đạn
+        RaycastHit hit;
 
-                // hủy impact sau một thời gian
-                Destroy(impact, impactLifetime);
-            }
+        if (Physics.Raycast(cam.position, cam.forward, out hit, range))
+        {
+            // spawn impact tại điểm bắn trúng
+            GameObject impact = Instantiate(
+                impactPrefab,
+                hit.point,                          // vị trí chạm
+                Quaternion.LookRotation(hit.normal) // xoay theo mặt phẳng
+            );
+
+            // tự xóa sau vài giây
+            Destroy(impact, impactLifetime);
         }
 
         //- arrmor
@@ -211,7 +210,8 @@ public class GunSystem : MonoBehaviour
             }
         }
         // recoil
-        gunRecoil.Fire();
+        if(gunRecoil != null)
+            gunRecoil.Fire();
 
         // =====================================================
         // HƯỚNG BẮN — lấy từ AimSystem
