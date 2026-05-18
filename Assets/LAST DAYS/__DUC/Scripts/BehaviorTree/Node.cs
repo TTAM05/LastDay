@@ -1,16 +1,13 @@
 using UnityEngine;
-
-public class Node : MonoBehaviour
+using System;
+public enum NodeState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    Running,
+    Success,
+    Failure
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public abstract class Node
+{
+    public abstract NodeState Evaluate();
 }
