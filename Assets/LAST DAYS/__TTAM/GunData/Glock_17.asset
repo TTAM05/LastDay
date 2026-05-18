@@ -22,8 +22,8 @@ MonoBehaviour:
   maxAmmo: 8
   maxReserveAmmo: 200
   bulletSpeed: 100
-  singleShotClip: {fileID: 8300000, guid: de97c5f09dabaa94abacdaa8853624e8, type: 3}
-  autoShotClip: {fileID: 0}
+  singleShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
+  autoShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
   reloadclip: {fileID: 8300000, guid: 7e9876368f2e0364d8ce33e8ec59e8f1, type: 3}
   recoilX: 3
   recoilY: 0.5
