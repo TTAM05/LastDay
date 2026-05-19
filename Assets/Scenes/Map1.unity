@@ -2642,11 +2642,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6842009011769139980, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
       propertyPath: walkSpeed
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6842009011769139980, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
       propertyPath: chaseSpeed
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6842009011769139980, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
       propertyPath: attackRange
@@ -2715,6 +2715,14 @@ PrefabInstance:
     - target: {fileID: 8696659952195766958, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740582769523091759, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
+      propertyPath: m_Height
+      value: 1.5441265
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740582769523091759, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
+      propertyPath: m_Center.y
+      value: 0.77206326
       objectReference: {fileID: 0}
     - target: {fileID: 8790186475922347912, guid: aaa59b8e6c08ebc49b64de9f0f0fbb83, type: 3}
       propertyPath: m_Layer
