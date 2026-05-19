@@ -13,6 +13,6 @@ public class GunRecoil : MonoBehaviour
 
         fps.wantedYRotation += recoilHorizontal;
 
-        Debug.Log("RECOIL");
+        // Debug.Log("RECOIL");
     }
 }

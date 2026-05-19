@@ -178,18 +178,35 @@ public class GunSystem : MonoBehaviour
         //hiện vêt đạn bắn trúng
         if (aimSystem != null)
         {
-            Ray ray = new Ray(aimSystem.FirePoint, aimSystem.FireDirection);
+            Ray ray = new Ray(
+                aimSystem.FirePoint,
+                aimSystem.FireDirection
+            );
+
             if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
             {
-                // tạo impact tại điểm trúng
-                GameObject impact = Instantiate(
-                    impactPrefab,
-                    hit.point + hit.normal * 0.01f, // đẩy ra một chút để tránh z-fighting
-                    Quaternion.LookRotation(hit.normal) // quay theo mặt phẳng va chạm
-                );
+                // DAMAGE
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    EnemyHealth enemy =
+                        hit.collider.GetComponent<EnemyHealth>();
 
-                // hủy impact sau một thời gian
-                Destroy(impact, impactLifetime);
+                    if (enemy != null)
+                    {
+                        enemy.TakeDamage(gunData.damage);
+                    }
+                }
+                else
+                {
+                    // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
+                    GameObject impact = Instantiate(
+                        impactPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+
+                    Destroy(impact, impactLifetime);
+                }
             }
         }
 
@@ -251,6 +268,12 @@ public class GunSystem : MonoBehaviour
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+
+        // // truyền damage từ gunData sang Bullet
+        // Bullet bulletScript =
+        // bullet.GetComponent<Bullet>();
+
+        // bulletScript.damage = gunData.damage;
     }
 
     // =========================================================
