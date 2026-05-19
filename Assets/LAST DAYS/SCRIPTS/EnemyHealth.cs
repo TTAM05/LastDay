@@ -8,6 +8,10 @@ public class EnemyHealth : MonoBehaviour
     bool isDead = false;
     private Animator anim;
 
+    //Sound
+    public AudioSource audioSource;
+    public AudioClip DieClip;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -63,12 +67,18 @@ public class EnemyHealth : MonoBehaviour
             col.enabled = false;
         }
 
-        
+
         if (isHeadshot)
         {
             if (anim != null)
             {
                 anim.SetTrigger("HeadShot");
+            }
+
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+                audioSource.PlayOneShot(DieClip);
             }
 
             Debug.Log("Headshot!");
@@ -78,6 +88,12 @@ public class EnemyHealth : MonoBehaviour
             if (anim != null)
             {
                 anim.SetTrigger("Die");
+            }
+
+            if (audioSource != null)
+            {   
+                audioSource.Stop();
+                audioSource.PlayOneShot(DieClip);
             }
 
             Debug.Log(gameObject.name + " has died.");

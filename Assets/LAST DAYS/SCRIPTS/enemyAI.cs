@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,9 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
     public NavMeshAgent agent;
     public Animator animator;
+    public GameObject BloodScreenObj;
+    private GameObject InstantiatedObj;
+    private Coroutine bloodCoroutine;
 
     [Header("Patrol")]
     public float patrolWaitTime = 2f;
@@ -34,6 +38,12 @@ public class EnemyAI : MonoBehaviour
     [Header("Movement")]
     public float walkSpeed = 2f;
     public float chaseSpeed = 4f;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip chaseClip;
+    // public AudioClip attackClip;
+    public AudioClip patrolClip;
 
     private EnemyState currentState;
 
@@ -160,6 +170,8 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
+        PlayAudio(patrolClip);
+
         agent.isStopped = false;
         agent.speed = walkSpeed;
 
@@ -187,17 +199,23 @@ public class EnemyAI : MonoBehaviour
     }
 
     void Chase()
-    {
+    {   
+
+        PlayAudio(chaseClip);
+
         agent.isStopped = false;
         agent.speed = chaseSpeed;
 
         agent.SetDestination(player.position);
 
         RotateToPlayer();
+
+        // DeleteObect();
     }
 
     void Attack()
     {
+        // audioSource.PlayOneShot(attackClip);
         agent.isStopped = true;
 
         RotateToPlayer();
@@ -206,6 +224,14 @@ public class EnemyAI : MonoBehaviour
             return;
 
         animator.SetTrigger("Attack");
+
+        //hiện bloodScreen
+        if (bloodCoroutine != null)
+        {
+            StopCoroutine(bloodCoroutine);
+        }
+
+        bloodCoroutine = StartCoroutine(ActiveBloodScreen());
 
         attackTimer = 0f;
     }
@@ -216,6 +242,10 @@ public class EnemyAI : MonoBehaviour
             player.position - transform.position;
 
         dir.y = 0;
+
+        // tránh vector zero
+        if (dir.sqrMagnitude < 0.001f)
+            return;
 
         Quaternion rot =
             Quaternion.LookRotation(dir);
@@ -254,6 +284,42 @@ public class EnemyAI : MonoBehaviour
         {
             patrolPoint = hit.position;
         }
+    }
+
+    void PlayAudio(AudioClip clip)
+    {
+        if (audioSource == null || clip == null)
+            return;
+
+        if (audioSource.clip == clip && audioSource.isPlaying)
+            return;
+
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
+    void InstantiatedObject()
+    {
+        if (InstantiatedObj != null) return;
+
+        InstantiatedObj = Instantiate(BloodScreenObj);
+    }
+
+    void DeleteObject()
+    {
+        if(InstantiatedObj != null)
+        {
+            Destroy(InstantiatedObj);
+            InstantiatedObj = null;
+        }
+    }
+
+    private IEnumerator ActiveBloodScreen()
+    {
+        InstantiatedObject();
+        yield return new WaitForSeconds(attackCooldown);
+        DeleteObject();
     }
 
     void OnDrawGizmosSelected()
