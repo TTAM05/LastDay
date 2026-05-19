@@ -10,6 +10,7 @@ TagManager:
   - PatrolCenter
   - New tag
   - EnemyHead
+  - EnemyBody
   layers:
   - Default
   - TransparentFX

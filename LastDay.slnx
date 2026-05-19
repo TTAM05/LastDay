@@ -30,7 +30,6 @@
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.Splines.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
-  <Project Path="OpalStudio.CodePreview.csproj" />
   <Project Path="Unity.AppUI.Navigation.Editor.csproj" />
   <Project Path="Unity.Burst.Editor.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />
@@ -55,6 +54,7 @@
   <Project Path="Unity.AppUI.Undo.csproj" />
   <Project Path="Unity.EditorCoroutines.Editor.csproj" />
   <Project Path="VoxelLabs.UltimateThumbnails.Lib.csproj" />
+  <Project Path="OpalStudio.CodePreview.csproj" />
   <Project Path="Unity.Behavior.Editor.csproj" />
   <Project Path="Unity.Behavior.Serialization.Editor.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />

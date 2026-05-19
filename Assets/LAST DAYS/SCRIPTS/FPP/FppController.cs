@@ -27,6 +27,14 @@ public class FPSController : MonoBehaviour
     [Header("References")]
     public Camera playerCamera;
 
+    [Header("FootStep")]
+    public AudioClip[] footstepSound;
+    public AudioSource rightfootstep;
+    public AudioSource leftfootstep;
+    public float footstepInterval = 0.5f;
+    private float NextfootstepTime;
+    private bool isLeftFoot = true;
+
     private CharacterController controller;
     private PlayerInputActions input;
     private Vector2 moveInput;
@@ -95,6 +103,16 @@ public class FPSController : MonoBehaviour
         GroundCheck();
         Move();
         ApplyGravity();
+
+        //HandleFootsteps
+        if(isGrounded && controller.velocity.magnitude > 2f && NextfootstepTime <= Time.time)
+        {
+            if(Time.time >= NextfootstepTime)
+            {
+                PlayerFootstepSound();
+                NextfootstepTime = Time.time + footstepInterval;
+            }
+        }
     }
 
     void LateUpdate()
@@ -119,25 +137,6 @@ public class FPSController : MonoBehaviour
 
         controller.Move(finalMove * Time.deltaTime);
     }
-
-    // void Look()
-    // {
-    //     currentLook = Vector2.SmoothDamp(
-    //         currentLook, lookInput,
-    //         ref lookVelocity, smoothTime
-    //     );
-
-    //     float mouseX = currentLook.x * mouseSensitivity;
-    //     float mouseY = currentLook.y * mouseSensitivity;
-
-    //     xRotation -= mouseY;
-    //     xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-    //     playerCamera.transform.localRotation =
-    //         Quaternion.Euler(xRotation, 0f, 0f);
-
-    //     transform.Rotate(Vector3.up * mouseX);
-    // }
 
     void Look()
     {
@@ -198,6 +197,23 @@ public class FPSController : MonoBehaviour
         isGrounded = Physics.CheckSphere(
             groundCheck.position, groundDistance, groundMask
         );
+    }
+
+    void PlayerFootstepSound()
+    {
+
+        AudioClip clip = footstepSound[Random.Range(0, footstepSound.Length)];
+        
+        if(isLeftFoot)
+        {
+            leftfootstep.PlayOneShot(clip);
+        }
+        else
+        {
+            rightfootstep.PlayOneShot(clip);
+        }
+
+        isLeftFoot = !isLeftFoot;
     }
 
     void OnMove(InputAction.CallbackContext ctx) => moveInput = ctx.ReadValue<Vector2>();

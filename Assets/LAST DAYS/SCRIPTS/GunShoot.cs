@@ -35,6 +35,9 @@ public class GunSystem : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    [Header("Blood")]
+    public ParticleSystem bloodPrefab;
+
     public Transform muzzle;
 
     [Header("Gun Data")]
@@ -189,21 +192,50 @@ public class GunSystem : MonoBehaviour
                 // DAMAGE
                 if (hit.collider.CompareTag("EnemyHead"))
                 {
+                    
+                    //hiện máu khi headshot
+                    ParticleSystem blood = Instantiate(
+                        bloodPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+                    blood.transform.SetParent(hit.collider.transform);
+                    Destroy(blood, 2f);
+
                     EnemyHealth enemy =
                         hit.collider.GetComponentInParent<EnemyHealth>();
 
-                    enemy.TakeDamage(gunData.damage * 2);
-                }
-                else if (hit.collider.CompareTag("Enemy"))
-                {
-                    EnemyHealth enemy =
-                        hit.collider.GetComponent<EnemyHealth>();
+                    enemy.TakeDamage(gunData.damage * 2, true);
 
-                    enemy.TakeDamage(gunData.damage);
                 }
-                else
+                else if (hit.collider.CompareTag("EnemyBody"))
                 {
-                    // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
+
+                    //hiện máu khi bắn trúng body
+                    ParticleSystem blood = Instantiate(
+                        bloodPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+                    blood.transform.SetParent(hit.collider.transform);
+                    Destroy(blood, 2f);
+
+
+                    EnemyHealth enemy =
+                        hit.collider.GetComponentInParent<EnemyHealth>();
+
+                    enemy.TakeDamage(gunData.damage, false);
+                   
+                }
+             
+                // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
+                bool isEnemy =
+                hit.collider.CompareTag("Enemy") ||
+                hit.collider.CompareTag("EnemyBody") ||
+                hit.collider.CompareTag("EnemyHead");
+
+                if (!isEnemy)
+                {
                     GameObject impact = Instantiate(
                         impactPrefab,
                         hit.point + hit.normal * 0.01f,
