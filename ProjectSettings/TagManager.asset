@@ -8,6 +8,8 @@ TagManager:
   - Bullet
   - Enemy
   - PatrolCenter
+  - New tag
+  - EnemyHead
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

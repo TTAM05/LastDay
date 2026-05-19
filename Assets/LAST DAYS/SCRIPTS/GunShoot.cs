@@ -185,16 +185,21 @@ public class GunSystem : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
             {
+
                 // DAMAGE
-                if (hit.collider.CompareTag("Enemy"))
+                if (hit.collider.CompareTag("EnemyHead"))
                 {
                     EnemyHealth enemy =
-                        hit.collider.GetComponent<EnemyHealth>();
+                        hit.collider.GetComponentInParent<EnemyHealth>();
 
-                    if (enemy != null)
-                    {
-                        enemy.TakeDamage(gunData.damage);
-                    }
+                    enemy.TakeDamage(gunData.damage * 2);
+                }
+                else if (hit.collider.CompareTag("Enemy"))
+                {
+                    EnemyHealth enemy =
+                        hit.collider.GetComponentInParent<EnemyHealth>();
+
+                    enemy.TakeDamage(gunData.damage);
                 }
                 else
                 {
@@ -269,11 +274,11 @@ public class GunSystem : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = fireDirection * gunData.bulletSpeed;
 
-        // // truyền damage từ gunData sang Bullet
-        // Bullet bulletScript =
-        // bullet.GetComponent<Bullet>();
-
-        // bulletScript.damage = gunData.damage;
+        //Gán damage cho viên đạn ngay khi bắn
+                 Bullet bulletScript = bullet.GetComponent<Bullet>();
+                 if (bulletScript != null)                 {
+                     bulletScript.damage = gunData.damage;
+                 }
     }
 
     // =========================================================

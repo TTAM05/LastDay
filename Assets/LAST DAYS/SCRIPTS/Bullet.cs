@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
     public float lifeTime = 3f;
     // sát thương của viên đạn
     public float damage ;
+    
 
     void Start()
     {
@@ -13,23 +14,40 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Hit: " + other.name);
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     Debug.Log("Hit: " + other.name);
 
-        // if (other.CompareTag("Enemy"))
-        // {
-        //     EnemyHealth enemy =
-        //         other.GetComponent<EnemyHealth>();
+    //     // HEADSHOT
+    //     if (other.CompareTag("EnemyHead"))
+    //     {
+    //         EnemyHealth enemy =
+    //             other.GetComponentInParent<EnemyHealth>();
 
-        //     if (enemy != null)
-        //     {
-        //         enemy.TakeDamage(damage);
-        //     }
+    //         if (enemy != null)
+    //         {
+    //             enemy.TakeDamage(damage * 2);
+    //         }
 
-        //     Destroy(gameObject);
-        // }
+    //         Destroy(gameObject);
+    //         return;
+    //     }
 
-        Destroy(gameObject);
-    }
+    //     // BODY
+    //     if (other.CompareTag("Enemy"))
+    //     {
+    //         EnemyHealth enemy =
+    //             other.GetComponent<EnemyHealth>();
+
+    //         if (enemy != null)
+    //         {
+    //             enemy.TakeDamage(damage);
+    //         }
+
+    //         Destroy(gameObject);
+    //         return;
+    //     }
+
+    //     Destroy(gameObject);
+    // }
 }
