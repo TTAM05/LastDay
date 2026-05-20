@@ -1,14 +1,7 @@
 using UnityEngine;
 
+
 public class PatrolCenter : MonoBehaviour
 {
-    public float patrolRadius = 15f;
-
-    //gizmos
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, patrolRadius);
-    }
+    public Transform[] waypoints; // Kéo các điểm vào đây trong Inspector
 }
-
