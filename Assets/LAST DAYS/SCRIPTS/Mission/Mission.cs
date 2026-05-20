@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using  UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -15,12 +15,16 @@ public class GameManager : MonoBehaviour
     [Header("Ambient")]
     public AmbientZombieSpawner ambientSpawner;
 
+    [Header("UI")]
+    public GameObject missionUI;
+
     // [Header("Wave 1")]
     // public ZombieSpawner[] wave1Spawners;
 
     void Awake()
     {
         Instance = this;
+        missionUI.SetActive(false);
     }
 
     void Update()
@@ -48,6 +52,8 @@ public class GameManager : MonoBehaviour
 
         ambientSpawner.StartSpawn();
 
+        UIMission();
+
         Debug.Log("Explore Started");
     }
 
@@ -67,5 +73,19 @@ public class GameManager : MonoBehaviour
         // }
 
         Debug.Log("Wave 1 Started");
+    }
+
+    //tắt UI sau 4s
+    public void UIMission()
+    {
+        missionUI.SetActive(true);
+        Invoke(nameof(HideMissionUI), 8f);
+
+        Debug.Log("Mission Completed");
+    }
+
+    private void HideMissionUI()
+    {
+        missionUI.SetActive(false);
     }
 }
