@@ -3,20 +3,17 @@ using System;
 
 public class Health : MonoBehaviour
 {
+    public CharData charData;
     [Header("Health")]
-    public float maxHealth = 100f;
     public float currentHealth;
 
     [Header("Damage Cooldown")]
     public float damageCooldown = 1f; // thời gian miễn sát thương
     private float lastDamageTime;
 
-    public event Action<float> OnHealthChanged;
-    public event Action OnDie;
-
     void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = charData.maxHealth;
         lastDamageTime = -999f;
     }
 
@@ -29,9 +26,8 @@ public class Health : MonoBehaviour
         lastDamageTime = Time.time;
 
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, charData.maxHealth);
 
-        OnHealthChanged?.Invoke(currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -43,14 +39,11 @@ public class Health : MonoBehaviour
     public void Heal(float amount)
     {
         currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        OnHealthChanged?.Invoke(currentHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, charData.maxHealth);
     }
 
     void Die()
     {
-        OnDie?.Invoke();
         Debug.Log("Dead");
     }
 }

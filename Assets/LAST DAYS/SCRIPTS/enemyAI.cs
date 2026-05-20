@@ -18,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     public GameObject BloodScreenObj;
     private GameObject InstantiatedObj;
     private Coroutine bloodCoroutine;
+    public ZombieData zombieData;
 
     [Header("Patrol")]
     public float patrolWaitTime = 2f;
@@ -35,15 +36,9 @@ public class EnemyAI : MonoBehaviour
     public float attackRange = 2f;
     public float attackCooldown = 2f;
 
-    [Header("Movement")]
-    public float walkSpeed = 2f;
-    public float chaseSpeed = 4f;
 
     [Header("Audio")]
     public AudioSource audioSource;
-    public AudioClip chaseClip;
-    // public AudioClip attackClip;
-    public AudioClip patrolClip;
 
     private EnemyState currentState;
 
@@ -170,10 +165,10 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
-        PlayAudio(patrolClip);
+        PlayAudio(zombieData.PatrolSound);
 
         agent.isStopped = false;
-        agent.speed = walkSpeed;
+        agent.speed = zombieData.Walkspeed;
 
         if (waiting)
         {
@@ -201,10 +196,10 @@ public class EnemyAI : MonoBehaviour
     void Chase()
     {   
 
-        PlayAudio(chaseClip);
+        PlayAudio(zombieData.ChaseSound);
 
         agent.isStopped = false;
-        agent.speed = chaseSpeed;
+        agent.speed = zombieData.Runspeed;
 
         agent.SetDestination(player.position);
 

@@ -57,28 +57,34 @@ public class AimSystem : MonoBehaviour
     // FIRE DATA
     // tính điểm bắn theo chế độ hip / aim
     // =====================================================
+   
     void UpdateFireData()
     {
-        if (isAiming)
+        Ray camRay = cam.ViewportPointToRay(
+            new Vector3(0.5f, 0.5f, 0f)
+        );
+
+        Vector3 targetPoint;
+
+        if (Physics.Raycast(camRay, out RaycastHit hit, range))
         {
-            // ADS — bắn theo hướng nòng súng
-            FirePoint     = muzzle.position;
-            FireDirection = muzzle.forward;
+            targetPoint = hit.point;
         }
         else
         {
-            // Hip fire — bắn theo hướng camera
-            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-
-            Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, range)
-                ? hit.point
-                : ray.GetPoint(range);
-
-            FirePoint     = muzzle.position;
-            FireDirection = (targetPoint - muzzle.position).normalized;
+            targetPoint = camRay.GetPoint(range);
         }
-        // ← thêm dòng này để thấy hướng bắn trong Scene view
-        Debug.DrawRay(FirePoint, FireDirection * 10f, Color.red);
+
+        FirePoint = muzzle.position;
+
+        FireDirection =
+            (targetPoint - muzzle.position).normalized;
+
+        Debug.DrawRay(
+            FirePoint,
+            FireDirection * 100f,
+            Color.red
+        );
     }
 
     // =====================================================

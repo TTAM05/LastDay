@@ -3,18 +3,26 @@ using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float health = 100f;
-
+    public ZombieData zombieData;
+    public float currentHealth;
     bool isDead = false;
     private Animator anim;
 
     //Sound
     public AudioSource audioSource;
-    public AudioClip DieClip;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        if (zombieData != null)
+        {
+            currentHealth = zombieData.maxHealth;
+        }
+        else
+        {
+            Debug.LogError("ZombieData not assigned on " + gameObject.name);
+            currentHealth = 100f; // default value
+        }
     }
 
     public void TakeDamage(float damage, bool isHeadshot)
@@ -23,13 +31,13 @@ public class EnemyHealth : MonoBehaviour
             return;
 
             
-        health -= damage;
+        currentHealth -= damage;
 
         Debug.Log(gameObject.name + 
             " took " + damage + 
-            " damage. Remaining health: " + health);
+            " damage. Remaining health: " + currentHealth);
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {   
             isDead = true;
             Die(isHeadshot);
@@ -78,7 +86,7 @@ public class EnemyHealth : MonoBehaviour
             if (audioSource != null)
             {
                 audioSource.Stop();
-                audioSource.PlayOneShot(DieClip);
+                audioSource.PlayOneShot(zombieData.DieSound);
             }
 
             Debug.Log("Headshot!");
@@ -93,7 +101,7 @@ public class EnemyHealth : MonoBehaviour
             if (audioSource != null)
             {   
                 audioSource.Stop();
-                audioSource.PlayOneShot(DieClip);
+                audioSource.PlayOneShot(zombieData.DieSound);
             }
 
             Debug.Log(gameObject.name + " has died.");

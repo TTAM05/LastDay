@@ -181,11 +181,15 @@ public class GunSystem : MonoBehaviour
         //hiện vêt đạn bắn trúng
         if (aimSystem != null)
         {
-            Ray ray = new Ray(
-                aimSystem.FirePoint,
-                aimSystem.FireDirection
+            // Ray ray = new Ray(
+            //     aimSystem.FirePoint,
+            //     aimSystem.FireDirection
+            // );
+            Ray ray = cam.ViewportPointToRay(
+                new Vector3(0.5f, 0.5f, 0f)
             );
 
+            
             if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
             {
 

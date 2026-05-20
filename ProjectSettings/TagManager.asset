@@ -11,6 +11,7 @@ TagManager:
   - New tag
   - EnemyHead
   - EnemyBody
+  - EnemyHand
   layers:
   - Default
   - TransparentFX
