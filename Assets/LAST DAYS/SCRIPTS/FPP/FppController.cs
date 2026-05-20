@@ -35,6 +35,15 @@ public class FPSController : MonoBehaviour
     private float NextfootstepTime;
     private bool isLeftFoot = true;
 
+    [Header("Die Animation")]
+    public float dieTiltSpeed = 3f;      // tốc độ ngã
+    public float dieDropSpeed = 2f;      // tốc độ hạ xuống
+    public float dieDropAmount = 0.8f;   // hạ xuống bao nhiêu
+
+    private bool isDead = false;
+    private float currentZRotation = 0f;
+    private Vector3 originalCamPos;
+
     private CharacterController controller;
     private PlayerInputActions input;
     private Vector2 moveInput;
@@ -117,6 +126,12 @@ public class FPSController : MonoBehaviour
 
     void LateUpdate()
     {
+        if (isDead)
+        {
+            DieCameraAnimation();
+            return; // không chạy Look() nữa
+        }
+
         Look();
     }
 
@@ -215,6 +230,40 @@ public class FPSController : MonoBehaviour
 
         isLeftFoot = !isLeftFoot;
     }
+
+    public void Die()
+    {
+        isDead = true;
+        originalCamPos = playerCamera.transform.localPosition;
+
+        // Khóa input
+        input.Disable();
+    }
+
+    void DieCameraAnimation()
+    {
+        // Xoay Z về 90 độ
+        currentZRotation = Mathf.MoveTowards(
+            currentZRotation, 90f,
+            dieTiltSpeed * 60f * Time.deltaTime
+        );
+
+        // Hạ camera xuống
+        Vector3 targetPos = originalCamPos - new Vector3(0, dieDropAmount, 0);
+        playerCamera.transform.localPosition = Vector3.Lerp(
+            playerCamera.transform.localPosition,
+            targetPos,
+            dieDropSpeed * Time.deltaTime
+        );
+
+        // Apply rotation
+        playerCamera.transform.localRotation = Quaternion.Euler(
+            xRotation,
+            0f,
+            currentZRotation  // Z nghiêng sang
+        );
+    }
+
 
     void OnMove(InputAction.CallbackContext ctx) => moveInput = ctx.ReadValue<Vector2>();
     void OnMoveCanceled(InputAction.CallbackContext ctx) => moveInput = Vector2.zero;

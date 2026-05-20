@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: John
   maxHealth: 100
-  hitSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: dc6820a2c5a48cf4dacb31a16b734841, type: 3}
+  deathSound: {fileID: 8300000, guid: 05c7b3b461af2de4cad2dea0a94e6a54, type: 3}

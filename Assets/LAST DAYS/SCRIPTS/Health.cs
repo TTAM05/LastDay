@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Health : MonoBehaviour
 {
@@ -70,6 +71,14 @@ public class Health : MonoBehaviour
         {
             audioSource.PlayOneShot(charData.deathSound);
         }
+
+        FPSController fps = GetComponentInParent<FPSController>();
+        if (fps != null)
+            fps.Die();
+
+        // Freeze game after short delay to allow sound to play
+        StartCoroutine(FreezeAfterDelay(2f));
+        
     }
 
     //va chạm với zombie
@@ -92,5 +101,12 @@ public class Health : MonoBehaviour
         if (healthBarFill != null)
             // fillAmount từ 0 đến 1
             healthBarFill.fillAmount = currentHealth / charData.maxHealth;
+    }
+
+    
+    IEnumerator FreezeAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // RealTime để không bị ảnh hưởng bởi timeScale
+        Time.timeScale = 0f; // Dừng game
     }
 }
