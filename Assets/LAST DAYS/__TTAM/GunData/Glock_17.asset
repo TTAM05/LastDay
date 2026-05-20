@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccfa92590711e8488c9dd51e68f4a1e, type: 3}
   m_Name: Glock_17
   m_EditorClassIdentifier: 
-  gunName: 
-  damage: 20
+  gunName: 'Glock '
+  damage: 8
   fireRate: 0.1
   isAutomatic: 0
   range: 100
@@ -22,8 +22,8 @@ MonoBehaviour:
   maxAmmo: 8
   maxReserveAmmo: 200
   bulletSpeed: 100
-  singleShotClip: {fileID: 8300000, guid: de97c5f09dabaa94abacdaa8853624e8, type: 3}
-  autoShotClip: {fileID: 0}
+  singleShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
+  autoShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
   reloadclip: {fileID: 8300000, guid: 7e9876368f2e0364d8ce33e8ec59e8f1, type: 3}
   recoilX: 3
   recoilY: 0.5

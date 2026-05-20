@@ -35,6 +35,9 @@ public class GunSystem : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    [Header("Blood")]
+    public ParticleSystem bloodPrefab;
+
     public Transform muzzle;
 
     [Header("Gun Data")]
@@ -178,18 +181,73 @@ public class GunSystem : MonoBehaviour
         //hiện vêt đạn bắn trúng
         if (aimSystem != null)
         {
-            Ray ray = new Ray(aimSystem.FirePoint, aimSystem.FireDirection);
+            // Ray ray = new Ray(
+            //     aimSystem.FirePoint,
+            //     aimSystem.FireDirection
+            // );
+            Ray ray = cam.ViewportPointToRay(
+                new Vector3(0.5f, 0.5f, 0f)
+            );
+
+            
             if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
             {
-                // tạo impact tại điểm trúng
-                GameObject impact = Instantiate(
-                    impactPrefab,
-                    hit.point + hit.normal * 0.01f, // đẩy ra một chút để tránh z-fighting
-                    Quaternion.LookRotation(hit.normal) // quay theo mặt phẳng va chạm
-                );
 
-                // hủy impact sau một thời gian
-                Destroy(impact, impactLifetime);
+                // DAMAGE
+                if (hit.collider.CompareTag("EnemyHead"))
+                {
+                    
+                    //hiện máu khi headshot
+                    ParticleSystem blood = Instantiate(
+                        bloodPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+                    blood.transform.SetParent(hit.collider.transform);
+                    Destroy(blood, 2f);
+
+                    EnemyHealth enemy =
+                        hit.collider.GetComponentInParent<EnemyHealth>();
+
+                    enemy.TakeDamage(gunData.damage * 2, true);
+
+                }
+                else if (hit.collider.CompareTag("EnemyBody"))
+                {
+
+                    //hiện máu khi bắn trúng body
+                    ParticleSystem blood = Instantiate(
+                        bloodPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+                    blood.transform.SetParent(hit.collider.transform);
+                    Destroy(blood, 2f);
+
+
+                    EnemyHealth enemy =
+                        hit.collider.GetComponentInParent<EnemyHealth>();
+
+                    enemy.TakeDamage(gunData.damage, false);
+                   
+                }
+             
+                // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
+                bool isEnemy =
+                hit.collider.CompareTag("Enemy") ||
+                hit.collider.CompareTag("EnemyBody") ||
+                hit.collider.CompareTag("EnemyHead");
+
+                if (!isEnemy)
+                {
+                    GameObject impact = Instantiate(
+                        impactPrefab,
+                        hit.point + hit.normal * 0.01f,
+                        Quaternion.LookRotation(hit.normal)
+                    );
+
+                    Destroy(impact, impactLifetime);
+                }
             }
         }
 
@@ -251,6 +309,12 @@ public class GunSystem : MonoBehaviour
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+
+        //Gán damage cho viên đạn ngay khi bắn
+                 Bullet bulletScript = bullet.GetComponent<Bullet>();
+                 if (bulletScript != null)                 {
+                     bulletScript.damage = gunData.damage;
+                 }
     }
 
     // =========================================================

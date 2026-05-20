@@ -6,6 +6,12 @@ TagManager:
   tags:
   - CinemachineTarget
   - Bullet
+  - Enemy
+  - PatrolCenter
+  - New tag
+  - EnemyHead
+  - EnemyBody
+  - EnemyHand
   layers:
   - Default
   - TransparentFX
@@ -13,8 +19,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
