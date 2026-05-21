@@ -2,7 +2,10 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewGun", menuName = "Gun/Gun Data")]
 public class GunData : ScriptableObject
-{
+{   
+    [Header("Inventory Data")]
+    InventoryData inventoryData; // chứa maxReserveAmmo để AmmoInventory tham chiếu
+
     [Header("Info")]
     public string gunName;
 
@@ -25,8 +28,6 @@ public class GunData : ScriptableObject
 
     [Header("Ammo")]
     public int maxAmmo = 30;
-    public int maxReserveAmmo = 200;  // đạn dự trữ tối đa
-
     [Header("Bullet")]
     public float bulletSpeed = 100f;
 
@@ -39,4 +40,5 @@ public class GunData : ScriptableObject
     [Header("Recoil")]
     public float recoilX = 1f;
     public float recoilY = 1f;
+
 }

@@ -27,6 +27,23 @@ public class FPSController : MonoBehaviour
     [Header("References")]
     public Camera playerCamera;
 
+    [Header("FootStep")]
+    public AudioClip[] footstepSound;
+    public AudioSource rightfootstep;
+    public AudioSource leftfootstep;
+    public float footstepInterval = 0.5f;
+    private float NextfootstepTime;
+    private bool isLeftFoot = true;
+
+    [Header("Die Animation")]
+    public float dieTiltSpeed = 3f;      // tốc độ ngã
+    public float dieDropSpeed = 2f;      // tốc độ hạ xuống
+    public float dieDropAmount = 0.8f;   // hạ xuống bao nhiêu
+
+    private bool isDead = false;
+    private float currentZRotation = 0f;
+    private Vector3 originalCamPos;
+
     private CharacterController controller;
     private PlayerInputActions input;
     private Vector2 moveInput;
@@ -95,10 +112,26 @@ public class FPSController : MonoBehaviour
         GroundCheck();
         Move();
         ApplyGravity();
+
+        //HandleFootsteps
+        if(isGrounded && controller.velocity.magnitude > 2f && NextfootstepTime <= Time.time)
+        {
+            if(Time.time >= NextfootstepTime)
+            {
+                PlayerFootstepSound();
+                NextfootstepTime = Time.time + footstepInterval;
+            }
+        }
     }
 
     void LateUpdate()
     {
+        if (isDead)
+        {
+            DieCameraAnimation();
+            return; // không chạy Look() nữa
+        }
+
         Look();
     }
 
@@ -119,25 +152,6 @@ public class FPSController : MonoBehaviour
 
         controller.Move(finalMove * Time.deltaTime);
     }
-
-    // void Look()
-    // {
-    //     currentLook = Vector2.SmoothDamp(
-    //         currentLook, lookInput,
-    //         ref lookVelocity, smoothTime
-    //     );
-
-    //     float mouseX = currentLook.x * mouseSensitivity;
-    //     float mouseY = currentLook.y * mouseSensitivity;
-
-    //     xRotation -= mouseY;
-    //     xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-    //     playerCamera.transform.localRotation =
-    //         Quaternion.Euler(xRotation, 0f, 0f);
-
-    //     transform.Rotate(Vector3.up * mouseX);
-    // }
 
     void Look()
     {
@@ -199,6 +213,57 @@ public class FPSController : MonoBehaviour
             groundCheck.position, groundDistance, groundMask
         );
     }
+
+    void PlayerFootstepSound()
+    {
+
+        AudioClip clip = footstepSound[Random.Range(0, footstepSound.Length)];
+        
+        if(isLeftFoot)
+        {
+            leftfootstep.PlayOneShot(clip);
+        }
+        else
+        {
+            rightfootstep.PlayOneShot(clip);
+        }
+
+        isLeftFoot = !isLeftFoot;
+    }
+
+    public void Die()
+    {
+        isDead = true;
+        originalCamPos = playerCamera.transform.localPosition;
+
+        // Khóa input
+        input.Disable();
+    }
+
+    void DieCameraAnimation()
+    {
+        // Xoay Z về 90 độ
+        currentZRotation = Mathf.MoveTowards(
+            currentZRotation, 90f,
+            dieTiltSpeed * 60f * Time.deltaTime
+        );
+
+        // Hạ camera xuống
+        Vector3 targetPos = originalCamPos - new Vector3(0, dieDropAmount, 0);
+        playerCamera.transform.localPosition = Vector3.Lerp(
+            playerCamera.transform.localPosition,
+            targetPos,
+            dieDropSpeed * Time.deltaTime
+        );
+
+        // Apply rotation
+        playerCamera.transform.localRotation = Quaternion.Euler(
+            xRotation,
+            0f,
+            currentZRotation  // Z nghiêng sang
+        );
+    }
+
 
     void OnMove(InputAction.CallbackContext ctx) => moveInput = ctx.ReadValue<Vector2>();
     void OnMoveCanceled(InputAction.CallbackContext ctx) => moveInput = Vector2.zero;

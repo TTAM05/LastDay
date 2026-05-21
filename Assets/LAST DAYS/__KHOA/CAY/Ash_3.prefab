@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3675202777387253487}
   - component: {fileID: 2923634821118667830}
   - component: {fileID: 108773191347954493}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 1471099677569490783}
   - component: {fileID: 1897059529211485926}
   - component: {fileID: 8893585285622036199}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash3_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 7440372498963563350}
   - component: {fileID: 6782046075776463400}
   - component: {fileID: 8632487349752965533}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 4201042951214258645}
   - component: {fileID: 2620842362562187367}
   - component: {fileID: 7105945025208682670}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 6012046777991822699}
   - component: {fileID: 1327215031302559663}
   - component: {fileID: 3042262502160738601}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 3612761717506901747}
   - component: {fileID: 6507590504357473242}
   - component: {fileID: 7582502909534462834}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 2071429860783786170}
   - component: {fileID: 6015115748198077891}
   - component: {fileID: 3169859674566997257}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 8575781490227243152}
   - component: {fileID: 4134043023202697746}
   - component: {fileID: 1233260243591071987}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 4984563804737499386}
   - component: {fileID: 7996267777616192065}
   - component: {fileID: 6731080320727748756}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash3_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 7332990283047316611}
   - component: {fileID: 3083524825511349172}
   - component: {fileID: 2138208266529689364}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash3_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -877,7 +877,7 @@ GameObject:
   - component: {fileID: 4265424399428111070}
   - component: {fileID: 130577593660643376}
   - component: {fileID: 1794684006616347360}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash3_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,7 +964,9 @@ GameObject:
   - component: {fileID: 6002078629836339791}
   - component: {fileID: 2344155532720013438}
   - component: {fileID: 6058352264222817497}
-  m_Layer: 0
+  - component: {fileID: 7831914743428222466}
+  - component: {fileID: -6937113885549865401}
+  m_Layer: 3
   m_Name: Ash_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -981,7 +983,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1471099677569490783}
@@ -1046,11 +1048,52 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3057505471171079499, guid: defd852720802834b9378d7c05cb94f2, type: 3}
+--- !u!65 &7831914743428222466
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123247909885958350}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.38244805, y: 1.7169231, z: 0.37458676}
+  m_Center: {x: -0.013508281, y: 0.8445567, z: 0.017969042}
+--- !u!114 &-6937113885549865401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123247909885958350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &8564872706579805898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,7 +1105,7 @@ GameObject:
   - component: {fileID: 1130668971376323887}
   - component: {fileID: 5723488652309857115}
   - component: {fileID: 6078683876364358966}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

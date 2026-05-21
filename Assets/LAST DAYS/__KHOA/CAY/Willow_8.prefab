@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3881185481991166475}
   - component: {fileID: 4670394123646638326}
   - component: {fileID: 4424225069883422759}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5930561358143293170}
   - component: {fileID: 5057267962419732880}
   - component: {fileID: 8052296543026079640}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow8_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 5539584651270739031}
   - component: {fileID: 4792203687112333705}
   - component: {fileID: 3853611546669362652}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow8_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 7942540167543680677}
   - component: {fileID: 8945995218707026366}
   - component: {fileID: 5182146920477241909}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow8_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 1325558554535616904}
   - component: {fileID: 4484222032927918154}
   - component: {fileID: 1033651336029698827}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 4608191518396479380}
   - component: {fileID: 5879258504970781500}
   - component: {fileID: 5225510563531989368}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 1312405408540938946}
   - component: {fileID: 190166884547108608}
   - component: {fileID: 515479993086704694}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,8 +615,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4104404824513045158}
   - component: {fileID: 3902041577755827365}
-  - component: {fileID: 819956381007590336}
-  m_Layer: 0
+  - component: {fileID: 4632056923995299755}
+  - component: {fileID: 1884439204327687551}
+  m_Layer: 3
   m_Name: Willow_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +634,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7942540167543680677}
@@ -677,8 +678,8 @@ LODGroup:
     - renderer: {fileID: 7033531621579030222}
     - renderer: {fileID: 515479993086704694}
   m_Enabled: 1
---- !u!64 &819956381007590336
-MeshCollider:
+--- !u!65 &4632056923995299755
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -695,10 +696,29 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4120825433684285517, guid: 8a494c8aa994f3d4bbb033b576a828b0, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.43093586, y: 1.743134, z: 0.37737727}
+  m_Center: {x: -0.083695196, y: 0.8937678, z: 0.083685964}
+--- !u!114 &1884439204327687551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271399899545557173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &8414432402035173366
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,7 +730,7 @@ GameObject:
   - component: {fileID: 2897677266840178046}
   - component: {fileID: 7436589949316935791}
   - component: {fileID: 7033531621579030222}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow8_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
