@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3980736239350023240}
   - component: {fileID: 5491758635601699118}
-  - component: {fileID: 8655549448747023956}
+  - component: {fileID: 8583876456381830552}
   m_Layer: 0
   m_Name: Ash_6
   m_TagString: Untagged
@@ -76,8 +76,8 @@ LODGroup:
     - renderer: {fileID: 5569067857492910314}
     - renderer: {fileID: 9206465849285557590}
   m_Enabled: 1
---- !u!64 &8655549448747023956
-MeshCollider:
+--- !u!65 &8583876456381830552
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,10 +94,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6981534621997266882, guid: a95f30929d2c0c74085b979f22f609ef, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.60274017, y: 2.7216547, z: 0.5554793}
+  m_Center: {x: -0.009458443, y: 1.381112, z: 0.03310288}
 --- !u!1 &349903477616601880
 GameObject:
   m_ObjectHideFlags: 0

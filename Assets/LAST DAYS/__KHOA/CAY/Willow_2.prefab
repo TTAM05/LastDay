@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 743794231458891510}
   - component: {fileID: 4774340156722020152}
-  - component: {fileID: 7624291460038483360}
+  - component: {fileID: 2108765497531558863}
   m_Layer: 0
   m_Name: Willow_2
   m_TagString: Untagged
@@ -72,8 +72,8 @@ LODGroup:
     - renderer: {fileID: 7444762368100846797}
     - renderer: {fileID: 8121759795191466452}
   m_Enabled: 1
---- !u!64 &7624291460038483360
-MeshCollider:
+--- !u!65 &2108765497531558863
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,10 +90,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3702196309433099282, guid: 81874aee5a6915743ab8bc2843222d57, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.47250134, y: 1.3086442, z: 1.1010106}
+  m_Center: {x: -0.1402922, y: 0.64253896, z: 0.050505124}
 --- !u!1 &854382264514375668
 GameObject:
   m_ObjectHideFlags: 0

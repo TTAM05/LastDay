@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         missionUI.SetActive(true);
         Invoke(nameof(HideMissionUI), 8f);
 
-        Debug.Log("Mission Completed");
+        Debug.Log("Mission UI Show");
     }
 
     private void HideMissionUI()
