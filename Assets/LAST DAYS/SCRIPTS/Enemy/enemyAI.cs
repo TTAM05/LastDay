@@ -71,14 +71,14 @@ public class EnemyAI : MonoBehaviour
         // SetClosestWaypointAsStart();
 
         StartCoroutine(InitWhenReady());
-        
+
 
         currentState = EnemyState.Chase;
     }
 
     void Update()
     {
-        if (!isInitialized ||player == null) return;
+        if (!isInitialized || player == null) return;
 
         attackTimer += Time.deltaTime;
 
@@ -180,7 +180,7 @@ public class EnemyAI : MonoBehaviour
         currentState = EnemyState.Chase;
         waiting = false;
 
-        if(agent != null)
+        if (agent != null)
         {
             agent.isStopped = false;
         }
@@ -266,7 +266,7 @@ public class EnemyAI : MonoBehaviour
 
     void Chase()
     {
-        if(agent == null || !agent.isOnNavMesh)
+        if (agent == null || !agent.isOnNavMesh)
             return;
 
         PlayAudio(zombieData.ChaseSound);
@@ -281,7 +281,7 @@ public class EnemyAI : MonoBehaviour
 
     void Attack()
     {
-        if(agent == null || !agent.isOnNavMesh)
+        if (agent == null || !agent.isOnNavMesh)
             return;
 
         // audioSource.PlayOneShot(attackClip);
@@ -373,7 +373,7 @@ public class EnemyAI : MonoBehaviour
 
     void DeleteObject()
     {
-        if(InstantiatedObj != null)
+        if (InstantiatedObj != null)
         {
             Destroy(InstantiatedObj);
             InstantiatedObj = null;
