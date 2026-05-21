@@ -57,6 +57,7 @@ public class FPSController : MonoBehaviour
     public float wantedYRotation;
     private Vector2 currentLook;
     private Vector2 lookVelocity;
+    private Animator animator;
 
     // ── THÊM MỚI ──
     private bool isSprinting;
@@ -65,6 +66,7 @@ public class FPSController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         input = new PlayerInputActions();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -151,6 +153,11 @@ public class FPSController : MonoBehaviour
         finalMove.y = velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);
+
+        animator.SetFloat(
+        "Speed",
+        finalMove.magnitude);
+
     }
 
     void Look()
