@@ -13,6 +13,7 @@ public class GunData : ScriptableObject
     public float fireRate = 0.1f;
 
     public bool isAutomatic = true;
+    public float range = 1000f;
 
     [Header("Reload")]
     // public float reloadSpeed = 2f;
@@ -34,4 +35,8 @@ public class GunData : ScriptableObject
 
     public AudioClip autoShotClip;
     public AudioClip reloadclip;
+
+    [Header("Recoil")]
+    public float recoilX = 1f;
+    public float recoilY = 1f;
 }

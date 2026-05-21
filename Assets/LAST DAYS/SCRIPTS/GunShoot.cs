@@ -29,6 +29,7 @@ public class GunSystem : MonoBehaviour
     // cooldown bắn
     private float nextFireTime;
     public AudioSource gunAudio;
+    public GunRecoil gunRecoil;
 
     [Header("Bullet")]
 
@@ -39,9 +40,15 @@ public class GunSystem : MonoBehaviour
     [Header("Gun Data")]
     public GunData gunData;
     public int currentAmmo;
-    private int reserveAmmo;
+    // private int reserveAmmo;
+
+    private AmmoInventory inventory;
     [Header("Animation")]
     public AnimationClip reloadClip;
+
+    [Header("Impact")]
+    public GameObject impactPrefab;   // kéo Prefab Quad vào đây
+    public float impactLifetime = 2f; // biến mất sau bao giây
 
 
     void Start()
@@ -52,8 +59,10 @@ public class GunSystem : MonoBehaviour
         }
 
         currentAmmo = gunData.maxAmmo;
-        // ví dụ spawn full ammo
-        reserveAmmo = gunData.maxReserveAmmo;
+        // // ví dụ spawn full ammo
+        // reserveAmmo = gunData.maxReserveAmmo;
+
+        inventory = GetComponentInParent<AmmoInventory>();
     }
 
 
@@ -166,6 +175,24 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void Shoot()
     {
+        //hiện vêt đạn bắn trúng
+        if (aimSystem != null)
+        {
+            Ray ray = new Ray(aimSystem.FirePoint, aimSystem.FireDirection);
+            if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
+            {
+                // tạo impact tại điểm trúng
+                GameObject impact = Instantiate(
+                    impactPrefab,
+                    hit.point + hit.normal * 0.01f, // đẩy ra một chút để tránh z-fighting
+                    Quaternion.LookRotation(hit.normal) // quay theo mặt phẳng va chạm
+                );
+
+                // hủy impact sau một thời gian
+                Destroy(impact, impactLifetime);
+            }
+        }
+
         //- arrmor
         currentAmmo--;
         // muzzle flash
@@ -187,6 +214,8 @@ public class GunSystem : MonoBehaviour
                 animator.SetTrigger("Fire");
             }
         }
+        // recoil
+        gunRecoil.Fire(gunData);
 
         // =====================================================
         // HƯỚNG BẮN — lấy từ AimSystem
@@ -236,7 +265,7 @@ public class GunSystem : MonoBehaviour
             yield break;
 
         // hết đạn dự trữ
-        if (reserveAmmo <= 0)
+        if (inventory.reserveAmmo <= 0)
             yield break;
 
         isReloading = true;
@@ -265,11 +294,13 @@ public class GunSystem : MonoBehaviour
         int needAmmo = gunData.maxAmmo - currentAmmo;
 
         // số đạn thực sự có thể nạp
-        int ammoToLoad = Mathf.Min(needAmmo, reserveAmmo);
+        int ammoToLoad = Mathf.Min(needAmmo, inventory.reserveAmmo);
 
         currentAmmo += ammoToLoad;
 
-        reserveAmmo -= ammoToLoad;
+        inventory.reserveAmmo -= ammoToLoad;
+
+        Debug.Log("Reserve ammo: " +  inventory.reserveAmmo);
 
         isReloading = false;
     }
@@ -281,4 +312,16 @@ public class GunSystem : MonoBehaviour
             gunAudio.PlayOneShot(gunData.reloadclip);
         }
     }
+
+    // public void AddAmmo(int amount)
+    // {
+    //     reserveAmmo += amount;
+
+    //     reserveAmmo = Mathf.Min(
+    //         reserveAmmo,
+    //         gunData.maxReserveAmmo
+    //     );
+
+    //     Debug.Log("Reserve Ammo: " + reserveAmmo);
+    // }
 }
