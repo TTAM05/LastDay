@@ -11127,7 +11127,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -138.18707, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -74816,6 +74816,8 @@ MonoBehaviour:
   damageCooldown: 1
   healthBarFill: {fileID: 1558335627}
   audioSource: {fileID: 1929591285}
+  gunSystem: {fileID: 0}
+  aimSystem: {fileID: 0}
 --- !u!82 &1929591285
 AudioSource:
   m_ObjectHideFlags: 0
@@ -76332,6 +76334,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: ammoText
+      value: 
+      objectReference: {fileID: 251906930}
     - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: bloodPrefab
       value: 
@@ -79128,7 +79134,7 @@ GameObject:
   - component: {fileID: 2043834380}
   - component: {fileID: 2043834379}
   m_Layer: 5
-  m_Name: Bullet
+  m_Name: BulletIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79927,6 +79933,9 @@ MonoBehaviour:
   gunData: {fileID: 11400000, guid: 1940c4fa39da3f940acc20bc0f9c31b5, type: 2}
   reloadClip: {fileID: 7400000, guid: ea3736e92cd6d294f8aec5ba21a20ec1, type: 2}
   currentAmmo: 0
+  isFiring: 0
+  isReloading: 0
+  nextFireTime: 0
 --- !u!82 &2083927469 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 8863887310452592269, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}

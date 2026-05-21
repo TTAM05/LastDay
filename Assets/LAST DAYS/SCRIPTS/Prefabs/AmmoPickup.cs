@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class AmmoPickup : MonoBehaviour, IInteractable
 {
-    public int ammoAmount ;
+    public int ammoAmount;
+    public int weaponIndex; // loại súng nhận ammo
     public float rotationSpeed = 50f;
 
     void Start()
     {
-        ammoAmount = Random.Range(15 , 30);
+        ammoAmount = Random.Range(15, 30);
 
-       
+        // nếu không set thì random weapon
+        // weaponIndex = Random.Range(0, 2);
     }
 
     void Update()
@@ -19,10 +21,9 @@ public class AmmoPickup : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteract player)
     {
-        AmmoInventory inventory =
-            player.GetComponent<AmmoInventory>();
+        AmmoInventory inventory = player.GetComponent<AmmoInventory>();
 
-        inventory.AddAmmo(ammoAmount);
+        inventory.AddAmmo(weaponIndex, ammoAmount);
 
         Destroy(gameObject);
     }

@@ -6,7 +6,7 @@ public class WeaponManager : MonoBehaviour
     [Header("Weapons")]
     public GameObject[] weapons;
 
-    private int currentWeapon;
+    public int currentWeapon;
 
     private PlayerInputActions input;
 

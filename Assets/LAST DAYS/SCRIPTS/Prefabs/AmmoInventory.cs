@@ -2,25 +2,43 @@ using UnityEngine;
 
 public class AmmoInventory : MonoBehaviour
 {
-    public int reserveAmmo = 0;
-
-    public int maxReserveAmmo = 300;
     public AudioClip pickupSound;
     public AudioSource audioSource;
 
-    public void AddAmmo(int amount)
-    {
-        reserveAmmo += amount;
+    [Header("GunData")]
+    public GunData[] gunData;
 
-        reserveAmmo = Mathf.Min(
-            reserveAmmo,
-            maxReserveAmmo
+    [Header("Ammo per weapon")]
+    public int[] reserveAmmo;
+
+    void Start()
+    {
+        reserveAmmo = new int[gunData.Length];
+    }
+
+    public void AddAmmo(int weaponIndex, int amount)
+    {
+        reserveAmmo[weaponIndex] += amount;
+
+        reserveAmmo[weaponIndex] = Mathf.Min(
+            reserveAmmo[weaponIndex],
+            gunData[weaponIndex].maxReserveAmmo
         );
 
-        //sound effect
         if (pickupSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(pickupSound);
         }
+    }
+
+    public int GetAmmo(int weaponIndex)
+    {
+        return reserveAmmo[weaponIndex];
+    }
+
+    public void UseAmmo(int weaponIndex, int amount)
+    {
+        reserveAmmo[weaponIndex] -= amount;
+        reserveAmmo[weaponIndex] = Mathf.Max(reserveAmmo[weaponIndex], 0);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class GunSystem : MonoBehaviour
 {
@@ -44,7 +45,8 @@ public class GunSystem : MonoBehaviour
     public GunData gunData;
     public int currentAmmo;
     // private int reserveAmmo;
-
+    private WeaponManager weaponManager;
+    private int weaponIndex;
     private AmmoInventory inventory;
     [Header("Animation")]
     public AnimationClip reloadClip;
@@ -52,6 +54,11 @@ public class GunSystem : MonoBehaviour
     [Header("Impact")]
     public GameObject impactPrefab;   // kéo Prefab Quad vào đây
     public float impactLifetime = 2f; // biến mất sau bao giây
+
+    [Header("UI")]
+    public TMP_Text ammoText;
+    public TMP_Text reserveAmmoText;
+    public TMP_Text reloadTimeText;
 
 
     void Start()
@@ -66,8 +73,10 @@ public class GunSystem : MonoBehaviour
         // reserveAmmo = gunData.maxReserveAmmo;
 
         inventory = GetComponentInParent<AmmoInventory>();
-    }
+        weaponManager = GetComponentInParent<WeaponManager>();
 
+
+    }
 
     // =========================================================
     // AWAKE
@@ -110,12 +119,8 @@ public class GunSystem : MonoBehaviour
     // =========================================================
     void Update()
     {
-        if(isReloading)
-        {
-            return; // không làm gì khi đang nạp đạn
-        }
-        
-        // bắn liên thanh
+        if (isReloading) return;
+
         if (gunData.isAutomatic && isFiring)
         {
             if (Time.time >= nextFireTime)
@@ -129,8 +134,14 @@ public class GunSystem : MonoBehaviour
             }
         }
 
-        //đạn chỉ đc giới hạn trong range của gundata
+        UpdateAmmoUI();
+    }
 
+    void LateUpdate()
+    {
+        if (weaponManager == null) return;
+
+        weaponIndex = weaponManager.currentWeapon;
     }
 
     // =========================================================
@@ -177,7 +188,12 @@ public class GunSystem : MonoBehaviour
     // SHOOT
     // =========================================================
     void Shoot()
-    {
+    {   
+
+        if (currentAmmo <= 0)
+            return;
+
+            
         //hiện vêt đạn bắn trúng
         if (aimSystem != null)
         {
@@ -329,7 +345,7 @@ public class GunSystem : MonoBehaviour
             yield break;
 
         // hết đạn dự trữ
-        if (inventory.reserveAmmo <= 0)
+        if (inventory.GetAmmo(weaponIndex) <= 0)
             yield break;
 
         isReloading = true;
@@ -356,15 +372,16 @@ public class GunSystem : MonoBehaviour
 
         // số đạn cần nạp
         int needAmmo = gunData.maxAmmo - currentAmmo;
+        int reserve = inventory.GetAmmo(weaponIndex);
 
         // số đạn thực sự có thể nạp
-        int ammoToLoad = Mathf.Min(needAmmo, inventory.reserveAmmo);
+        int ammoToLoad = Mathf.Min(needAmmo, reserve);
 
         currentAmmo += ammoToLoad;
 
-        inventory.reserveAmmo -= ammoToLoad;
+        inventory.UseAmmo(weaponIndex, ammoToLoad);
 
-        Debug.Log("Reserve ammo: " +  inventory.reserveAmmo);
+        Debug.Log("Reserve ammo: " +  inventory.GetAmmo(weaponIndex));
 
         isReloading = false;
     }
@@ -388,4 +405,15 @@ public class GunSystem : MonoBehaviour
 
     //     Debug.Log("Reserve Ammo: " + reserveAmmo);
     // }
+
+    public void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+            ammoText.text = currentAmmo + " / " + gunData.maxAmmo;
+
+        if (reserveAmmoText != null)
+            reserveAmmoText.text = inventory.GetAmmo(weaponIndex).ToString();
+
+        
+    }
 }
