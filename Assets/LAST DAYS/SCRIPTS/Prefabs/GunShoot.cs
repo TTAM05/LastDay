@@ -75,6 +75,10 @@ public class GunSystem : MonoBehaviour
         inventory = GetComponentInParent<AmmoInventory>();
         weaponManager = GetComponentInParent<WeaponManager>();
 
+        // ✅ Ẩn timer lúc khởi đầu
+        if (reloadTimeText != null)
+            reloadTimeText.gameObject.SetActive(false);
+
 
     }
 
@@ -350,6 +354,10 @@ public class GunSystem : MonoBehaviour
 
         isReloading = true;
 
+          // ✅ Hiện reloadTimeText
+        if (reloadTimeText != null)
+            reloadTimeText.gameObject.SetActive(true);
+
         // =================================================
         // TÍNH TỐC ĐỘ ANIMATION
         // =================================================
@@ -365,10 +373,22 @@ public class GunSystem : MonoBehaviour
         // play anim
         animator.SetTrigger("Reload");
 
+         // ✅ Đếm ngược thời gian reload
+        float timer = gunData.reloadTime;
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            if (reloadTimeText != null)
+                reloadTimeText.text = $"Reloading... {timer:F1}s";
+            yield return null;
+        }
+
         // =================================================
 
-        // chờ đúng reloadTime
-        yield return new WaitForSeconds(gunData.reloadTime);
+        // // chờ đúng reloadTime
+        // yield return new WaitForSeconds(gunData.reloadTime);
+        
+        isReloading = false;
 
         // số đạn cần nạp
         int needAmmo = gunData.maxAmmo - currentAmmo;
@@ -383,7 +403,11 @@ public class GunSystem : MonoBehaviour
 
         Debug.Log("Reserve ammo: " +  inventory.GetAmmo(weaponIndex));
 
-        isReloading = false;
+        // ✅ Ẩn reloadTimeText khi xong
+        if (reloadTimeText != null)
+        reloadTimeText.gameObject.SetActive(false);
+
+        
     }
 
     public void PlayReloadSound()
@@ -409,11 +433,9 @@ public class GunSystem : MonoBehaviour
     public void UpdateAmmoUI()
     {
         if (ammoText != null)
-            ammoText.text = currentAmmo + " / " + gunData.maxAmmo;
+            ammoText.text = $"{currentAmmo} / {gunData.maxAmmo}";
 
         if (reserveAmmoText != null)
             reserveAmmoText.text = inventory.GetAmmo(weaponIndex).ToString();
-
-        
     }
 }

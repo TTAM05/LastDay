@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1049705956333979928}
   - component: {fileID: 3325031687862491376}
   - component: {fileID: 654075318054213882}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BirchGroup1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2787028855104107073}
   - component: {fileID: 1658593462752124610}
   - component: {fileID: 3772029324214939679}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 5150962782365899345}
   - component: {fileID: 4170643131036480994}
   - component: {fileID: 4473047982472187697}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 8724488047603964095}
   - component: {fileID: 3344575703159220279}
   - component: {fileID: 5917259136390573961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BirchGroup1_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 3719617959741722973}
   - component: {fileID: 8606395203804311563}
   - component: {fileID: 1288018567769265679}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BirchGroup1_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 5624590119220543487}
   - component: {fileID: 4333081271847250567}
   - component: {fileID: 4402767004388910360}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1685207843461240545}
   - component: {fileID: 6074705901520640481}
   - component: {fileID: 39292455933678633}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 7798837856583955392}
   - component: {fileID: 2745719919908001827}
   - component: {fileID: 726848573107436124}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 7544972872329239853}
   - component: {fileID: 1357315468658877427}
   - component: {fileID: 8393696404113084479}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -792,7 +792,8 @@ GameObject:
   - component: {fileID: 5691285386052280066}
   - component: {fileID: 8939438191788446225}
   - component: {fileID: 4374982337446553389}
-  m_Layer: 0
+  - component: {fileID: 5044504023071840111}
+  m_Layer: 3
   m_Name: Birch_Group_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,6 +880,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8281839579670726709, guid: 55310037ded0f0e4b8240e7c493a41aa, type: 3}
+--- !u!114 &5044504023071840111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644342318760253636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &7716568373115756456
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +911,7 @@ GameObject:
   - component: {fileID: 4109906018440339560}
   - component: {fileID: 8988015954045624707}
   - component: {fileID: 3718236716962185635}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +997,7 @@ GameObject:
   - component: {fileID: 5697221102573803596}
   - component: {fileID: 546915727025405163}
   - component: {fileID: 8427467139790684508}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,7 +1083,7 @@ GameObject:
   - component: {fileID: 9124619243452964346}
   - component: {fileID: 5885349835522401844}
   - component: {fileID: 2497100553014339802}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BirchGroup1_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

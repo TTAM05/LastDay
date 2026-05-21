@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 743794231458891510}
   - component: {fileID: 4774340156722020152}
   - component: {fileID: 2108765497531558863}
-  m_Layer: 0
+  - component: {fileID: -4214401756125166154}
+  m_Layer: 3
   m_Name: Willow_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,6 +94,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.47250134, y: 1.3086442, z: 1.1010106}
   m_Center: {x: -0.1402922, y: 0.64253896, z: 0.050505124}
+--- !u!114 &-4214401756125166154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606959100095419184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &854382264514375668
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +125,7 @@ GameObject:
   - component: {fileID: 5242609433108544882}
   - component: {fileID: 7782625357555210428}
   - component: {fileID: 1326523816186989875}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +212,7 @@ GameObject:
   - component: {fileID: 998141729096801430}
   - component: {fileID: 1692742073063442738}
   - component: {fileID: 3795917054029127645}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +298,7 @@ GameObject:
   - component: {fileID: 4783670489196789970}
   - component: {fileID: 1204262893681939086}
   - component: {fileID: 8121759795191466452}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +384,7 @@ GameObject:
   - component: {fileID: 8040846890652065391}
   - component: {fileID: 9182293559779523696}
   - component: {fileID: 7444762368100846797}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,7 +471,7 @@ GameObject:
   - component: {fileID: 2810272669712108444}
   - component: {fileID: 6200527938196324188}
   - component: {fileID: 9220184054855625157}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +557,7 @@ GameObject:
   - component: {fileID: 3828162567915415346}
   - component: {fileID: 3182236963954358630}
   - component: {fileID: 2659070236950195155}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -623,7 +644,7 @@ GameObject:
   - component: {fileID: 4999852337198138425}
   - component: {fileID: 469978793261365250}
   - component: {fileID: 3290160578200014301}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -709,7 +730,7 @@ GameObject:
   - component: {fileID: 8624692614006903885}
   - component: {fileID: 781561121995280147}
   - component: {fileID: 7568032021518098199}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Willow2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

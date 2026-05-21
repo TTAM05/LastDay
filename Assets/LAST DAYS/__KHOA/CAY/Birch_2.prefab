@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3702380509475476087}
   - component: {fileID: 2754481175507160474}
   - component: {fileID: 4519503973950468961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 4784732131779949899}
   - component: {fileID: 4163279856938348376}
   - component: {fileID: 4147732342142947457}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 3099097649929988664}
   - component: {fileID: 4512408964423845167}
   - component: {fileID: 2871651036455881550}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 246482448039134924}
   - component: {fileID: 7934191014939018784}
   - component: {fileID: 4597951040903188111}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 3983500687272194577}
   - component: {fileID: 9065852129588222569}
   - component: {fileID: 7821543034090940104}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Birch2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 5408731398370826029}
   - component: {fileID: 582869202876622275}
   - component: {fileID: 2135928864743221018}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 367334492360901192}
   - component: {fileID: 6944056509670777384}
   - component: {fileID: 8842838979923879918}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Birch2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 2364846595327886257}
   - component: {fileID: 6163535766795687117}
   - component: {fileID: 7513034663414427018}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Birch2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 8708005697974386855}
   - component: {fileID: 1663835743794029896}
   - component: {fileID: 1869279959873269209}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 826800232201637368}
   - component: {fileID: 4881830433461126817}
   - component: {fileID: 5228186419788108349}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Birch2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -877,7 +877,7 @@ GameObject:
   - component: {fileID: 8068658194131057176}
   - component: {fileID: 7239050782802306735}
   - component: {fileID: 1271624301543454342}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 2569516042100800245}
   - component: {fileID: 7536658295392779580}
   - component: {fileID: 1128020043733141779}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1051,7 +1051,8 @@ GameObject:
   - component: {fileID: 9187814428276540602}
   - component: {fileID: 127226171098091051}
   - component: {fileID: 6707308567206928247}
-  m_Layer: 0
+  - component: {fileID: 6816175761968909065}
+  m_Layer: 3
   m_Name: Birch_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1137,3 +1138,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.19364826, y: 1.5375446, z: 0.18225531}
   m_Center: {x: -0.037167393, y: 0.80059165, z: 0.020014908}
+--- !u!114 &6816175761968909065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9132324267549094486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

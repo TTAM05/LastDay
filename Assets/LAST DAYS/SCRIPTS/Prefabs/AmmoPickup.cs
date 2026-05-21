@@ -22,8 +22,11 @@ public class AmmoPickup : MonoBehaviour, IInteractable
     public void Interact(PlayerInteract player)
     {
         AmmoInventory inventory = player.GetComponent<AmmoInventory>();
+        if (inventory == null) return;
 
-        inventory.AddAmmo(weaponIndex, ammoAmount);
+        // ✅ Clamp weaponIndex về phạm vi hợp lệ
+        int safeIndex = Mathf.Clamp(weaponIndex, 0, inventory.reserveAmmo.Length - 1);
+        inventory.AddAmmo(safeIndex, ammoAmount);
 
         Destroy(gameObject);
     }
