@@ -75,11 +75,30 @@ public class GunSystem : MonoBehaviour
         inventory = GetComponentInParent<AmmoInventory>();
         weaponManager = GetComponentInParent<WeaponManager>();
 
-        // ✅ Ẩn timer lúc khởi đầu
+        //tự tìm UI theo tên nếu chưa gán
+        if (ammoText == null)
+            ammoText = GameObject.Find("AmmoText").GetComponent<TMP_Text>();    
+
+        if (reserveAmmoText == null)
+            reserveAmmoText = GameObject.Find("ReserveAmmoText").GetComponent<TMP_Text>();    
+       
+        // tìm trước
+        if (reloadTimeText == null)
+        {
+            TMP_Text[] all = Resources.FindObjectsOfTypeAll<TMP_Text>();
+            foreach (TMP_Text t in all)
+            {
+                if (t.name == "ReloadTimeText")
+                {
+                    reloadTimeText = t;
+                    break;
+                }
+            }
+        }
+
+        // ẩn sau
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(false);
-
-
     }
 
     // =========================================================
@@ -437,5 +456,6 @@ public class GunSystem : MonoBehaviour
 
         if (reserveAmmoText != null)
             reserveAmmoText.text = inventory.GetAmmo(weaponIndex).ToString();
+
     }
 }

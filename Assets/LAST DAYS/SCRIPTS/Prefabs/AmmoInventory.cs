@@ -7,7 +7,8 @@ public class AmmoInventory : MonoBehaviour
 
     // Không cần set tay nữa — tự lấy từ WeaponManager
     [HideInInspector] public GunData[] gunData;
-    [HideInInspector] public int[] reserveAmmo;
+    public InventoryData inventoryData;
+    [HideInInspector] public int reserveAmmo;
 
     void Start()
     {
@@ -19,8 +20,7 @@ public class AmmoInventory : MonoBehaviour
             return;
         }
 
-        gunData     = new GunData[wm.weapons.Length];
-        reserveAmmo = new int[wm.weapons.Length];
+        gunData  = new GunData[wm.weapons.Length]; 
 
         for (int i = 0; i < wm.weapons.Length; i++)
         {
@@ -33,17 +33,17 @@ public class AmmoInventory : MonoBehaviour
             }
 
             gunData[i]     = gs.gunData;
-            reserveAmmo[i] = gs.gunData.maxReserveAmmo; // bắt đầu với đạn đầy
+            reserveAmmo = inventoryData.maxReserveAmmo; // bắt đầu với đạn đầy
         }
     }
 
     // Nhặt đạn
     public void AddAmmo(int weaponIndex, int amount)
     {
-        if (!IsValid(weaponIndex)) return;
+       
 
-        reserveAmmo[weaponIndex] += amount;
-        reserveAmmo[weaponIndex]  = Mathf.Min(reserveAmmo[weaponIndex], gunData[weaponIndex].maxReserveAmmo);
+        reserveAmmo += amount;
+        reserveAmmo  = Mathf.Min(reserveAmmo, inventoryData.maxReserveAmmo);
 
         if (pickupSound != null && audioSource != null)
             audioSource.PlayOneShot(pickupSound);
@@ -51,25 +51,16 @@ public class AmmoInventory : MonoBehaviour
 
     public int GetAmmo(int weaponIndex)
     {
-        if (!IsValid(weaponIndex)) return 0;
-        return reserveAmmo[weaponIndex];
+        
+        return reserveAmmo;
     }
 
     public void UseAmmo(int weaponIndex, int amount)
     {
-        if (!IsValid(weaponIndex)) return;
-
-        reserveAmmo[weaponIndex] -= amount;
-        reserveAmmo[weaponIndex]  = Mathf.Max(reserveAmmo[weaponIndex], 0);
+        
+        reserveAmmo -= amount;
+        reserveAmmo  = Mathf.Max(reserveAmmo, 0);
     }
 
-    private bool IsValid(int index)
-    {
-        if (reserveAmmo == null || index < 0 || index >= reserveAmmo.Length)
-        {
-            Debug.LogError($"[AmmoInventory] weaponIndex không hợp lệ: {index}");
-            return false;
-        }
-        return true;
-    }
+  
 }

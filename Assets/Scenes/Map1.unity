@@ -11183,7 +11183,7 @@ GameObject:
   - component: {fileID: 251906931}
   - component: {fileID: 251906930}
   m_Layer: 5
-  m_Name: BulletAmount
+  m_Name: AmmoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60643,7 +60643,7 @@ GameObject:
   - component: {fileID: 1567818762}
   - component: {fileID: 1567818761}
   m_Layer: 5
-  m_Name: ReLoadTime
+  m_Name: ReloadTimeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72269,7 +72269,7 @@ GameObject:
   - component: {fileID: 1848668148}
   - component: {fileID: 1848668147}
   m_Layer: 5
-  m_Name: AmmoBoxAmount
+  m_Name: ReserveAmmoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78182,6 +78182,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7034368500209227809, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
+      propertyPath: inventoryData
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c025f48bf95e0c4b8bec9674c151c40, type: 2}
     - target: {fileID: 7253415650333126385, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: m_Layer
       value: 6
