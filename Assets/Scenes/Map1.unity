@@ -16,8 +16,8 @@ RenderSettings:
   serializedVersion: 10
   m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.038
+  m_FogMode: 2
+  m_FogDensity: 0.027
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -27,7 +27,7 @@ RenderSettings:
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 1612dc54605b67947bed7b6e6b4f48c4, type: 2}
-  m_HaloStrength: 0.5
+  m_HaloStrength: 0.507
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
@@ -4954,7 +4954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &111379502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77993,7 +77993,7 @@ PrefabInstance:
     - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: bloodPrefab
       value: 
-      objectReference: {fileID: 2060387426457203627, guid: 79e3e7724ab5d124d9743b8a9ad1a708, type: 3}
+      objectReference: {fileID: 6901311055338445368, guid: 16c89707c8cda8e43a58cdbfe187761a, type: 3}
     - target: {fileID: 1932268205563680910, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: reloadTimeText
       value: 
@@ -78057,7 +78057,7 @@ PrefabInstance:
     - target: {fileID: 4101910516082351885, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: bloodPrefab
       value: 
-      objectReference: {fileID: 2060387426457203627, guid: 79e3e7724ab5d124d9743b8a9ad1a708, type: 3}
+      objectReference: {fileID: 6901311055338445368, guid: 16c89707c8cda8e43a58cdbfe187761a, type: 3}
     - target: {fileID: 4101910516082351885, guid: 1a56d1b621924dd4d9bfeb372ff00918, type: 3}
       propertyPath: bulletPrefab
       value: 
