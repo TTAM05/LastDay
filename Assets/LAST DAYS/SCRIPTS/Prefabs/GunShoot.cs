@@ -60,6 +60,14 @@ public class GunSystem : MonoBehaviour
     public TMP_Text reserveAmmoText;
     public TMP_Text reloadTimeText;
 
+    [Header("Crosshair")]
+    public GameObject normalCrosshair;
+    public GameObject hitCrosshair;
+
+    public float hitCrosshairTime = 0.1f;
+
+    private Coroutine hitRoutine;
+
 
     void Start()
     {
@@ -231,11 +239,16 @@ public class GunSystem : MonoBehaviour
             
             if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
             {
+                bool hitenemy = false;
 
+                 // hiện hit crosshair
                 // DAMAGE
                 if (hit.collider.CompareTag("EnemyHead"))
                 {
                     
+                    hitenemy = true;
+
+                     // hiện hit crosshair
                     //hiện máu khi headshot
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
@@ -253,7 +266,9 @@ public class GunSystem : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("EnemyBody"))
                 {
+                    hitenemy = true;
 
+                     // hiện hit crosshair
                     //hiện máu khi bắn trúng body
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
@@ -286,6 +301,14 @@ public class GunSystem : MonoBehaviour
                     );
 
                     Destroy(impact, impactLifetime);
+                }
+
+                if (hitenemy && !aimSystem.isAiming)
+                {
+                    if (hitRoutine != null)
+                        StopCoroutine(hitRoutine);
+
+                    hitRoutine = StartCoroutine(ShowHitCrosshair());
                 }
             }
         }
@@ -354,6 +377,17 @@ public class GunSystem : MonoBehaviour
                  if (bulletScript != null)                 {
                      bulletScript.damage = gunData.damage;
                  }
+    }
+
+    IEnumerator ShowHitCrosshair()
+    {
+        normalCrosshair.SetActive(false);
+        hitCrosshair.SetActive(true);
+
+        yield return new WaitForSeconds(hitCrosshairTime);
+
+        hitCrosshair.SetActive(false);
+        normalCrosshair.SetActive(true);
     }
 
     // =========================================================

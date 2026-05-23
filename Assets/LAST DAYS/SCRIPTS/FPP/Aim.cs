@@ -14,7 +14,7 @@ public class AimSystem : MonoBehaviour
     public float range = 1000f;
 
     private PlayerInputActions input;
-    private bool isAiming;
+    public bool isAiming;
 
     // điểm bắn — các script khác lấy từ đây
     public Vector3 FirePoint { get; private set; }
