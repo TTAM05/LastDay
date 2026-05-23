@@ -43323,7 +43323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1143444024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -84736,7 +84736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPhase: 0
-  exploreTime: 90
+  exploreTime: 60
   ambientSpawner: {fileID: 111379502}
   missionUI: {fileID: 2080937844}
 --- !u!82 &2006217522
@@ -90473,7 +90473,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 256
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -90778,7 +90778,7 @@ GameObject:
   - component: {fileID: 3727323126414095512}
   - component: {fileID: 934510937737315582}
   - component: {fileID: 1437844136}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
