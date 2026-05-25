@@ -18,6 +18,11 @@ public class Health : MonoBehaviour
 
     [Header("Audio")]
     public AudioSource audioSource;
+
+    [Header("GunSystem")]
+    public GunSystem gunSystem;
+    public AimSystem aimSystem;
+
     void Awake()
     {
         currentHealth = charData.maxHealth;
@@ -106,7 +111,15 @@ public class Health : MonoBehaviour
     
     IEnumerator FreezeAfterDelay(float delay)
     {
+
+        gunSystem = GetComponentInChildren<GunSystem>();
+        aimSystem = GetComponentInChildren<AimSystem>();
+
+        gunSystem.enabled = false; // Vô hiệu hóa hệ thống súng
+        aimSystem.enabled = false; // Vô hiệu hóa hệ thống nhắm
+
         yield return new WaitForSecondsRealtime(delay); // RealTime để không bị ảnh hưởng bởi timeScale
+
         Time.timeScale = 0f; // Dừng game
     }
 }

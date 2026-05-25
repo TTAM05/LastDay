@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public GamePhase currentPhase;
 
     [Header("Explore")]
-    public float exploreTime = 90f;
+    public float exploreTime = 60f;
 
     private float timer;
 
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         missionUI.SetActive(true);
         Invoke(nameof(HideMissionUI), 8f);
 
-        Debug.Log("Mission Completed");
+        Debug.Log("Mission UI Show");
     }
 
     private void HideMissionUI()

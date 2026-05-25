@@ -7,7 +7,7 @@ public class AmbientZombieSpawner : MonoBehaviour
 
     public Transform[] spawnPoints;
 
-    public float spawnInterval = 10f;
+    public float spawnInterval = 2f;
 
     private bool spawning;
 
@@ -24,6 +24,8 @@ public class AmbientZombieSpawner : MonoBehaviour
             0f,
             spawnInterval
         );
+
+        Debug.Log("Ambient Spawner Started");
     }
 
     // =====================================================
@@ -43,7 +45,7 @@ public class AmbientZombieSpawner : MonoBehaviour
 
     void SpawnZombie()
     {
-        if(!spawning) return;
+        if (!spawning) return;
 
         // random point
         Transform point =
@@ -54,22 +56,38 @@ public class AmbientZombieSpawner : MonoBehaviour
                 )
             ];
 
-        
-            if (NavMesh.SamplePosition(
-                point.position,
-                out NavMeshHit hit,
-                3f,
-                NavMesh.AllAreas))
+        Debug.Log("Spawn Point: " + point.position);
+
+        if (NavMesh.SamplePosition(
+            point.position,
+            out NavMeshHit hit,
+            3f,
+            NavMesh.AllAreas))
+        {
+            GameObject zombie = Instantiate(
+                zombiePrefab,
+                hit.position,
+                Quaternion.identity
+            );
+
+            // lấy EnemyAI
+            EnemyAI ai =
+                zombie.GetComponent<EnemyAI>();
+
+            if (ai != null)
             {
-                Instantiate(
-                    zombiePrefab,
-                    hit.position,
-                    Quaternion.identity
-                );
+                GameObject playerObj =
+                    GameObject.FindGameObjectWithTag("Player");
 
-                Debug.Log("Zombie Spawned");
+                if (playerObj != null)
+                {
+                    ai.player = playerObj.transform;
+
+                    ai.SetChaseState();
+                }
             }
-        
 
+            Debug.Log("Zombie Spawned");
+        }
     }
 }

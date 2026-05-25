@@ -2,25 +2,65 @@ using UnityEngine;
 
 public class AmmoInventory : MonoBehaviour
 {
-    public int reserveAmmo = 0;
-
-    public int maxReserveAmmo = 300;
     public AudioClip pickupSound;
     public AudioSource audioSource;
 
-    public void AddAmmo(int amount)
+    // Không cần set tay nữa — tự lấy từ WeaponManager
+    [HideInInspector] public GunData[] gunData;
+    public InventoryData inventoryData;
+    [HideInInspector] public int reserveAmmo;
+
+    void Start()
     {
-        reserveAmmo += amount;
+        WeaponManager wm = GetComponentInChildren<WeaponManager>();
 
-        reserveAmmo = Mathf.Min(
-            reserveAmmo,
-            maxReserveAmmo
-        );
-
-        //sound effect
-        if (pickupSound != null && audioSource != null)
+        if (wm == null)
         {
-            audioSource.PlayOneShot(pickupSound);
+            Debug.LogError("[AmmoInventory] Không tìm thấy WeaponManager!");
+            return;
+        }
+
+        gunData  = new GunData[wm.weapons.Length]; 
+
+        for (int i = 0; i < wm.weapons.Length; i++)
+        {
+            GunSystem gs = wm.weapons[i].GetComponent<GunSystem>();
+
+            if (gs == null)
+            {
+                Debug.LogError($"[AmmoInventory] Weapon[{i}] không có GunSystem!");
+                continue;
+            }
+
+            gunData[i]     = gs.gunData;
+            reserveAmmo = inventoryData.maxReserveAmmo; // bắt đầu với đạn đầy
         }
     }
+
+    // Nhặt đạn
+    public void AddAmmo(int weaponIndex, int amount)
+    {
+       
+
+        reserveAmmo += amount;
+        reserveAmmo  = Mathf.Min(reserveAmmo, inventoryData.maxReserveAmmo);
+
+        if (pickupSound != null && audioSource != null)
+            audioSource.PlayOneShot(pickupSound);
+    }
+
+    public int GetAmmo(int weaponIndex)
+    {
+        
+        return reserveAmmo;
+    }
+
+    public void UseAmmo(int weaponIndex, int amount)
+    {
+        
+        reserveAmmo -= amount;
+        reserveAmmo  = Mathf.Max(reserveAmmo, 0);
+    }
+
+  
 }

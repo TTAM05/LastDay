@@ -429,11 +429,18 @@ MonoBehaviour:
   animator: {fileID: 0}
   muzzleFlash: {fileID: 0}
   gunAudio: {fileID: 0}
+  gunRecoil: {fileID: 0}
   bulletPrefab: {fileID: 5824776450096212737, guid: 01508d88d28021a489717448a4509efc, type: 3}
+  bloodPrefab: {fileID: 0}
   muzzle: {fileID: 128353169}
   gunData: {fileID: 0}
   currentAmmo: 0
   reloadClip: {fileID: 0}
+  impactPrefab: {fileID: 0}
+  impactLifetime: 2
+  ammoText: {fileID: 0}
+  reserveAmmoText: {fileID: 0}
+  reloadTimeText: {fileID: 0}
 --- !u!1001 &810845948
 PrefabInstance:
   m_ObjectHideFlags: 0
