@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class MinimapFogFix : MonoBehaviour
-{
+public class Minimap : MonoBehaviour
+{   
+
     Camera cam;
 
     void OnEnable()
@@ -34,4 +35,6 @@ public class MinimapFogFix : MonoBehaviour
             RenderSettings.fog = true;
         }
     }
+
+
 }

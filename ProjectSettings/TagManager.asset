@@ -12,6 +12,8 @@ TagManager:
   - EnemyHead
   - EnemyBody
   - EnemyHand
+  - MissionPoint
+  - Minimap
   layers:
   - Default
   - TransparentFX

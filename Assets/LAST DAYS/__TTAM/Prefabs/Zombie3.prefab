@@ -1476,6 +1476,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombieData: {fileID: 11400000, guid: 48f8503b66a57d443b0abbf72462af96, type: 2}
   currentHealth: 0
+  icon: {fileID: 6230036610589341815}
+  item:
+  - {fileID: 5964868330792830803, guid: 73dc251a2885fe549b6ec984a78382bf, type: 3}
   audioSource: {fileID: 5766816416229391321}
 --- !u!82 &5766816416229391321
 AudioSource:
@@ -1614,7 +1617,7 @@ Transform:
   m_GameObject: {fileID: 6230036610589341815}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.33, z: 0}
+  m_LocalPosition: {x: 0, y: 15, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
