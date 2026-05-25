@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public GamePhase currentPhase;
 
     [Header("Explore")]
-    public float exploreTime = 90f;
+    public float exploreTime = 60f;
 
     private float timer;
 

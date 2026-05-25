@@ -5,6 +5,7 @@ public class AmmoPickup : MonoBehaviour, IInteractable
     public int ammoAmount;
     public int weaponIndex; // loại súng nhận ammo
     public float rotationSpeed = 50f;
+    public bool isPicked;
     void Start()
     {
         ammoAmount = Random.Range(15, 30);
@@ -26,7 +27,7 @@ public class AmmoPickup : MonoBehaviour, IInteractable
         // ✅ Clamp weaponIndex về phạm vi hợp lệ
         int safeIndex = Mathf.Clamp(weaponIndex, 0, inventory.reserveAmmo - 1);
         inventory.AddAmmo(safeIndex, ammoAmount);
-
+        isPicked = true;
         Destroy(gameObject);
     }
 }
