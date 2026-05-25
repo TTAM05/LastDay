@@ -1,17 +1,37 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class MiniMap : MonoBehaviour
+public class MinimapFogFix : MonoBehaviour
 {
-    private bool oldFog;
+    Camera cam;
 
-    void OnPreRender()
+    void OnEnable()
     {
-        oldFog = RenderSettings.fog;
-        RenderSettings.fog = false;
+        cam = GetComponent<Camera>();
+
+        RenderPipelineManager.beginCameraRendering += BeginCamera;
+        RenderPipelineManager.endCameraRendering += EndCamera;
     }
 
-    void OnPostRender()
+    void OnDisable()
     {
-        RenderSettings.fog = oldFog;
+        RenderPipelineManager.beginCameraRendering -= BeginCamera;
+        RenderPipelineManager.endCameraRendering -= EndCamera;
+    }
+
+    void BeginCamera(ScriptableRenderContext context, Camera renderingCamera)
+    {
+        if (renderingCamera == cam)
+        {
+            RenderSettings.fog = false;
+        }
+    }
+
+    void EndCamera(ScriptableRenderContext context, Camera renderingCamera)
+    {
+        if (renderingCamera == cam)
+        {
+            RenderSettings.fog = true;
+        }
     }
 }
