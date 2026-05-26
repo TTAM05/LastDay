@@ -14,6 +14,8 @@ TagManager:
   - EnemyHand
   - MissionPoint
   - Minimap
+  - HealthBar
+  - Loading
   layers:
   - Default
   - TransparentFX

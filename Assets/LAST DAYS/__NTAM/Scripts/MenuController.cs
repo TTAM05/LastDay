@@ -5,6 +5,7 @@ public class MenuController : MonoBehaviour
 {
     public string mapName;
     public GameObject SettingPanel;
+    public GameObject MenuPanel;
 
      void Start()
     {
@@ -32,6 +33,7 @@ public class MenuController : MonoBehaviour
         if (SettingPanel != null)
         {
             SettingPanel.SetActive(true);
+            MenuPanel.SetActive(false);
         }
     }
 
@@ -41,6 +43,7 @@ public class MenuController : MonoBehaviour
         if (SettingPanel != null)
         {
             SettingPanel.SetActive(false);
+            MenuPanel.SetActive(true);
         }
     }
 

@@ -2,67 +2,73 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class AudioSettings : MonoBehaviour
+public class AudioUIManager : MonoBehaviour
 {
-    [Header("Mixer")]
-    public AudioMixer mixer;
 
-    [Header("Sliders")]
-    public Slider environmentSlider;
-    public Slider playerSlider;
-    public Slider sfxSlider;
-    public Slider zombieSlider;
+    [Header("Fill Images")]
+    public Image playerFill;
+    public Image environmentFill;
+    public Image zombieFill;
+    public Image sfxFill;
 
     void Start()
     {
-        // Load saved values
-        environmentSlider.value = PlayerPrefs.GetFloat("EnvironmentVolume", 1f);
-        playerSlider.value = PlayerPrefs.GetFloat("PlayerVolume", 1f);
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        zombieSlider.value = PlayerPrefs.GetFloat("ZombieVolume", 1f);
-
-        // Add listeners
-        environmentSlider.onValueChanged.AddListener(SetEnvironmentVolume);
-        playerSlider.onValueChanged.AddListener(SetPlayerVolume);
-        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
-        zombieSlider.onValueChanged.AddListener(SetZombieVolume);
-
-        // Apply loaded values
-        SetEnvironmentVolume(environmentSlider.value);
-        SetPlayerVolume(playerSlider.value);
-        SetSFXVolume(sfxSlider.value);
-        SetZombieVolume(zombieSlider.value);
+       RefreshUI();
     }
 
-    public void SetEnvironmentVolume(float value)
+      public void PlayerMinus()
     {
-        SetVolume("EnvironmentVolume", value);
+        AudioManager.Instance.ChangePlayer(-0.1f);
+        RefreshUI();
     }
 
-    public void SetPlayerVolume(float value)
+    public void PlayerPlus()
     {
-        SetVolume("PlayerVolume", value);
+        AudioManager.Instance.ChangePlayer(0.1f);
+        RefreshUI();
     }
 
-    public void SetSFXVolume(float value)
+    public void EnvironmentMinus()
     {
-        SetVolume("SFXVolume", value);
+        AudioManager.Instance.ChangeEnvironment(-0.1f);
+        RefreshUI();
     }
 
-    public void SetZombieVolume(float value)
+    public void EnvironmentPlus()
     {
-        SetVolume("ZombieVolume", value);
+        AudioManager.Instance.ChangeEnvironment(0.1f);
+        RefreshUI();
     }
 
-    void SetVolume(string parameter, float value)
+    public void ZombieMinus()
     {
-        // Save
-        PlayerPrefs.SetFloat(parameter, value);
+        AudioManager.Instance.ChangeZombie(-0.1f);
+        RefreshUI();
+    }
 
-        // Apply volume
-        if (value <= 0.0001f)
-            mixer.SetFloat(parameter, -80f);
-        else
-            mixer.SetFloat(parameter, Mathf.Log10(value) * 20);
+    public void ZombiePlus()
+    {
+        AudioManager.Instance.ChangeZombie(0.1f);
+        RefreshUI();
+    }
+
+    public void SFXMinus()
+    {
+        AudioManager.Instance.ChangeSFX(-0.1f);
+        RefreshUI();
+    }
+
+    public void SFXPlus()
+    {
+        AudioManager.Instance.ChangeSFX(0.1f);
+        RefreshUI();
+    }
+
+    void RefreshUI()
+    {
+        playerFill.fillAmount = AudioManager.Instance.player;
+        environmentFill.fillAmount = AudioManager.Instance.environment;
+        zombieFill.fillAmount = AudioManager.Instance.zombie;
+        sfxFill.fillAmount = AudioManager.Instance.sfx;
     }
 }
