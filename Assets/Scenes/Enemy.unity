@@ -2128,7 +2128,7 @@ PrefabInstance:
     - target: {fileID: 446041944588053886, guid: 030a7fa21e2abab40b07272339ffd989, type: 3}
       propertyPath: BloodScreenObj
       value: 
-      objectReference: {fileID: 4297302649684689149, guid: fad24ddcfa225784cad78de784a3677a, type: 3}
+      objectReference: {fileID: 4601951252973648368, guid: 44e5477e2412b0440a0fa3a9dc4b5d97, type: 3}
     - target: {fileID: 996928522163625536, guid: 030a7fa21e2abab40b07272339ffd989, type: 3}
       propertyPath: m_Name
       value: Zombie
