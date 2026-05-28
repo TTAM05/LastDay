@@ -78,4 +78,25 @@ public class AudioManager : MonoBehaviour
     {
         mixer.SetFloat(key, value <= 0.0001f ? -80f : Mathf.Log10(value) * 20f);
     }
+
+    void OnApplicationQuit()
+    {
+        SaveAll();
+    }
+
+    void SaveAll()
+    {
+        PlayerPrefs.SetFloat("PlayerVolume", player);
+        PlayerPrefs.SetFloat("EnvironmentVolume", environment);
+        PlayerPrefs.SetFloat("ZombieVolume", zombie);
+        PlayerPrefs.SetFloat("SFXVolume", sfx);
+        PlayerPrefs.Save();
+    }
+
+    void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            SaveAll();
+    }
+
 }

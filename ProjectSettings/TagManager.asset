@@ -16,6 +16,8 @@ TagManager:
   - Minimap
   - HealthBar
   - Loading
+  - Hunter
+  - Ammo
   layers:
   - Default
   - TransparentFX

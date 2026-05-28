@@ -58,6 +58,7 @@ public class FPSController : MonoBehaviour
     private Vector2 currentLook;
     private Vector2 lookVelocity;
     private Animator animator;
+    public bool canLook = true;
 
     // ── THÊM MỚI ──
     private bool isSprinting;
@@ -134,7 +135,8 @@ public class FPSController : MonoBehaviour
             return; // không chạy Look() nữa
         }
 
-        Look();
+        if (canLook)
+            Look();
     }
 
     // =========================================================
@@ -281,6 +283,13 @@ public class FPSController : MonoBehaviour
     // ── THÊM MỚI ──
     void OnSprintStarted(InputAction.CallbackContext ctx) => isSprinting = true;
     void OnSprintCanceled(InputAction.CallbackContext ctx) => isSprinting = false;
+
+    public void SetLookEnabled(bool enabled)
+    {
+        canLook = enabled;
+        if (!enabled)
+            lookInput = Vector2.zero;
+    }
 
     void OnDrawGizmosSelected()
     {
