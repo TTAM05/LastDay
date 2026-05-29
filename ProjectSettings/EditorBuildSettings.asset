@@ -6,17 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/LAST DAYS/__NTAM/Start.unity
-    guid: d0f04cbc9faab05439db7bddb2bfa269
+    path: Assets/Scenes/Start.unity
+    guid: 4f76b4f1fa2f2cd4f87e1d9db50bdfb8
   - enabled: 1
-    path: Assets/Scenes/Test.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/MapMenu.unity
+    guid: 32f791c4b9ad96248a51c8758356e23b
   - enabled: 1
-    path: Assets/LAST DAYS/__NTAM/Login.unity
-    guid: 6d7e7af72483fe04a85edbf4e147a024
-  - enabled: 1
-    path: Assets/LAST DAYS/__NTAM/Settings.unity
-    guid: 46e8e141e3416f84d90ce0a30e1be509
+    path: Assets/Scenes/Map1.unity
+    guid: 337557b9c1bc9824ca3f35c72fea5c40
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}

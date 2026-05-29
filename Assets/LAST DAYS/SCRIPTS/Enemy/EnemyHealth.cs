@@ -7,6 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth;
     bool isDead = false;
     private Animator anim;
+    public GameObject icon;
+    private bool isReward = false;
+    public GameObject[] item;
 
     //Sound
     public AudioSource audioSource;
@@ -22,6 +25,18 @@ public class EnemyHealth : MonoBehaviour
         {
             Debug.LogError("ZombieData not assigned on " + gameObject.name);
             currentHealth = 100f; // default value
+        }
+
+        //random rewward
+        int rand = Random.Range(0, 3);
+        if(rand == 1)
+        {
+            isReward = true;
+            
+        }
+        else
+        {
+            isReward = false;
         }
     }
 
@@ -105,6 +120,19 @@ public class EnemyHealth : MonoBehaviour
             }
 
             Debug.Log(gameObject.name + " has died.");
+        }
+
+        // Nếu có item thưởng, instantiate nó tại vị trí của zombie
+        if (isReward && item.Length > 0)
+        {
+            int randItem = Random.Range(0, item.Length);
+            Instantiate(item[randItem], transform.position, Quaternion.identity);
+        }
+
+        //tắt icon minimap
+        if(icon != null)
+        {
+            icon.SetActive(false);
         }
 
         Destroy(gameObject, 5f);

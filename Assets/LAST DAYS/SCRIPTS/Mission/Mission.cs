@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    //Mission 0
     [Header("Phase")]
     public GamePhase currentPhase;
 
@@ -15,16 +16,26 @@ public class GameManager : MonoBehaviour
     [Header("Ambient")]
     public AmbientZombieSpawner ambientSpawner;
 
+    [Header("Mission System")]
+    public MissionSystem missionSystem;
+
     [Header("UI")]
-    public GameObject missionUI;
+    public GameObject[] missionUI;
 
-    // [Header("Wave 1")]
-    // public ZombieSpawner[] wave1Spawners;
-
+    //Mission 1
+    [Header("Wave 1")]
+    public GameObject NPC;
+    
     void Awake()
     {
         Instance = this;
-        missionUI.SetActive(false);
+        currentPhase = GamePhase.None;
+
+        foreach (var ui in missionUI)
+            ui.SetActive(false);
+
+        if (NPC != null)
+            NPC.SetActive(false);
     }
 
     void Update()
@@ -36,6 +47,10 @@ public class GameManager : MonoBehaviour
             if(timer <= 0f)
             {
                 StartWave1();
+                if (missionSystem != null)
+                    missionSystem.CompleteCurrentMission();
+                else
+                    Debug.LogWarning("MissionSystem reference is missing on GameManager.");
             }
         }
     }
@@ -52,40 +67,49 @@ public class GameManager : MonoBehaviour
 
         ambientSpawner.StartSpawn();
 
-        UIMission();
+        UIMission(0);
 
         Debug.Log("Explore Started");
+
+       
     }
 
     // =====================================================
     // WAVE 1
     // =====================================================
-
-    void StartWave1()
+    public void StartWave1()
     {
         currentPhase = GamePhase.Wave1;
 
-        // ambientSpawner.StopSpawn();
+        ambientSpawner.StopSpawn();
 
-        // foreach(var spawner in wave1Spawners)
-        // {
-        //     spawner.Spawn();
-        // }
+        if (NPC != null)
+            NPC.SetActive(true);
+
+        UIMission(1);
 
         Debug.Log("Wave 1 Started");
     }
 
     //tắt UI sau 4s
-    public void UIMission()
+    public void UIMission(int missionIndex)
     {
-        missionUI.SetActive(true);
-        Invoke(nameof(HideMissionUI), 8f);
+        HideMissionUI();
 
-        Debug.Log("Mission UI Show");
+        if (missionIndex < 0 || missionIndex >= missionUI.Length)
+            return;
+
+        missionUI[missionIndex].SetActive(true);
+
+        CancelInvoke(nameof(HideMissionUI));
+        Invoke(nameof(HideMissionUI), 8f);
     }
 
     private void HideMissionUI()
     {
-        missionUI.SetActive(false);
+        foreach (var ui in missionUI)
+        {
+            ui.SetActive(false);
+        }
     }
 }

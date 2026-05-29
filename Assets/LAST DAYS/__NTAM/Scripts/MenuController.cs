@@ -3,16 +3,54 @@ using UnityEngine.SceneManagement; // Bắt buộc phải có để dùng SceneM
 
 public class MenuController : MonoBehaviour
 {
-    // Hàm chuyển sang Scene Login
-    public void GoToLogin()
+    public string mapName;
+    public GameObject SettingPanel;
+    public GameObject MenuPanel;
+
+     void Start()
     {
-        SceneManager.LoadScene("Login"); 
+        // Đảm bảo SettingPanel được ẩn khi bắt đầu
+        if (SettingPanel != null)
+        {
+            SettingPanel.SetActive(false);
+        }
+    }
+    // Hàm chuyển sang Scene Login
+    public void GoMenu()
+    {
+        SceneManager.LoadScene("MapMenu"); 
+    }
+
+    //Play
+    public void PlayGame()
+    {
+        SceneManager.LoadScene(mapName);
     }
 
     // Hàm chuyển sang Scene Setting
     public void GoToSettings()
     {
-        SceneManager.LoadScene("Settings");
+        if (SettingPanel != null)
+        {
+            SettingPanel.SetActive(true);
+            MenuPanel.SetActive(false);
+        }
+    }
+
+    // Hàm quay lại Menu chính từ Setting
+    public void BackToMenu()
+    {
+        if (SettingPanel != null)
+        {
+            SettingPanel.SetActive(false);
+            MenuPanel.SetActive(true);
+        }
+    }
+
+    // Hàm chuyển sang Start
+    public void GoToStart()
+    {
+        SceneManager.LoadScene("Start");
     }
 
     // Hàm thoát Game

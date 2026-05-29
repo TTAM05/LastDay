@@ -27,6 +27,7 @@ public class MissionPoint : MonoBehaviour
 
             // tắt marker
             missionSystem.DisableMaker();
+            Debug.Log("Marker Disabled");
         }
     }
 }
