@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7344902115915070851}
   m_Layer: 0
   m_Name: Ammo
-  m_TagString: Untagged
+  m_TagString: Ammo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoAmount: 0
+  weaponIndex: 0
   rotationSpeed: 50
+  isPicked: 0
 --- !u!1 &7030392115949546835
 GameObject:
   m_ObjectHideFlags: 0

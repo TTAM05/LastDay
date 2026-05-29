@@ -6,7 +6,7 @@ public class PlayerInteract : MonoBehaviour
 {
     public Camera cam;
     public float distance = 3f;
-    public TMP_Text interactUI;
+    public TMP_Text[] interactUI;
     private PlayerInputActions input;
 
     void Awake()
@@ -43,20 +43,40 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
-            IInteractable interactable =
-                hit.collider.GetComponent<IInteractable>();
-
-            if (interactable != null)
+            if (hit.collider.CompareTag("Ammo"))
             {
-                interactable.Interact(this);
+                IInteractable interactable =
+                    hit.collider.GetComponent<IInteractable>();
+
+                if (interactable != null)
+                {
+                    interactable.Interact(this);
+                }
+            }
+            else if (hit.collider.CompareTag("Hunter"))
+            {
+                HunterDialogueZone hunterDialogueZone =
+                hit.collider.transform.root.GetComponentInChildren<HunterDialogueZone>();
+
+                if (hunterDialogueZone != null)
+                {
+                    hunterDialogueZone.Interact(this);
+                }
+
+                
             }
         }
     }
 
-    void ShowUI(bool show)
+    void ShowUI(bool show, int index = 0)
     {
-        interactUI.alpha = show ? 1f : 0f;
-        // interactUI.blocksRaycasts = false;
+        for (int i = 0; i < interactUI.Length; i++)
+        {
+            if (interactUI[i] != null)
+            {
+                interactUI[i].alpha = (show && i == index) ? 1f : 0f;
+            }
+        }
     }
 
     void Check()
@@ -68,14 +88,18 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
-            IInteractable interactable =
-                hit.collider.GetComponent<IInteractable>();
+            if (hit.collider.CompareTag("Ammo"))
+            {
+                ShowUI(true, 0);
+                return;
+            }
+            else if (hit.collider.CompareTag("Hunter"))
+            {
+                ShowUI(true, 1);
+                return;
+            }
+        }
 
-            ShowUI(interactable != null);
-        }
-        else
-        {
-            ShowUI(false);
-        }
+        ShowUI(false, 0);
     }
 }

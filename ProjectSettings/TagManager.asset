@@ -12,6 +12,12 @@ TagManager:
   - EnemyHead
   - EnemyBody
   - EnemyHand
+  - MissionPoint
+  - Minimap
+  - HealthBar
+  - Loading
+  - Hunter
+  - Ammo
   layers:
   - Default
   - TransparentFX
@@ -22,7 +28,7 @@ TagManager:
   - Player
   - Enemy
   - MainVolume
-  - 
+  - PlayerIcon
   - 
   - 
   - 
