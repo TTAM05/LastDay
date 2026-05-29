@@ -441,6 +441,9 @@ MonoBehaviour:
   ammoText: {fileID: 0}
   reserveAmmoText: {fileID: 0}
   reloadTimeText: {fileID: 0}
+  normalCrosshair: {fileID: 0}
+  hitCrosshair: {fileID: 0}
+  hitCrosshairTime: 0.1
 --- !u!1001 &810845948
 PrefabInstance:
   m_ObjectHideFlags: 0
