@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 2
   m_FogDensity: 0.027
@@ -10216,7 +10216,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.3566284, y: -312.15002}
+  m_AnchoredPosition: {x: 4.3566895, y: -312.15002}
   m_SizeDelta: {x: -441.7313, y: -800.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &223816334
@@ -21857,7 +21857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5075320850108920823, guid: beb4f9d359d67fc409f9c3a5a996f3d9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5075320850108920823, guid: beb4f9d359d67fc409f9c3a5a996f3d9, type: 3}
       propertyPath: m_TagString
@@ -28722,6 +28722,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 112944415950271143, guid: d9750adb74e965f43a94d956e70a40bc, type: 3}
+      propertyPath: nextButton
+      value: 
+      objectReference: {fileID: 1849154382}
+    - target: {fileID: 112944415950271143, guid: d9750adb74e965f43a94d956e70a40bc, type: 3}
+      propertyPath: dialogueText
+      value: 
+      objectReference: {fileID: 2081819620}
+    - target: {fileID: 112944415950271143, guid: d9750adb74e965f43a94d956e70a40bc, type: 3}
+      propertyPath: dialoguePanel
+      value: 
+      objectReference: {fileID: 223816332}
     - target: {fileID: 6033388062615991564, guid: d9750adb74e965f43a94d956e70a40bc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 238.99661
@@ -81351,7 +81363,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897180349}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 

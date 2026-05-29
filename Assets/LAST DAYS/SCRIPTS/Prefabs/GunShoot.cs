@@ -261,7 +261,7 @@ public class GunSystem : MonoBehaviour
                     EnemyHealth enemy =
                         hit.collider.GetComponentInParent<EnemyHealth>();
 
-                    enemy.TakeDamage(gunData.damage * 2, true);
+                    enemy.TakeDamage(gunData.damage * 3, true);
 
                 }
                 else if (hit.collider.CompareTag("EnemyBody"))
