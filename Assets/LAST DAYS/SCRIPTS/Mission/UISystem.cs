@@ -3,7 +3,9 @@ using TMPro;
 using UnityEngine;
 
 public class MissionUI : MonoBehaviour
-{
+{   
+    public static MissionUI Instance;
+    
     [Header("UI")]
     public RectTransform panel;
     public TMP_Text missionText;
@@ -16,15 +18,20 @@ public class MissionUI : MonoBehaviour
     public Vector2 hiddenPos;
     public Vector2 showPos;
 
-    public float slideSpeed = 8f;
+    private float slideSpeed = 8f;
 
     [Header("Typing")]
-    public float startTypingDelay = 1.5f;
-    public float typingSpeed = 0.03f;
+    private float startTypingDelay = 0.5f;
+    private float typingSpeed = 0.03f;
 
     // =====================================================
     // START
     // =====================================================
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {

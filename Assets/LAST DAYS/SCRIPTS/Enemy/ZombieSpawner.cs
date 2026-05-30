@@ -7,7 +7,7 @@ public class AmbientZombieSpawner : MonoBehaviour
 
     public Transform[] spawnPoints;
 
-    public float spawnInterval = 2f;
+    public float spawnInterval=5 ;
 
     private bool spawning;
 
@@ -26,6 +26,7 @@ public class AmbientZombieSpawner : MonoBehaviour
         );
 
         Debug.Log("Ambient Spawner Started");
+        
     }
 
     // =====================================================
@@ -88,6 +89,7 @@ public class AmbientZombieSpawner : MonoBehaviour
             }
 
             Debug.Log("Zombie Spawned");
+            Debug.Log("Spawn Interval: " + spawnInterval + " seconds");
         }
     }
 }

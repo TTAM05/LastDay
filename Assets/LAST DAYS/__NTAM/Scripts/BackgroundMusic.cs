@@ -10,7 +10,6 @@ public class BackgroundMusic : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // Giữ đối tượng này khi chuyển Scene
         }
         else
         {

@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         missionUI[missionIndex].SetActive(true);
 
         CancelInvoke(nameof(HideMissionUI));
-        Invoke(nameof(HideMissionUI), 8f);
+        Invoke(nameof(HideMissionUI), 6f);
     }
 
     private void HideMissionUI()

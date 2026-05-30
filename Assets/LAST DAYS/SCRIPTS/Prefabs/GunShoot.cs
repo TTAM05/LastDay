@@ -59,6 +59,8 @@ public class GunSystem : MonoBehaviour
     public TMP_Text ammoText;
     public TMP_Text reserveAmmoText;
     public TMP_Text reloadTimeText;
+    public GameObject bulletUI;
+    public GameObject crosshairUI;
 
     [Header("Crosshair")]
     public GameObject normalCrosshair;
@@ -107,21 +109,17 @@ public class GunSystem : MonoBehaviour
         // ẩn sau
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(false);
+
+        EnsureUIReferences();
+        if (enabled)
+            SetUIActive(true);
     }
 
-    // =========================================================
-    // AWAKE
-    // =========================================================
-    void Awake()
-    {
-        input = new PlayerInputActions();
-    }
-
-    // =========================================================
-    // ENABLE
-    // =========================================================
     void OnEnable()
     {
+        EnsureUIReferences();
+        SetUIActive(true);
+
         input.Enable();
 
         // nhấn chuột
@@ -130,19 +128,57 @@ public class GunSystem : MonoBehaviour
 
         // thả chuột
         input.Player.Fire.canceled += OnFireReleased;
-
-
     }
 
-    // =========================================================
-    // DISABLE
-    // =========================================================
     void OnDisable()
     {
         input.Player.Fire.performed -= OnFirePressed;
         input.Player.Reload.performed -= OnReloadPressed;
         input.Player.Fire.canceled -= OnFireReleased;
         input.Disable();
+
+        SetUIActive(false);
+    }
+
+    void EnsureUIReferences()
+    {
+        if (bulletUI == null)
+        {
+            GameObject obj = GameObject.Find("BulletUI");
+            if (obj != null) bulletUI = obj;
+        }
+
+        if (crosshairUI == null)
+        {
+            GameObject obj = GameObject.Find("Crosshair");
+            if (obj == null)
+                obj = GameObject.Find("CrossHair");
+            if (obj != null) crosshairUI = obj;
+        }
+    }
+
+    void SetUIActive(bool active)
+    {
+        if (bulletUI != null)
+            bulletUI.SetActive(active);
+
+        if (crosshairUI != null)
+            crosshairUI.SetActive(active);
+        else
+        {
+            if (normalCrosshair != null)
+                normalCrosshair.SetActive(active);
+            if (!active && hitCrosshair != null)
+                hitCrosshair.SetActive(false);
+        }
+    }
+
+    // =========================================================
+    // AWAKE
+    // =========================================================
+    void Awake()
+    {
+        input = new PlayerInputActions();
     }
 
     // =========================================================

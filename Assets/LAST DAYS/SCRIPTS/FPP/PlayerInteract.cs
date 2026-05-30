@@ -12,6 +12,9 @@ public class PlayerInteract : MonoBehaviour
     void Awake()
     {
         input = new PlayerInputActions();
+        if (cam == null)
+            cam = Camera.main;
+
         ShowUI(false);
     }
 
@@ -47,10 +50,11 @@ public class PlayerInteract : MonoBehaviour
             {
                 IInteractable interactable =
                     hit.collider.GetComponent<IInteractable>();
-
+                    
                 if (interactable != null)
                 {
                     interactable.Interact(this);
+                   
                 }
             }
             else if (hit.collider.CompareTag("Hunter"))
@@ -61,6 +65,7 @@ public class PlayerInteract : MonoBehaviour
                 if (hunterDialogueZone != null)
                 {
                     hunterDialogueZone.Interact(this);
+    
                 }
 
                 
@@ -70,12 +75,16 @@ public class PlayerInteract : MonoBehaviour
 
     void ShowUI(bool show, int index = 0)
     {
+        if (interactUI == null || interactUI.Length == 0)
+            return;
+
         for (int i = 0; i < interactUI.Length; i++)
         {
-            if (interactUI[i] != null)
-            {
-                interactUI[i].alpha = (show && i == index) ? 1f : 0f;
-            }
+            var txt = interactUI[i];
+            if (txt == null)
+                continue;
+
+            txt.gameObject.SetActive(show && i == index);
         }
     }
 
