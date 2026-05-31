@@ -32,6 +32,11 @@ public class GameSetting : MonoBehaviour
             if (loadingObj != null && loadingObj.activeInHierarchy)
                 return;
 
+            HunterDialogueZone dialogue = FindObjectOfType<HunterDialogueZone>();
+
+            if (dialogue != null && dialogue.IsDialogueOpen())
+                return;
+
             ToggleOption();
         }
     }
@@ -47,6 +52,11 @@ public class GameSetting : MonoBehaviour
             optionPanel.SetActive(isOptionOpen);
 
         ApplyPauseState();
+
+        foreach (var gun in FindObjectsOfType<GunSystem>())
+        {
+            gun.CancelFire();
+        }
     }
 
     public void CloseOption()
@@ -57,6 +67,11 @@ public class GameSetting : MonoBehaviour
             optionPanel.SetActive(false);
 
         ApplyPauseState();
+
+        foreach (var gun in FindObjectsOfType<GunSystem>())
+        {
+            gun.CancelFire();
+        }
     }
 
     public void BackToMenu()

@@ -7,9 +7,8 @@ public class AudioManager : MonoBehaviour
 
     public AudioMixer mixer;
 
-    public float player = 0.5f;
     public float environment = 0.5f;
-    public float zombie = 0.5f;
+    public float master = 0.5f;
     public float sfx = 0.5f;
 
     void Awake()
@@ -27,11 +26,7 @@ public class AudioManager : MonoBehaviour
         ApplyAll();
     }
 
-    public void ChangePlayer(float amount)
-    {
-        player = Mathf.Clamp01(player + amount);
-        SaveAndApply("PlayerVolume", player);
-    }
+   
 
     public void ChangeEnvironment(float amount)
     {
@@ -39,10 +34,10 @@ public class AudioManager : MonoBehaviour
         SaveAndApply("EnvironmentVolume", environment);
     }
 
-    public void ChangeZombie(float amount)
+    public void ChangeMaster(float amount)
     {
-        zombie = Mathf.Clamp01(zombie + amount);
-        SaveAndApply("ZombieVolume", zombie);
+        master = Mathf.Clamp01(master+ amount);
+        SaveAndApply("MasterVolume", master);
     }
 
     public void ChangeSFX(float amount)
@@ -53,17 +48,15 @@ public class AudioManager : MonoBehaviour
 
     void Load()
     {
-        player = PlayerPrefs.GetFloat("PlayerVolume", 0.5f);
         environment = PlayerPrefs.GetFloat("EnvironmentVolume", 0.5f);
-        zombie = PlayerPrefs.GetFloat("ZombieVolume", 0.5f);
+        master= PlayerPrefs.GetFloat("MasterVolume", 0.5f);
         sfx = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
     }
 
     void ApplyAll()
     {
-        SetMixer("PlayerVolume", player);
         SetMixer("EnvironmentVolume", environment);
-        SetMixer("ZombieVolume", zombie);
+        SetMixer("MasterVolume", master);
         SetMixer("SFXVolume", sfx);
     }
 
@@ -86,9 +79,9 @@ public class AudioManager : MonoBehaviour
 
     void SaveAll()
     {
-        PlayerPrefs.SetFloat("PlayerVolume", player);
+
         PlayerPrefs.SetFloat("EnvironmentVolume", environment);
-        PlayerPrefs.SetFloat("ZombieVolume", zombie);
+        PlayerPrefs.SetFloat("MasterVolume", master);
         PlayerPrefs.SetFloat("SFXVolume", sfx);
         PlayerPrefs.Save();
     }

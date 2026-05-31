@@ -69,7 +69,21 @@ public class GunSystem : MonoBehaviour
     public float hitCrosshairTime = 0.1f;
 
     private Coroutine hitRoutine;
+    private Vector3 startLocalPosition;
+    private Quaternion startLocalRotation;
+    private Vector3 startLocalScale;
 
+
+    void Awake()
+    {
+        input = new PlayerInputActions();
+
+        startLocalPosition = transform.localPosition;
+        startLocalRotation = transform.localRotation;
+        startLocalScale = transform.localScale;
+
+        input = new PlayerInputActions();
+    }
 
     void Start()
     {
@@ -120,13 +134,13 @@ public class GunSystem : MonoBehaviour
         EnsureUIReferences();
         SetUIActive(true);
 
+        isReloading = false;
+        isFiring = false;
+
         input.Enable();
 
-        // nhấn chuột
         input.Player.Fire.performed += OnFirePressed;
         input.Player.Reload.performed += OnReloadPressed;
-
-        // thả chuột
         input.Player.Fire.canceled += OnFireReleased;
     }
 
@@ -135,6 +149,7 @@ public class GunSystem : MonoBehaviour
         input.Player.Fire.performed -= OnFirePressed;
         input.Player.Reload.performed -= OnReloadPressed;
         input.Player.Fire.canceled -= OnFireReleased;
+
         input.Disable();
 
         SetUIActive(false);
@@ -173,19 +188,15 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // AWAKE
-    // =========================================================
-    void Awake()
-    {
-        input = new PlayerInputActions();
-    }
+    
 
     // =========================================================
     // UPDATE
     // =========================================================
     void Update()
-    {
+    {   
+        if (Time.timeScale == 0f) return;
+
         if (isReloading) return;
 
         if (gunData.isAutomatic && isFiring)
@@ -215,7 +226,8 @@ public class GunSystem : MonoBehaviour
     // NHẤN CHUỘT
     // =========================================================
     void OnFirePressed(InputAction.CallbackContext ctx)
-    {
+    {   
+        if(Time.timeScale == 0f) return;
         if (isReloading) return;
 
         isFiring = true;
@@ -228,7 +240,8 @@ public class GunSystem : MonoBehaviour
     }
 
     void OnReloadPressed(InputAction.CallbackContext ctx)
-    {
+    {   
+        if(Time.timeScale == 0f) return;
         if (currentAmmo < gunData.maxAmmo && !isReloading)
         {
             StartCoroutine(Reload());
@@ -239,7 +252,8 @@ public class GunSystem : MonoBehaviour
     // THẢ CHUỘT
     // =========================================================
     void OnFireReleased(InputAction.CallbackContext ctx)
-    {
+    {   
+        if (Time.timeScale == 0f) return;
         isFiring = false;
 
         // tắt anim auto
@@ -497,6 +511,21 @@ public class GunSystem : MonoBehaviour
         reloadTimeText.gameObject.SetActive(false);
 
         
+    }
+
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
+
+    
+
+    public void CancelFire()
+    {
+        isFiring = false;
+
+        if (animator != null)
+            animator.SetBool("Auto", false);
     }
 
     public void PlayReloadSound()

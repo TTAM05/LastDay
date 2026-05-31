@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
     public CharData charData;
     [Header("Health")]
     public float currentHealth;
+    private bool isDead= false;
 
     [Header("Damage Cooldown")]
     public float damageCooldown = 1f; // thời gian miễn sát thương
@@ -20,9 +21,9 @@ public class Health : MonoBehaviour
     public AudioSource audioSource;
 
     [Header("GunSystem")]
-    public GunSystem gunSystem;
-    public AimSystem aimSystem;
-    public MacheteSystem macheteSystem;
+    public GunSystem[] gunSystem;
+    public AimSystem[] aimSystem;
+    public MacheteSystem[] macheteSystem;
 
     void Awake()
     {
@@ -34,7 +35,8 @@ public class Health : MonoBehaviour
 
     //NHẬN DAMAGE (có cooldown)
     public void TakeDamage(float damage)
-    {
+    {   
+        if(isDead) return;
         if (Time.time < lastDamageTime + damageCooldown)
             return; // đang trong thời gian bất tử
 
@@ -57,6 +59,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+            
         }
     }
 
@@ -70,7 +73,10 @@ public class Health : MonoBehaviour
     }
 
     void Die()
-    {
+    {   
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log("Dead");
         // play death sound
         if (charData.deathSound != null && audioSource != null)
@@ -112,17 +118,31 @@ public class Health : MonoBehaviour
     
     IEnumerator FreezeAfterDelay(float delay)
     {
+        gunSystem = GetComponentsInChildren<GunSystem>(true);
+        aimSystem = GetComponentsInChildren<AimSystem>(true);
+        macheteSystem = GetComponentsInChildren<MacheteSystem>(true);
 
-        gunSystem = GetComponentInChildren<GunSystem>();
-        aimSystem = GetComponentInChildren<AimSystem>();
-        macheteSystem = GetComponentInChildren<MacheteSystem>();
+        foreach (var gun in gunSystem)
+        {
+            if (gun != null)
+                gun.enabled = false;
+        }
 
-        gunSystem.enabled = false; // Vô hiệu hóa hệ thống súng
-        aimSystem.enabled = false; // Vô hiệu hóa hệ thống nhắm
-        macheteSystem.enabled = false; // Vô hiệu hóa hệ thống dao
+        foreach (var aim in aimSystem)
+        {
+            if (aim != null)
+                aim.enabled = false;
+        }
 
-        yield return new WaitForSecondsRealtime(delay); // RealTime để không bị ảnh hưởng bởi timeScale
+        foreach (var machete in macheteSystem)
+        {
+            if (machete != null)
+                machete.enabled = false;
+        }
 
-        Time.timeScale = 0f; // Dừng game
+        yield return new WaitForSecondsRealtime(delay);
+
+        Debug.Log("Game Over");
+        Time.timeScale = 0f;
     }
 }

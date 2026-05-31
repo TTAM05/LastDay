@@ -356,7 +356,13 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         {
             dialogueEndedNaturally = true;
             ScheduleZombieSpawn();
-        }
+
+            //Show UI
+            Debug.Log("Talk to jake");
+            
+            if (GameManager.Instance != null)
+                GameManager.Instance.UIMission(2);
+                }
     }
 
     System.Collections.IEnumerator AutoHideAfterDelay(float delay)
@@ -397,20 +403,23 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         if (GameManager.Instance != null && GameManager.Instance.ambientSpawner != null)
         {
             GameManager.Instance.ambientSpawner.StopSpawn();
-            Debug.Log("HunterDialogueZone: Zombie spawning stopped after 90 seconds.");
+            Debug.Log("Đã dừng spawn zombie sau 90s");
         }
 
-        //nếu ko còn zombie thì hiện UI nhiệm vụ
-        //Tìm tất cả zombie còn lại trong scene
-        GameObject[] remainingZombies = GameObject.FindGameObjectsWithTag("Enemy");
-        if (remainingZombies.Length == 0)
+        // Chờ tới khi tất cả zombie bị giết
+        while (GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
         {
-            //hiện point kế
+            yield return new WaitForSeconds(1f);
+        }
+
+        Debug.Log("Đã hết zombie, hoàn thành nhiệm vụ");
+
+        if (MissionSystem.Instance != null)
             MissionSystem.Instance.CompleteCurrentMission();
 
-            //hiện UI nhiệm vụ kế
-            GameManager.Instance.UIMission(3);
-        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.UIMission(1);
+
         zombieSpawnCoroutine = null;
     }
 
@@ -424,5 +433,10 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public bool IsDialogueOpen()
+    {
+        return dialoguePanel != null && dialoguePanel.activeInHierarchy;
     }
 }
