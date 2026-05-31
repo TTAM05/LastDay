@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameSetting : MonoBehaviour
 {
@@ -58,6 +59,13 @@ public class GameSetting : MonoBehaviour
         ApplyPauseState();
     }
 
+    public void BackToMenu()
+    {   
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
+        //Load scene MapMenu
+        SceneManager.LoadScene("MapMenu");
+    }
     void ApplyPauseState()
     {
         if (pauseWhenOpen)

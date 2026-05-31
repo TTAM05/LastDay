@@ -28,7 +28,7 @@ public class WeaponManager : MonoBehaviour
         // number keys
         input.Player.Weapon1.performed += OnWeapon1;
         input.Player.Weapon2.performed += OnWeapon2;
-        
+        input.Player.Weapon3.performed += OnWeapon3;
 
         // scroll
         input.Player.ScrollWeapon.performed += OnScrollWeapon;
@@ -41,7 +41,8 @@ public class WeaponManager : MonoBehaviour
     {
         input.Player.Weapon1.performed -= OnWeapon1;
         input.Player.Weapon2.performed -= OnWeapon2;
-    
+        input.Player.Weapon3.performed -= OnWeapon3;
+
         input.Player.ScrollWeapon.performed -= OnScrollWeapon;
 
         input.Disable();
@@ -121,6 +122,11 @@ public class WeaponManager : MonoBehaviour
     void OnWeapon2(InputAction.CallbackContext ctx)
     {
         SelectWeapon(1);
+    }
+
+    void OnWeapon3(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+    {
+        SelectWeapon(2);
     }
 
 }

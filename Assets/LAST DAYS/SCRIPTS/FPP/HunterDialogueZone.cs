@@ -25,17 +25,22 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     public float typewriterSpeed = 0.03f;
     public bool disableGunDuringDialogue = true;
     public bool disableAimDuringDialogue = true;
+    public bool disableMacheteDuringDialogue = true;
     public float autoHideAfterSeconds = 0f;
+    public float zombieSpawnDuration = 90f;
 
     private PlayerInteract currentPlayer;
     private GunSystem[] playerGunSystems;
     private AimSystem[] playerAimSystems;
+    private MacheteSystem[] playerMacheteSystems;
     private FPSController playerController;
     private int currentLineIndex;
     private Coroutine dialogueCoroutine;
     private Coroutine hideCoroutine;
     private Coroutine typewriterCoroutine;
+    private Coroutine zombieSpawnCoroutine;
     private bool isTyping;
+    private bool dialogueEndedNaturally;
 
     void Awake()
     {
@@ -88,6 +93,14 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             hideCoroutine = null;
         }
 
+        if (zombieSpawnCoroutine != null)
+        {
+            StopCoroutine(zombieSpawnCoroutine);
+            zombieSpawnCoroutine = null;
+        }
+
+        dialogueEndedNaturally = false;
+
         CollectPlayerSystems();
 
         if (disableGunDuringDialogue)
@@ -95,6 +108,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         if (disableAimDuringDialogue)
             SetAimControl(false);
+
+        if (disableMacheteDuringDialogue)
+            SetMacheteControl(false);
 
         SetCameraControl(false);
 
@@ -152,6 +168,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         if (disableAimDuringDialogue)
             SetAimControl(true);
+
+        if (disableMacheteDuringDialogue)
+            SetMacheteControl(true);
 
         SetCameraControl(true);
         RestoreCursor();
@@ -248,6 +267,8 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         if (currentLineIndex >= dialogueLines.Length)
         {
+            dialogueEndedNaturally = true;
+            ScheduleZombieSpawn();
             StopDialogue();
             return;
         }
@@ -262,6 +283,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         playerGunSystems = currentPlayer.GetComponentsInChildren<GunSystem>(true);
         playerAimSystems = currentPlayer.GetComponentsInChildren<AimSystem>(true);
+        playerMacheteSystems = currentPlayer.GetComponentsInChildren<MacheteSystem>(true);
         playerController = currentPlayer.GetComponentInParent<FPSController>();
     }
 
@@ -286,6 +308,18 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         {
             if (aim != null)
                 aim.enabled = enabled;
+        }
+    }
+
+    void SetMacheteControl(bool enabled)
+    {
+        if (playerMacheteSystems == null || playerMacheteSystems.Length == 0)
+            return;
+
+        foreach (MacheteSystem machete in playerMacheteSystems)
+        {
+            if (machete != null)
+                machete.enabled = enabled;
         }
     }
 
@@ -317,12 +351,67 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         {
             hideCoroutine = StartCoroutine(AutoHideAfterDelay(autoHideAfterSeconds));
         }
+
+        if (!dialogueEndedNaturally)
+        {
+            dialogueEndedNaturally = true;
+            ScheduleZombieSpawn();
+        }
     }
 
     System.Collections.IEnumerator AutoHideAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         StopDialogue();
+    }
+
+    void ScheduleZombieSpawn()
+    {
+        if (zombieSpawnCoroutine != null)
+            return;
+
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning("HunterDialogueZone: GameManager instance not found for zombie spawn.");
+            return;
+        }
+
+        if (GameManager.Instance.ambientSpawner == null)
+        {
+            Debug.LogWarning("HunterDialogueZone: ambientSpawner reference missing in GameManager.");
+            return;
+        }
+
+        GameManager.Instance.ambientSpawner.spawnInterval = 2f; // Set spawn interval to 2 seconds
+        Debug.Log("HunterDialogueZone: Starting zombie spawn with " + GameManager.Instance.ambientSpawner.spawnInterval + " second interval.");
+        GameManager.Instance.ambientSpawner.StartSpawn();
+
+        Debug.Log("HunterDialogueZone: Zombie spawning started after dialogue completion.");
+        zombieSpawnCoroutine = StartCoroutine(StopZombieSpawnAfterDelay(zombieSpawnDuration));
+    }
+
+    IEnumerator StopZombieSpawnAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (GameManager.Instance != null && GameManager.Instance.ambientSpawner != null)
+        {
+            GameManager.Instance.ambientSpawner.StopSpawn();
+            Debug.Log("HunterDialogueZone: Zombie spawning stopped after 90 seconds.");
+        }
+
+        //nếu ko còn zombie thì hiện UI nhiệm vụ
+        //Tìm tất cả zombie còn lại trong scene
+        GameObject[] remainingZombies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (remainingZombies.Length == 0)
+        {
+            //hiện point kế
+            MissionSystem.Instance.CompleteCurrentMission();
+
+            //hiện UI nhiệm vụ kế
+            GameManager.Instance.UIMission(3);
+        }
+        zombieSpawnCoroutine = null;
     }
 
     void EnableCursor()

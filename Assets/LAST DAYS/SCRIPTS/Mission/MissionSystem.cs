@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MissionSystem : MonoBehaviour
 {
+    public static MissionSystem Instance;
+    
     public Transform[] targets;
 
     public GameObject markerPrefab;
@@ -10,6 +12,10 @@ public class MissionSystem : MonoBehaviour
 
     private int currentTargetIndex;
 
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         SpawnMarker();

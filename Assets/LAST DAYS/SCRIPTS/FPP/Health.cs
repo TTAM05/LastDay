@@ -22,6 +22,7 @@ public class Health : MonoBehaviour
     [Header("GunSystem")]
     public GunSystem gunSystem;
     public AimSystem aimSystem;
+    public MacheteSystem macheteSystem;
 
     void Awake()
     {
@@ -114,9 +115,11 @@ public class Health : MonoBehaviour
 
         gunSystem = GetComponentInChildren<GunSystem>();
         aimSystem = GetComponentInChildren<AimSystem>();
+        macheteSystem = GetComponentInChildren<MacheteSystem>();
 
         gunSystem.enabled = false; // Vô hiệu hóa hệ thống súng
         aimSystem.enabled = false; // Vô hiệu hóa hệ thống nhắm
+        macheteSystem.enabled = false; // Vô hiệu hóa hệ thống dao
 
         yield return new WaitForSecondsRealtime(delay); // RealTime để không bị ảnh hưởng bởi timeScale
 
