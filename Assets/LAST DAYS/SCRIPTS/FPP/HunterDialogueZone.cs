@@ -10,11 +10,21 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     public TMP_Text dialogueText;
     public Button nextButton;
 
-    [Header("Dialogue Content")]
+    [Header("Dialogue Content 1")]
     [TextArea]
     public string[] dialogueLines ;
     public bool useSpeakerLabels = true;
     public string[] dialogueSpeakers ;
+
+    [Header("Dialogue Content 2")]
+    [TextArea]
+    public string[] dialogueLines2 ;
+    public bool useSpeakerLabels2 = true;
+    public string[] dialogueSpeakers2 ;
+
+    private bool firstDialogueFinished = false;
+    private bool isPlayingSecondDialogue = false;
+    private bool canStartSecondDialogue = false;
 
     [Header("Settings")]
     public bool hideOnExit = true;
@@ -71,15 +81,28 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteract player)
     {
+        if (firstDialogueFinished && !canStartSecondDialogue)
+        {
+            Debug.Log("Chưa chạm Point3 nên chưa cho thoại đợt 2");
+            return;
+        }
+
         currentPlayer = player;
         StartDialogue();
         Debug.Log("Interacted with Hunter Dialogue Zone");
+    }
+
+    public void UnlockSecondDialogue()
+    {
+        canStartSecondDialogue = true;
+        Debug.Log("Đã mở khóa hội thoại đợt 2");
     }
 
     public void StartDialogue()
     {
         if (dialoguePanel == null || dialogueText == null)
             return;
+        isPlayingSecondDialogue = firstDialogueFinished;    
 
         if (dialogueCoroutine != null)
         {
@@ -178,28 +201,29 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
     void ShowCurrentLine()
     {
-        if (dialogueLines == null || dialogueLines.Length == 0)
+        string[] lines = firstDialogueFinished ? dialogueLines2 : dialogueLines;
+        string[] speakers = firstDialogueFinished ? dialogueSpeakers2 : dialogueSpeakers;
+        bool speakerLabels = firstDialogueFinished ? useSpeakerLabels2 : useSpeakerLabels;
+
+        if (lines == null || lines.Length == 0)
             return;
 
-        currentLineIndex = Mathf.Clamp(currentLineIndex, 0, dialogueLines.Length - 1);
-        string line = dialogueLines[currentLineIndex];
+        currentLineIndex = Mathf.Clamp(currentLineIndex, 0, lines.Length - 1);
+
+        string line = lines[currentLineIndex];
         string speaker = string.Empty;
 
-        if (useSpeakerLabels && dialogueSpeakers != null && currentLineIndex < dialogueSpeakers.Length)
-            speaker = dialogueSpeakers[currentLineIndex];
+        if (speakerLabels && speakers != null && currentLineIndex < speakers.Length)
+            speaker = speakers[currentLineIndex];
 
         string formattedLine = string.IsNullOrEmpty(speaker)
             ? line
             : $"<b>{speaker}:</b> {line}";
 
         if (useTypewriter)
-        {
             StartTypewriter(formattedLine);
-        }
         else
-        {
             dialogueText.text = formattedLine;
-        }
     }
 
     void StartTypewriter(string line)
@@ -236,13 +260,17 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             typewriterCoroutine = null;
         }
 
-        if (dialogueLines != null && dialogueLines.Length > 0)
+        string[] lines = isPlayingSecondDialogue ? dialogueLines2 : dialogueLines;
+        string[] speakers = isPlayingSecondDialogue ? dialogueSpeakers2 : dialogueSpeakers;
+        bool speakerLabels = isPlayingSecondDialogue ? useSpeakerLabels2 : useSpeakerLabels;
+
+        if (lines != null && lines.Length > 0)
         {
-            string line = dialogueLines[currentLineIndex];
+            string line = lines[currentLineIndex];
             string speaker = string.Empty;
 
-            if (useSpeakerLabels && dialogueSpeakers != null && currentLineIndex < dialogueSpeakers.Length)
-                speaker = dialogueSpeakers[currentLineIndex];
+            if (speakerLabels && speakers != null && currentLineIndex < speakers.Length)
+                speaker = speakers[currentLineIndex];
 
             dialogueText.text = string.IsNullOrEmpty(speaker)
                 ? line
@@ -254,7 +282,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
     public void AdvanceDialogue()
     {
-        if (dialogueLines == null || dialogueLines.Length == 0)
+        string[] lines = isPlayingSecondDialogue ? dialogueLines2 : dialogueLines;
+
+        if (lines == null || lines.Length == 0)
             return;
 
         if (isTyping)
@@ -265,17 +295,28 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         currentLineIndex++;
 
-        if (currentLineIndex >= dialogueLines.Length)
+        if (currentLineIndex >= lines.Length)
         {
             dialogueEndedNaturally = true;
-            ScheduleZombieSpawn();
+
+            if (!isPlayingSecondDialogue)
+            {
+                firstDialogueFinished = true;
+                ScheduleZombieSpawn();
+            }
+            else
+            {
+                Debug.Log("Đã xong hội thoại đợt 2");
+                // xử lý sau hội thoại 2 ở đây nếu cần
+                // GameManager.Instance.UIMission(3);
+            }
+
             StopDialogue();
             return;
         }
 
         ShowCurrentLine();
     }
-
     void CollectPlayerSystems()
     {
         if (currentPlayer == null)
@@ -331,16 +372,18 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         playerController.SetLookEnabled(enabled);
     }
 
-    System.Collections.IEnumerator PlayDialogueSequence()
+    IEnumerator PlayDialogueSequence()
     {
-        while (currentLineIndex < dialogueLines.Length)
+        string[] lines = firstDialogueFinished ? dialogueLines2 : dialogueLines;
+
+        while (currentLineIndex < lines.Length)
         {
             ShowCurrentLine();
 
             if (useTypewriter)
                 yield return new WaitUntil(() => !isTyping);
 
-            if (currentLineIndex >= dialogueLines.Length - 1)
+            if (currentLineIndex >= lines.Length - 1)
                 break;
 
             yield return new WaitForSeconds(autoAdvanceDelay);
@@ -355,14 +398,28 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         if (!dialogueEndedNaturally)
         {
             dialogueEndedNaturally = true;
-            ScheduleZombieSpawn();
 
-            //Show UI
-            Debug.Log("Talk to jake");
-            
-            if (GameManager.Instance != null)
-                GameManager.Instance.UIMission(2);
-                }
+            // Logic thoại 1
+            if (!firstDialogueFinished)
+            {
+                firstDialogueFinished = true;
+
+                ScheduleZombieSpawn();
+
+                Debug.Log("Talk to jake");
+
+                if (GameManager.Instance != null)
+                    GameManager.Instance.UIMission(3);
+            }
+            // Logic thoại 2
+            else
+            {
+                Debug.Log("Xong hội thoại đợt 2");
+
+                if (GameManager.Instance != null)
+                    GameManager.Instance.UIMission(4); // đổi số UI nếu cần
+            }
+        }
     }
 
     System.Collections.IEnumerator AutoHideAfterDelay(float delay)
@@ -392,6 +449,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         Debug.Log("HunterDialogueZone: Starting zombie spawn with " + GameManager.Instance.ambientSpawner.spawnInterval + " second interval.");
         GameManager.Instance.ambientSpawner.StartSpawn();
 
+        if (GameManager.Instance != null)
+            GameManager.Instance.UIMission(2);
+
         Debug.Log("HunterDialogueZone: Zombie spawning started after dialogue completion.");
         zombieSpawnCoroutine = StartCoroutine(StopZombieSpawnAfterDelay(zombieSpawnDuration));
     }
@@ -416,6 +476,8 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         if (MissionSystem.Instance != null)
             MissionSystem.Instance.CompleteCurrentMission();
+
+
 
         if (GameManager.Instance != null)
             GameManager.Instance.UIMission(1);

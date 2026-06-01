@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class MissionPoint3 : MonoBehaviour
 {
-    public MissionSystem missionSystem;
-    public GameObject missionUI;
+   
     private bool activated;
 
     private void OnTriggerEnter(Collider other)
@@ -17,14 +16,21 @@ public class MissionPoint3 : MonoBehaviour
 
             Debug.Log("Explore Triggered (MissionPoint3)");
 
-            if (missionSystem != null)
+            if (MissionSystem.Instance != null)
             {
-                missionSystem.DisableMaker();
+                MissionSystem.Instance.DisableMaker();
                 Debug.Log("Marker Disabled (MissionPoint3)");
             }
 
-            // Hiện UI nhiệm vụ
-            GameManager.Instance.UIMission(3);
+            if (GameManager.Instance != null)
+                GameManager.Instance.UIMission(3);
+
+            HunterDialogueZone dialogue = FindObjectOfType<HunterDialogueZone>();
+
+            if (dialogue != null)
+                dialogue.UnlockSecondDialogue();    
+
+            gameObject.SetActive(false);
         }
     }
 
