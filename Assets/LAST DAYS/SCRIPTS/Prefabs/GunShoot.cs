@@ -293,13 +293,10 @@ public class GunSystem : MonoBehaviour
 
                  // hiện hit crosshair
                 // DAMAGE
-                if (hit.collider.CompareTag("EnemyHead"))
+                if (hit.collider.CompareTag("EnemyHead") || hit.collider.CompareTag("MutantHead"))
                 {
-                    
                     hitenemy = true;
 
-                     // hiện hit crosshair
-                    //hiện máu khi headshot
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
                         hit.point + hit.normal * 0.01f,
@@ -308,18 +305,25 @@ public class GunSystem : MonoBehaviour
                     blood.transform.SetParent(hit.collider.transform);
                     Destroy(blood, 2f);
 
-                    EnemyHealth enemy =
-                        hit.collider.GetComponentInParent<EnemyHealth>();
-
-                    enemy.TakeDamage(gunData.damage * 3, true);
-
+                    if (hit.collider.CompareTag("MutantHead"))
+                    {
+                        MutantHealth mutant =
+                            hit.collider.GetComponentInParent<MutantHealth>();
+                        if (mutant != null)
+                            mutant.TakeDamage(gunData.damage * 3, true);
+                    }
+                    else
+                    {
+                        EnemyHealth enemy =
+                            hit.collider.GetComponentInParent<EnemyHealth>();
+                        if (enemy != null)
+                            enemy.TakeDamage(gunData.damage * 3, true);
+                    }
                 }
-                else if (hit.collider.CompareTag("EnemyBody"))
+                else if (hit.collider.CompareTag("EnemyBody") || hit.collider.CompareTag("MutantBody"))
                 {
                     hitenemy = true;
 
-                     // hiện hit crosshair
-                    //hiện máu khi bắn trúng body
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
                         hit.point + hit.normal * 0.01f,
@@ -328,19 +332,29 @@ public class GunSystem : MonoBehaviour
                     blood.transform.SetParent(hit.collider.transform);
                     Destroy(blood, 2f);
 
-
-                    EnemyHealth enemy =
-                        hit.collider.GetComponentInParent<EnemyHealth>();
-
-                    enemy.TakeDamage(gunData.damage, false);
-                   
+                    if (hit.collider.CompareTag("MutantBody"))
+                    {
+                        MutantHealth mutant =
+                            hit.collider.GetComponentInParent<MutantHealth>();
+                        if (mutant != null)
+                            mutant.TakeDamage(gunData.damage, false);
+                    }
+                    else
+                    {
+                        EnemyHealth enemy =
+                            hit.collider.GetComponentInParent<EnemyHealth>();
+                        if (enemy != null)
+                            enemy.TakeDamage(gunData.damage, false);
+                    }
                 }
              
                 // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
                 bool isEnemy =
                 hit.collider.CompareTag("Enemy") ||
                 hit.collider.CompareTag("EnemyBody") ||
-                hit.collider.CompareTag("EnemyHead");
+                hit.collider.CompareTag("EnemyHead") ||
+                hit.collider.CompareTag("MutantBody") ||
+                hit.collider.CompareTag("MutantHead");
 
                 if (!isEnemy)
                 {
@@ -420,7 +434,8 @@ public class GunSystem : MonoBehaviour
         );
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+        if (rb != null)
+            rb.linearVelocity = fireDirection * gunData.bulletSpeed;
 
         //Gán damage cho viên đạn ngay khi bắn
                  Bullet bulletScript = bullet.GetComponent<Bullet>();

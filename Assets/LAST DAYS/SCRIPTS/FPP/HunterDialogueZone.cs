@@ -39,6 +39,15 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     public float autoHideAfterSeconds = 0f;
     public float zombieSpawnDuration = 90f;
 
+    [Header("Mutant Spawn")]
+    public GameObject mutantPrefab;
+    public Transform mutantSpawnPoint;
+    public float mutantSpawnDelay = 3f;
+    public float zombieSpawnInterval = 2f;
+    public CanvasGroup fadeCanvasGroup;
+    public float fadeDuration = 0.4f;
+    public float secondDialogueCameraTime = 4f;
+
     private PlayerInteract currentPlayer;
     private GunSystem[] playerGunSystems;
     private AimSystem[] playerAimSystems;
@@ -51,6 +60,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     private Coroutine zombieSpawnCoroutine;
     private bool isTyping;
     private bool dialogueEndedNaturally;
+    public MutantIntro camIntro;
 
     void Awake()
     {
@@ -307,8 +317,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             else
             {
                 Debug.Log("Đã xong hội thoại đợt 2");
-                // xử lý sau hội thoại 2 ở đây nếu cần
-                // GameManager.Instance.UIMission(3);
+                HandleSecondDialogueComplete();
             }
 
             StopDialogue();
@@ -415,9 +424,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             else
             {
                 Debug.Log("Xong hội thoại đợt 2");
+                HandleSecondDialogueComplete();
 
-                if (GameManager.Instance != null)
-                    GameManager.Instance.UIMission(4); // đổi số UI nếu cần
+                
             }
         }
     }
@@ -429,7 +438,8 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     }
 
     void ScheduleZombieSpawn()
-    {
+    {           
+
         if (zombieSpawnCoroutine != null)
             return;
 
@@ -445,15 +455,82 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             return;
         }
 
-        GameManager.Instance.ambientSpawner.spawnInterval = 2f; // Set spawn interval to 2 seconds
+        GameManager.Instance.ambientSpawner.spawnInterval = zombieSpawnInterval;
         Debug.Log("HunterDialogueZone: Starting zombie spawn with " + GameManager.Instance.ambientSpawner.spawnInterval + " second interval.");
         GameManager.Instance.ambientSpawner.StartSpawn();
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.UIMission(2);
-
         Debug.Log("HunterDialogueZone: Zombie spawning started after dialogue completion.");
         zombieSpawnCoroutine = StartCoroutine(StopZombieSpawnAfterDelay(zombieSpawnDuration));
+    }
+
+    void HandleSecondDialogueComplete()
+    {
+        StartCoroutine(SecondDialogueCompleteSequence());
+    }
+
+    IEnumerator SecondDialogueCompleteSequence()
+    {
+        if (fadeCanvasGroup != null)
+            yield return StartCoroutine(FadeCanvas(0f, 1f, fadeDuration));
+
+        if (mutantSpawnDelay > 0f)
+            yield return new WaitForSeconds(mutantSpawnDelay);
+
+        Transform mutantTarget = mutantSpawnPoint;
+        GameObject spawnedMutant = null;
+
+        if (fadeCanvasGroup != null)
+            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));
+
+        if (mutantPrefab != null && mutantSpawnPoint != null)
+        {
+            spawnedMutant = Instantiate(mutantPrefab, mutantSpawnPoint.position, mutantSpawnPoint.rotation);
+            mutantTarget = spawnedMutant.transform;
+            Debug.Log("HunterDialogueZone: Mutant spawned at spawn point after dialogue 2.");
+        }
+        else
+        {
+            Debug.LogWarning("HunterDialogueZone: mutantPrefab or mutantSpawnPoint not assigned.");
+        }
+
+       
+
+        if (camIntro != null && mutantTarget != null)
+            yield return StartCoroutine(camIntro.ShowMutant(mutantTarget, secondDialogueCameraTime));
+        else
+            yield return new WaitForSeconds(secondDialogueCameraTime);
+
+        if (fadeCanvasGroup != null)
+            yield return StartCoroutine(FadeCanvas(0f, 1f, fadeDuration));   
+
+        if (fadeCanvasGroup != null)
+            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));             
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.UIMission(4);
+
+        ScheduleZombieSpawn();
+    }
+
+    IEnumerator FadeCanvas(float startAlpha, float endAlpha, float duration)
+    {
+        if (fadeCanvasGroup == null)
+            yield break;
+
+        fadeCanvasGroup.gameObject.SetActive(true);
+        fadeCanvasGroup.alpha = startAlpha;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, Mathf.Clamp01(elapsed / duration));
+            yield return null;
+        }
+
+        fadeCanvasGroup.alpha = endAlpha;
+        if (Mathf.Approximately(endAlpha, 0f))
+            fadeCanvasGroup.gameObject.SetActive(false);
     }
 
     IEnumerator StopZombieSpawnAfterDelay(float delay)
@@ -502,3 +579,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         return dialoguePanel != null && dialoguePanel.activeInHierarchy;
     }
 }
+
+
+//khi mutant chết thì dừng spawn zombie 
+//khi hết zombie thì hoàn thành nhiệm vụ
+//thêm enemy có thể random muc tiêu
+//thêm Jake bắn cùng

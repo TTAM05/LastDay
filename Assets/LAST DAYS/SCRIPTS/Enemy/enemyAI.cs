@@ -42,7 +42,6 @@ public class EnemyAI : MonoBehaviour
 
     private EnemyState currentState;
 
-    private float waitTimer;
     private float attackTimer;
 
     private bool waiting;

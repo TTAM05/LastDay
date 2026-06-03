@@ -37,6 +37,10 @@ public class GameSetting : MonoBehaviour
             if (dialogue != null && dialogue.IsDialogueOpen())
                 return;
 
+            Health playerHealth = FindObjectOfType<Health>();
+            if (playerHealth != null && playerHealth.IsDead)
+                return;
+
             ToggleOption();
         }
     }

@@ -18,6 +18,16 @@ TagManager:
   - Loading
   - Hunter
   - Ammo
+  - Weapon
+  - SecondCamera
+  - BulletSpawn
+  - LevelPart
+  - Dummie
+  - MutantHead
+  - MutantBody
+  - LHandMutant
+  - GroundPoison
+  - Poison
   layers:
   - Default
   - TransparentFX

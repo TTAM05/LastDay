@@ -8,7 +8,8 @@ public class Health : MonoBehaviour
     public CharData charData;
     [Header("Health")]
     public float currentHealth;
-    private bool isDead= false;
+    private bool isDead = false;
+    public bool IsDead => isDead;
 
     [Header("Damage Cooldown")]
     public float damageCooldown = 1f; // thời gian miễn sát thương
@@ -24,6 +25,13 @@ public class Health : MonoBehaviour
     public GunSystem[] gunSystem;
     public AimSystem[] aimSystem;
     public MacheteSystem[] macheteSystem;
+
+    public GameObject BloodScreenObj;
+    private GameObject InstantiatedObj;
+    public float attackCooldown = 2f;
+
+    private float pushCooldown = 0.5f;
+    private float lastPushTime = -999f;
 
     void Awake()
     {
@@ -51,10 +59,10 @@ public class Health : MonoBehaviour
             audioSource.PlayOneShot(charData.hitSound);
         }
 
-
+        //bật bloodscreen
+        StartCoroutine(ActiveBloodScreen());
 
         UpdateHealthBar();
-
 
         if (currentHealth <= 0)
         {
@@ -106,6 +114,59 @@ public class Health : MonoBehaviour
 
                 Debug.Log("Player hit by enemy hand");
         }
+
+        if (other.CompareTag("LHandMutant"))
+        {
+            MutantBossAI enemyMelee = other.GetComponentInParent<MutantBossAI>();
+
+            if (enemyMelee != null)
+            {
+                GetComponent<Health>().TakeDamage(enemyMelee.mutantData.damage);
+                Debug.Log("Player hit by enemy melee");
+
+                // chỉ đẩy một lần mỗi lần va chạm mạnh
+                if (Time.time >= lastPushTime + pushCooldown)
+                {
+                    FPSController fps = GetComponentInParent<FPSController>();
+                    Vector3 pushDirection = other.transform.forward;
+                    pushDirection.y = 0; // chỉ đẩy theo phương ngang
+                    if (pushDirection.sqrMagnitude < 0.001f)
+                        pushDirection = transform.position - other.transform.position;
+
+                    if (fps != null)
+                    {
+                        float pushForce = 20f; // điều chỉnh lực đẩy
+                        fps.ApplyKnockback(pushDirection, pushForce);
+                        lastPushTime = Time.time;
+                        Debug.Log($"Applied mutant knockback: {pushDirection.normalized} * {pushForce}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Health.cs: FPSController not found on player or parent, cannot apply knockback.");
+                    }
+                }
+            }
+        }
+
+        if(other.CompareTag("Poison"))
+        {
+            Poison poison = other.GetComponent<Poison>();
+            if (poison != null)
+            {
+                GetComponent<Health>().TakeDamage(poison.poisonData.damage); // sát thương từ poison, có thể điều chỉnh
+                Debug.Log("Player hit by poison");
+            }
+        }
+
+        if(other.CompareTag("GroundPoison"))
+        {
+            GroundPoison poison = other.GetComponent<GroundPoison>();
+            if (poison != null)
+            {
+                GetComponent<Health>().TakeDamage(poison.poisonData.damage-5f); // sát thương từ poison, có thể điều chỉnh
+                Debug.Log("Player hit by ground poison");
+            }
+        }
     }
 
     void UpdateHealthBar()
@@ -145,4 +206,28 @@ public class Health : MonoBehaviour
         Debug.Log("Game Over");
         Time.timeScale = 0f;
     }
+
+    void InstantiatedObject()
+    {
+        if (InstantiatedObj != null) return;
+
+        InstantiatedObj = Instantiate(BloodScreenObj);
+    }
+
+    void DeleteObject()
+    {
+        if (InstantiatedObj != null)
+        {
+            Destroy(InstantiatedObj);
+            InstantiatedObj = null;
+        }
+    }
+
+    private IEnumerator ActiveBloodScreen()
+    {
+        InstantiatedObject();
+        yield return new WaitForSeconds(attackCooldown);
+        DeleteObject();
+    }
+
 }
