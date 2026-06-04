@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -121,6 +123,37 @@ public class MutantHealth : MonoBehaviour
             icon.SetActive(false);
         }
 
-        Destroy(gameObject, 5f);
+        StartCoroutine(WinAfterBossDead());
+        Destroy(gameObject, 8f);
+    }
+
+    IEnumerator WinAfterBossDead()
+    {   
+        Debug.Log("Mutant Boss defeated. Preparing win sequence...");
+        // Ngưng spawn zombie
+        AmbientZombieSpawner spawner = FindObjectOfType<AmbientZombieSpawner>();
+        if (spawner != null)
+            spawner.StopSpawn();
+
+        // Cho toàn bộ zombie chết
+        EnemyHealth[] zombies = FindObjectsOfType<EnemyHealth>();
+
+        foreach (EnemyHealth zombie in zombies)
+        {
+            if (zombie != null)
+                zombie.TakeDamage(99999f, false);
+        }
+
+        // Đợi 8 giây rồi hiện Win UI
+        yield return new WaitForSeconds(7f);
+
+        Health playerHealth = FindObjectOfType<Health>();
+
+        if (RewardManager.Instance != null && playerHealth != null)
+        {   
+
+            Debug.Log("Giving win reward to player. Total damage taken: " + playerHealth.totalDamageTaken);
+            RewardManager.Instance.GiveWinReward(playerHealth.totalDamageTaken);
+        }
     }
 }

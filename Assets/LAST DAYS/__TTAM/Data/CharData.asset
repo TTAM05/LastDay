@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CharData
   m_EditorClassIdentifier: 
   characterName: John
-  maxHealth: 1.0000001e+11
+  maxHealth: 100
   hitSound: {fileID: 8300000, guid: dc6820a2c5a48cf4dacb31a16b734841, type: 3}
   deathSound: {fileID: 8300000, guid: 05c7b3b461af2de4cad2dea0a94e6a54, type: 3}

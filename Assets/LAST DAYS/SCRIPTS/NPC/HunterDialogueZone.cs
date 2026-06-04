@@ -27,6 +27,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     private bool canStartSecondDialogue = false;
 
     public GameObject Hunter;
+    public GameObject HunterIdle;
 
     [Header("Settings")]
     public bool hideOnExit = true;
@@ -63,6 +64,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     private bool isTyping;
     private bool dialogueEndedNaturally;
     public MutantIntro camIntro;
+    public bool donedialoge2= false;
 
     void Awake()
     {
@@ -498,7 +500,7 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             Debug.LogWarning("HunterDialogueZone: mutantPrefab or mutantSpawnPoint not assigned.");
         }
 
-       
+        donedialoge2 = true;
 
         if (camIntro != null && mutantTarget != null)
             yield return StartCoroutine(camIntro.ShowMutant(mutantTarget, secondDialogueCameraTime));
@@ -509,16 +511,20 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             yield return StartCoroutine(FadeCanvas(0f, 1f, fadeDuration));   
 
         if (fadeCanvasGroup != null)
-            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));
-
-        //hiện hunter
-        if (Hunter != null)
-            Hunter.SetActive(true);                 
+            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));                
 
         if (GameManager.Instance != null)
             GameManager.Instance.UIMission(4);
 
-        ScheduleZombieSpawn();
+        GameManager.Instance.ambientSpawner.StartSpawn();
+
+        //hiện npc 
+        if (Hunter != null)
+            Hunter.SetActive(true);
+        //tắt object cha
+        if (HunterIdle != null)
+            HunterIdle.SetActive(false);
+        
     }
 
     IEnumerator FadeCanvas(float startAlpha, float endAlpha, float duration)

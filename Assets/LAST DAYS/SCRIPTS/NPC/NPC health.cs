@@ -7,6 +7,7 @@ public class NPCHealth : MonoBehaviour
     public CharData charData;
     public float currentHealth;
     private bool isDead;
+    public bool IsDead => isDead;
 
     [Header("References")]
     public Animator animator;
@@ -161,6 +162,9 @@ public class NPCHealth : MonoBehaviour
         if (animator != null)
             animator.SetTrigger(dieTrigger);
 
-        Destroy(gameObject, 5f);
+        //xóa tag
+        gameObject.tag = "Untagged";    
+
+        Destroy(gameObject, 4f);
     }
 }

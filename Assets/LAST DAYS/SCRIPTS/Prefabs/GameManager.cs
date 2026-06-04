@@ -97,6 +97,15 @@ public class GameSetting : MonoBehaviour
         SceneManager.LoadScene("MapMenu");
     }
 
+    public void Retry()
+    {
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
+
+        //Load lại scene hiện tại
+        SceneManager.LoadScene("Map1");
+    }
+
 
     void ApplyPauseState()
     {

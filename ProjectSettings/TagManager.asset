@@ -28,6 +28,7 @@ TagManager:
   - LHandMutant
   - GroundPoison
   - Poison
+  - NPC
   layers:
   - Default
   - TransparentFX

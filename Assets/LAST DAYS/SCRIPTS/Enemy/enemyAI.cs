@@ -99,7 +99,7 @@ public class EnemyAI : MonoBehaviour
     void FindTarget()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        GameObject hunterObj = GameObject.FindGameObjectWithTag("Hunter");
+        GameObject hunterObj = GameObject.FindGameObjectWithTag("NPC");
 
         if (playerObj == null && hunterObj == null)
             return;
@@ -123,7 +123,7 @@ public class EnemyAI : MonoBehaviour
     public void FindClosestTarget()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        GameObject hunterObj = GameObject.FindGameObjectWithTag("Hunter");
+        GameObject hunterObj = GameObject.FindGameObjectWithTag("NPC");
 
         if (playerObj == null && hunterObj == null)
             return;

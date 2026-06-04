@@ -1460,7 +1460,7 @@ MonoBehaviour:
   patrolWaitTime: 2
   detectionRange: 15
   loseRange: 15
-  attackRange: 1
+  attackRange: 1.5
   attackCooldown: 2
   audioSource: {fileID: 5766816416229391321}
 --- !u!114 &548146874900865760

@@ -10,6 +10,7 @@ public class Health : MonoBehaviour
     public float currentHealth;
     private bool isDead = false;
     public bool IsDead => isDead;
+    public float totalDamageTaken;
 
     [Header("Damage Cooldown")]
     public float damageCooldown = 1f; // thời gian miễn sát thương
@@ -17,6 +18,7 @@ public class Health : MonoBehaviour
 
     [Header("UI")]
     public Image healthBarFill; 
+    public GameObject GameOverPanel;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -52,6 +54,8 @@ public class Health : MonoBehaviour
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, charData.maxHealth);
+
+        totalDamageTaken += damage;
 
         // play hit sound
         if (charData.hitSound != null && audioSource != null)
@@ -98,6 +102,9 @@ public class Health : MonoBehaviour
 
         // Freeze game after short delay to allow sound to play
         StartCoroutine(FreezeAfterDelay(2f));
+
+        
+
         
     }
 
@@ -204,7 +211,18 @@ public class Health : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
 
         Debug.Log("Game Over");
+
+        // Hiển thị Game Over Panel
+        if (GameOverPanel != null)           
+            GameOverPanel.SetActive(true);
+
+        //hiên thị lại cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;  
+
         Time.timeScale = 0f;
+        // Tạm dừng âm thanh
+        AudioListener.pause = true;
     }
 
     void InstantiatedObject()
