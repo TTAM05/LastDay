@@ -1401,7 +1401,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1452,7 +1452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d9e84501f4f54b8f12b23eb5912b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  target: {fileID: 0}
   agent: {fileID: 8686957506139440085}
   animator: {fileID: 5976653687684800497}
   BloodScreenObj: {fileID: 4601951252973648368, guid: 1399b56c62027f341a3167dd7ada2097, type: 3}
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   patrolWaitTime: 2
   detectionRange: 15
   loseRange: 15
-  attackRange: 1.5
+  attackRange: 1
   attackCooldown: 2
   audioSource: {fileID: 5766816416229391321}
 --- !u!114 &548146874900865760
@@ -1481,6 +1481,7 @@ MonoBehaviour:
   item:
   - {fileID: 5964868330792830803, guid: 73dc251a2885fe549b6ec984a78382bf, type: 3}
   audioSource: {fileID: 5766816416229391321}
+  aimPoint: {fileID: 3240847988382387379}
 --- !u!82 &5766816416229391321
 AudioSource:
   m_ObjectHideFlags: 0

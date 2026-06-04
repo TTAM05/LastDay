@@ -10,6 +10,7 @@ public class MutantHealth : MonoBehaviour
     public GameObject icon;
     //Sound
     public AudioSource audioSource;
+    public Transform aimPoint;
 
     void Start()
     {

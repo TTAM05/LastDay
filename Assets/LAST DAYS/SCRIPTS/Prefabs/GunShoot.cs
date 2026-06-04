@@ -51,9 +51,9 @@ public class GunSystem : MonoBehaviour
     [Header("Animation")]
     public AnimationClip reloadClip;
 
-    [Header("Impact")]
-    public GameObject impactPrefab;   // kéo Prefab Quad vào đây
-    public float impactLifetime = 2f; // biến mất sau bao giây
+    // [Header("Impact")]
+    // public GameObject impactPrefab;   // kéo Prefab Quad vào đây
+    // public float impactLifetime = 2f; // biến mất sau bao giây
 
     [Header("UI")]
     public TMP_Text ammoText;
@@ -356,16 +356,16 @@ public class GunSystem : MonoBehaviour
                 hit.collider.CompareTag("MutantBody") ||
                 hit.collider.CompareTag("MutantHead");
 
-                if (!isEnemy)
-                {
-                    GameObject impact = Instantiate(
-                        impactPrefab,
-                        hit.point + hit.normal * 0.01f,
-                        Quaternion.LookRotation(hit.normal)
-                    );
+                // if (!isEnemy)
+                // {
+                //     GameObject impact = Instantiate(
+                //         impactPrefab,
+                //         hit.point + hit.normal * 0.01f,
+                //         Quaternion.LookRotation(hit.normal)
+                //     );
 
-                    Destroy(impact, impactLifetime);
-                }
+                //     Destroy(impact, impactLifetime);
+                // }
 
                 if (hitenemy && !aimSystem.isAiming)
                 {

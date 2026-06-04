@@ -77,15 +77,8 @@ public class AmbientZombieSpawner : MonoBehaviour
 
             if (ai != null)
             {
-                GameObject playerObj =
-                    GameObject.FindGameObjectWithTag("Player");
-
-                if (playerObj != null)
-                {
-                    ai.player = playerObj.transform;
-
-                    ai.SetChaseState();
-                }
+                ai.FindClosestTarget();
+                ai.SetChaseState();
             }
 
             Debug.Log("Zombie Spawned");

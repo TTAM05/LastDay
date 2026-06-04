@@ -26,6 +26,8 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     private bool isPlayingSecondDialogue = false;
     private bool canStartSecondDialogue = false;
 
+    public GameObject Hunter;
+
     [Header("Settings")]
     public bool hideOnExit = true;
     public bool autoAdvance = true;
@@ -66,6 +68,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     {
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
+
+        // if(Hunter != null)
+        //     Hunter.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
@@ -504,7 +509,11 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
             yield return StartCoroutine(FadeCanvas(0f, 1f, fadeDuration));   
 
         if (fadeCanvasGroup != null)
-            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));             
+            yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));
+
+        //hiện hunter
+        if (Hunter != null)
+            Hunter.SetActive(true);                 
 
         if (GameManager.Instance != null)
             GameManager.Instance.UIMission(4);

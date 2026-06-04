@@ -14,6 +14,8 @@ public class EnemyHealth : MonoBehaviour
     //Sound
     public AudioSource audioSource;
 
+    public Transform aimPoint;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -61,6 +63,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Die(bool isHeadshot)
     {
+        Debug.Log("Zombie Die: " + Time.time);
         // tắt AI
         EnemyAI ai = GetComponent<EnemyAI>();
 
@@ -133,6 +136,20 @@ public class EnemyHealth : MonoBehaviour
         if(icon != null)
         {
             icon.SetActive(false);
+        }
+
+        // Không còn được xem là enemy
+        foreach (Transform t in GetComponentsInChildren<Transform>(true))
+        {
+            t.tag = "Untagged";
+        }
+
+        // Đổi layer sang Dead
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+
+        foreach (Transform t in GetComponentsInChildren<Transform>(true))
+        {
+            t.gameObject.layer = LayerMask.NameToLayer("Dead");
         }
 
         Destroy(gameObject, 5f);

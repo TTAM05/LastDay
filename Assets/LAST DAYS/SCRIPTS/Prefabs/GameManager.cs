@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,16 +12,12 @@ public class GameSetting : MonoBehaviour
 
     [Header("Pause")]
     public bool pauseWhenOpen = true;
-
     private bool isOptionOpen;
-    private float oldAudioVolume;
 
     void Start()
     {
         if (optionPanel != null)
             optionPanel.SetActive(false);
-
-        oldAudioVolume = AudioListener.volume;
 
          // tự tìm Loading
         loadingObj = GameObject.FindGameObjectWithTag("Loading");
@@ -29,38 +27,34 @@ public class GameSetting : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            if (loadingObj != null && loadingObj.activeInHierarchy)
-                return;
+            bool panelOpening = optionPanel != null && optionPanel.activeSelf;
 
-            HunterDialogueZone dialogue = FindObjectOfType<HunterDialogueZone>();
-
-            if (dialogue != null && dialogue.IsDialogueOpen())
-                return;
-
-            Health playerHealth = FindObjectOfType<Health>();
-            if (playerHealth != null && playerHealth.IsDead)
-                return;
-
-            ToggleOption();
+            if (panelOpening)
+                CloseOption();
+            else
+                OpenOption();
         }
     }
 
-    public void ToggleOption()
+    public void OpenOption()
     {
         if (loadingObj != null && loadingObj.activeInHierarchy)
             return;
 
-        isOptionOpen = !isOptionOpen;
+        isOptionOpen = true;
 
         if (optionPanel != null)
-            optionPanel.SetActive(isOptionOpen);
+            optionPanel.SetActive(true);
 
-        ApplyPauseState();
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
 
-        foreach (var gun in FindObjectsOfType<GunSystem>())
-        {
-            gun.CancelFire();
-        }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        CancelGunFire();
+
+        Debug.Log("Open Option | TimeScale = " + Time.timeScale);
     }
 
     public void CloseOption()
@@ -70,29 +64,57 @@ public class GameSetting : MonoBehaviour
         if (optionPanel != null)
             optionPanel.SetActive(false);
 
-        ApplyPauseState();
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
 
+        StartCoroutine(LockCursorNextFrame());
+
+        CancelGunFire();
+
+        Debug.Log("Close Option | TimeScale = " + Time.timeScale);
+    }
+
+    IEnumerator LockCursorNextFrame()
+    {
+        yield return null;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void CancelGunFire()
+    {
         foreach (var gun in FindObjectsOfType<GunSystem>())
-        {
             gun.CancelFire();
-        }
     }
 
     public void BackToMenu()
     {   
         Time.timeScale = 1f;
         AudioListener.pause = false;
+
         //Load scene MapMenu
         SceneManager.LoadScene("MapMenu");
     }
+
+
     void ApplyPauseState()
     {
-        if (pauseWhenOpen)
-            Time.timeScale = isOptionOpen ? 0f : 1f;
+        if (isOptionOpen==true)
+        {
+            Time.timeScale = 0f;
+            AudioListener.pause = true;
 
-        AudioListener.pause = isOptionOpen;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
 
-        Cursor.visible = isOptionOpen;
-        Cursor.lockState = isOptionOpen ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

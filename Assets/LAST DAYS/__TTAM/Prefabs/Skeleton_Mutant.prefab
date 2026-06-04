@@ -1566,6 +1566,7 @@ MonoBehaviour:
   currentHealth: 0
   icon: {fileID: 823326521201489505}
   audioSource: {fileID: 5880108206739557980}
+  aimPoint: {fileID: 920928111688521331}
 --- !u!54 &4298896047880395413
 Rigidbody:
   m_ObjectHideFlags: 0
