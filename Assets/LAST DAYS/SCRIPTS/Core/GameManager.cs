@@ -56,7 +56,7 @@ public class GameSetting : MonoBehaviour
 
         Debug.Log("Open Option | TimeScale = " + Time.timeScale);
     }
-
+    
     public void CloseOption()
     {
         isOptionOpen = false;
