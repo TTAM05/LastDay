@@ -51,9 +51,9 @@ public class GunSystem : MonoBehaviour
     [Header("Animation")]
     public AnimationClip reloadClip;
 
-    [Header("Impact")]
-    public GameObject impactPrefab;   // kéo Prefab Quad vào đây
-    public float impactLifetime = 2f; // biến mất sau bao giây
+    // [Header("Impact")]
+    // public GameObject impactPrefab;   // kéo Prefab Quad vào đây
+    // public float impactLifetime = 2f; // biến mất sau bao giây
 
     [Header("UI")]
     public TMP_Text ammoText;
@@ -69,7 +69,21 @@ public class GunSystem : MonoBehaviour
     public float hitCrosshairTime = 0.1f;
 
     private Coroutine hitRoutine;
+    private Vector3 startLocalPosition;
+    private Quaternion startLocalRotation;
+    private Vector3 startLocalScale;
 
+
+    void Awake()
+    {
+        input = new PlayerInputActions();
+
+        startLocalPosition = transform.localPosition;
+        startLocalRotation = transform.localRotation;
+        startLocalScale = transform.localScale;
+
+        input = new PlayerInputActions();
+    }
 
     void Start()
     {
@@ -120,13 +134,13 @@ public class GunSystem : MonoBehaviour
         EnsureUIReferences();
         SetUIActive(true);
 
+        isReloading = false;
+        isFiring = false;
+
         input.Enable();
 
-        // nhấn chuột
         input.Player.Fire.performed += OnFirePressed;
         input.Player.Reload.performed += OnReloadPressed;
-
-        // thả chuột
         input.Player.Fire.canceled += OnFireReleased;
     }
 
@@ -135,6 +149,7 @@ public class GunSystem : MonoBehaviour
         input.Player.Fire.performed -= OnFirePressed;
         input.Player.Reload.performed -= OnReloadPressed;
         input.Player.Fire.canceled -= OnFireReleased;
+
         input.Disable();
 
         SetUIActive(false);
@@ -173,19 +188,15 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // AWAKE
-    // =========================================================
-    void Awake()
-    {
-        input = new PlayerInputActions();
-    }
+    
 
     // =========================================================
     // UPDATE
     // =========================================================
     void Update()
-    {
+    {   
+        if (Time.timeScale == 0f) return;
+
         if (isReloading) return;
 
         if (gunData.isAutomatic && isFiring)
@@ -215,7 +226,8 @@ public class GunSystem : MonoBehaviour
     // NHẤN CHUỘT
     // =========================================================
     void OnFirePressed(InputAction.CallbackContext ctx)
-    {
+    {   
+        if(Time.timeScale == 0f) return;
         if (isReloading) return;
 
         isFiring = true;
@@ -228,7 +240,8 @@ public class GunSystem : MonoBehaviour
     }
 
     void OnReloadPressed(InputAction.CallbackContext ctx)
-    {
+    {   
+        if(Time.timeScale == 0f) return;
         if (currentAmmo < gunData.maxAmmo && !isReloading)
         {
             StartCoroutine(Reload());
@@ -239,7 +252,8 @@ public class GunSystem : MonoBehaviour
     // THẢ CHUỘT
     // =========================================================
     void OnFireReleased(InputAction.CallbackContext ctx)
-    {
+    {   
+        if (Time.timeScale == 0f) return;
         isFiring = false;
 
         // tắt anim auto
@@ -279,13 +293,10 @@ public class GunSystem : MonoBehaviour
 
                  // hiện hit crosshair
                 // DAMAGE
-                if (hit.collider.CompareTag("EnemyHead"))
+                if (hit.collider.CompareTag("EnemyHead") || hit.collider.CompareTag("MutantHead"))
                 {
-                    
                     hitenemy = true;
 
-                     // hiện hit crosshair
-                    //hiện máu khi headshot
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
                         hit.point + hit.normal * 0.01f,
@@ -294,18 +305,25 @@ public class GunSystem : MonoBehaviour
                     blood.transform.SetParent(hit.collider.transform);
                     Destroy(blood, 2f);
 
-                    EnemyHealth enemy =
-                        hit.collider.GetComponentInParent<EnemyHealth>();
-
-                    enemy.TakeDamage(gunData.damage * 3, true);
-
+                    if (hit.collider.CompareTag("MutantHead"))
+                    {
+                        MutantHealth mutant =
+                            hit.collider.GetComponentInParent<MutantHealth>();
+                        if (mutant != null)
+                            mutant.TakeDamage(gunData.damage * 3, true);
+                    }
+                    else
+                    {
+                        EnemyHealth enemy =
+                            hit.collider.GetComponentInParent<EnemyHealth>();
+                        if (enemy != null)
+                            enemy.TakeDamage(gunData.damage * 3, true);
+                    }
                 }
-                else if (hit.collider.CompareTag("EnemyBody"))
+                else if (hit.collider.CompareTag("EnemyBody") || hit.collider.CompareTag("MutantBody"))
                 {
                     hitenemy = true;
 
-                     // hiện hit crosshair
-                    //hiện máu khi bắn trúng body
                     ParticleSystem blood = Instantiate(
                         bloodPrefab,
                         hit.point + hit.normal * 0.01f,
@@ -314,30 +332,40 @@ public class GunSystem : MonoBehaviour
                     blood.transform.SetParent(hit.collider.transform);
                     Destroy(blood, 2f);
 
-
-                    EnemyHealth enemy =
-                        hit.collider.GetComponentInParent<EnemyHealth>();
-
-                    enemy.TakeDamage(gunData.damage, false);
-                   
+                    if (hit.collider.CompareTag("MutantBody"))
+                    {
+                        MutantHealth mutant =
+                            hit.collider.GetComponentInParent<MutantHealth>();
+                        if (mutant != null)
+                            mutant.TakeDamage(gunData.damage, false);
+                    }
+                    else
+                    {
+                        EnemyHealth enemy =
+                            hit.collider.GetComponentInParent<EnemyHealth>();
+                        if (enemy != null)
+                            enemy.TakeDamage(gunData.damage, false);
+                    }
                 }
              
                 // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
                 bool isEnemy =
                 hit.collider.CompareTag("Enemy") ||
                 hit.collider.CompareTag("EnemyBody") ||
-                hit.collider.CompareTag("EnemyHead");
+                hit.collider.CompareTag("EnemyHead") ||
+                hit.collider.CompareTag("MutantBody") ||
+                hit.collider.CompareTag("MutantHead");
 
-                if (!isEnemy)
-                {
-                    GameObject impact = Instantiate(
-                        impactPrefab,
-                        hit.point + hit.normal * 0.01f,
-                        Quaternion.LookRotation(hit.normal)
-                    );
+                // if (!isEnemy)
+                // {
+                //     GameObject impact = Instantiate(
+                //         impactPrefab,
+                //         hit.point + hit.normal * 0.01f,
+                //         Quaternion.LookRotation(hit.normal)
+                //     );
 
-                    Destroy(impact, impactLifetime);
-                }
+                //     Destroy(impact, impactLifetime);
+                // }
 
                 if (hitenemy && !aimSystem.isAiming)
                 {
@@ -406,7 +434,8 @@ public class GunSystem : MonoBehaviour
         );
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+        if (rb != null)
+            rb.linearVelocity = fireDirection * gunData.bulletSpeed;
 
         //Gán damage cho viên đạn ngay khi bắn
                  Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -497,6 +526,21 @@ public class GunSystem : MonoBehaviour
         reloadTimeText.gameObject.SetActive(false);
 
         
+    }
+
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
+
+    
+
+    public void CancelFire()
+    {
+        isFiring = false;
+
+        if (animator != null)
+            animator.SetBool("Auto", false);
     }
 
     public void PlayReloadSound()

@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     [Header("References")]
-    public Transform player;
+    public Transform target;
     public NavMeshAgent agent;
     public Animator animator;
     public GameObject BloodScreenObj;
@@ -42,7 +42,6 @@ public class EnemyAI : MonoBehaviour
 
     private EnemyState currentState;
 
-    private float waitTimer;
     private float attackTimer;
 
     private bool waiting;
@@ -57,14 +56,7 @@ public class EnemyAI : MonoBehaviour
 
         agent.updateRotation = false;
 
-        if (player == null)
-        {
-            GameObject playerObj =
-                GameObject.FindGameObjectWithTag("Player");
-
-            if (playerObj != null)
-                player = playerObj.transform;
-        }
+        FindClosestTarget();
 
         // FindClosestPatrolCenter();
         // SetNewPatrolPoint();
@@ -78,21 +70,21 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (!isInitialized || player == null) return;
+        if (!isInitialized || target == null)
+        {
+            FindClosestTarget();
+            return;
+        }
 
         attackTimer += Time.deltaTime;
 
         float distance =
-            Vector3.Distance(transform.position, player.position);
+            Vector3.Distance(transform.position, target.position);
 
         UpdateState(distance);
 
         switch (currentState)
         {
-            // case EnemyState.Patrol:
-            //     Patrol();
-            //     break;
-
             case EnemyState.Chase:
                 Chase();
                 break;
@@ -103,6 +95,59 @@ public class EnemyAI : MonoBehaviour
         }
 
         animator.SetFloat("Speed", agent.velocity.magnitude);
+    }
+    void FindTarget()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        GameObject hunterObj = GameObject.FindGameObjectWithTag("NPC");
+
+        if (playerObj == null && hunterObj == null)
+            return;
+
+        if (playerObj != null && hunterObj != null)
+        {
+            target = Random.value > 0.5f
+                ? playerObj.transform
+                : hunterObj.transform;
+        }
+        else if (playerObj != null)
+        {
+            target = playerObj.transform;
+        }
+        else
+        {
+            target = hunterObj.transform;
+        }
+    }
+
+    public void FindClosestTarget()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        GameObject hunterObj = GameObject.FindGameObjectWithTag("NPC");
+
+        if (playerObj == null && hunterObj == null)
+            return;
+
+        if (playerObj != null && hunterObj != null)
+        {
+            float playerDist =
+                Vector3.Distance(transform.position, playerObj.transform.position);
+
+            float hunterDist =
+                Vector3.Distance(transform.position, hunterObj.transform.position);
+
+            target = playerDist < hunterDist
+                ? playerObj.transform
+                : hunterObj.transform;
+        }
+        else if (playerObj != null)
+        {
+            target = playerObj.transform;
+        }
+        else
+        {
+            target = hunterObj.transform;
+        }
     }
 
 
@@ -200,6 +245,7 @@ public class EnemyAI : MonoBehaviour
 
         currentState = EnemyState.Chase;
         isInitialized = true;
+        attackTimer = attackCooldown;
     }
 
     // void FindClosestPatrolCenter()
@@ -274,7 +320,7 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = false;
         agent.speed = zombieData.Runspeed;
 
-        agent.SetDestination(player.position);
+        agent.SetDestination(target.position);
 
         RotateToMovement();
     }
@@ -284,7 +330,6 @@ public class EnemyAI : MonoBehaviour
         if (agent == null || !agent.isOnNavMesh)
             return;
 
-        // audioSource.PlayOneShot(attackClip);
         agent.isStopped = true;
 
         RotateToPlayer();
@@ -294,13 +339,13 @@ public class EnemyAI : MonoBehaviour
 
         animator.SetTrigger("Attack");
 
-        //hiện bloodScreen
-        if (bloodCoroutine != null)
+        if (target != null && target.CompareTag("Player"))
         {
-            StopCoroutine(bloodCoroutine);
-        }
+            if (bloodCoroutine != null)
+                StopCoroutine(bloodCoroutine);
 
-        bloodCoroutine = StartCoroutine(ActiveBloodScreen());
+            bloodCoroutine = StartCoroutine(ActiveBloodScreen());
+        }
 
         attackTimer = 0f;
     }
@@ -308,7 +353,7 @@ public class EnemyAI : MonoBehaviour
     void RotateToPlayer()
     {
         Vector3 dir =
-            player.position - transform.position;
+            target.position - transform.position;
 
         dir.y = 0;
 

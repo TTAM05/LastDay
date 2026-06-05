@@ -18,6 +18,17 @@ TagManager:
   - Loading
   - Hunter
   - Ammo
+  - Weapon
+  - SecondCamera
+  - BulletSpawn
+  - LevelPart
+  - Dummie
+  - MutantHead
+  - MutantBody
+  - LHandMutant
+  - GroundPoison
+  - Poison
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -29,9 +40,9 @@ TagManager:
   - Enemy
   - MainVolume
   - PlayerIcon
-  - 
-  - 
-  - 
+  - Building
+  - Dead
+  - Hunter
   - 
   - 
   - 

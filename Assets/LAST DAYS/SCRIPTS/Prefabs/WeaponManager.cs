@@ -61,17 +61,23 @@ public class WeaponManager : MonoBehaviour
     // =================================================
     void SelectWeapon(int index)
     {
-        // tránh lỗi index
         if (index < 0 || index >= weapons.Length)
             return;
 
-        // tắt tất cả
+        GunSystem currentGun =
+            weapons[currentWeapon].GetComponentInChildren<GunSystem>(true);
+
+        if (currentGun != null && currentGun.IsReloading())
+        {
+            Debug.Log("Đang reload, không đổi súng");
+            return;
+        }
+
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].SetActive(false);
         }
 
-        // bật weapon được chọn
         weapons[index].SetActive(true);
 
         currentWeapon = index;
@@ -82,33 +88,28 @@ public class WeaponManager : MonoBehaviour
     // =================================================
     void OnScrollWeapon(InputAction.CallbackContext ctx)
     {
+        if (Time.timeScale == 0f) return;
+
         Vector2 scroll = ctx.ReadValue<Vector2>();
 
-        // scroll up
+        int nextWeapon = currentWeapon;
+
         if (scroll.y > 0)
         {
-            currentWeapon++;
+            nextWeapon++;
 
-            if (currentWeapon >= weapons.Length)
-            {
-                currentWeapon = 0;
-            }
-
-            SelectWeapon(currentWeapon);
+            if (nextWeapon >= weapons.Length)
+                nextWeapon = 0;
         }
-
-        // scroll down
-        if (scroll.y < 0)
+        else if (scroll.y < 0)
         {
-            currentWeapon--;
+            nextWeapon--;
 
-            if (currentWeapon < 0)
-            {
-                currentWeapon = weapons.Length - 1;
-            }
-
-            SelectWeapon(currentWeapon);
+            if (nextWeapon < 0)
+                nextWeapon = weapons.Length - 1;
         }
+
+        SelectWeapon(nextWeapon);
     }
 
     // =================================================

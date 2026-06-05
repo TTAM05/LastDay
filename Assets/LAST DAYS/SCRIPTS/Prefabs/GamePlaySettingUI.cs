@@ -3,11 +3,22 @@ using UnityEngine.UI;
 
 public class GameplaySettingUI : MonoBehaviour
 {
-    public Toggle minimapToggle;
-    public Toggle healthBarToggle;
+    public Button minimapOnButton;
+    public Button minimapOffButton;
+    public Button healthBarOnButton;
+    public Button healthBarOffButton;
+
+    public Button gameplayTabButton;
+    public Button uiTabButton;
+
+    public Color activeColor = new Color32(0xC9, 0xFF, 0x2D, 0xFF);
+    public Color inactiveColor = Color.white;
 
     GameObject minimapObj;
     GameObject healthBarObj;
+
+    public GameObject GameplayContent;
+    public GameObject UIContent;
 
     void Start()
     {
@@ -17,20 +28,66 @@ public class GameplaySettingUI : MonoBehaviour
         bool minimap = PlayerPrefs.GetInt("Minimap", 1) == 1;
         bool healthbar = PlayerPrefs.GetInt("HealthBar", 1) == 1;
 
-        minimapToggle.onValueChanged.RemoveAllListeners();
-        healthBarToggle.onValueChanged.RemoveAllListeners();
-
-        minimapToggle.isOn = minimap;
-        healthBarToggle.isOn = healthbar;
-
-        ApplyMinimap(minimap);
-        ApplyHealthBar(healthbar);
-
-        minimapToggle.onValueChanged.AddListener(ApplyMinimap);
-        healthBarToggle.onValueChanged.AddListener(ApplyHealthBar);
+        SetMinimap(minimap, true);
+        SetHealthBar(healthbar, true);
+        UpdateTabButtons();
     }
 
-    void ApplyMinimap(bool isOn)
+    public void OnMinimapOn()
+    {
+        SetMinimap(true);
+    }
+
+    public void OnMinimapOff()
+    {
+        SetMinimap(false);
+    }
+
+    public void OnHealthBarOn()
+    {
+        SetHealthBar(true);
+    }
+
+    public void OnHealthBarOff()
+    {
+        SetHealthBar(false);
+    }
+
+    public void ShowGameplayContent()
+    {
+        if (GameplayContent != null)
+            GameplayContent.SetActive(true);
+
+        if (UIContent != null)
+            UIContent.SetActive(false);
+
+        SetTabButtonColors(true);
+    }
+
+    public void ShowUIContent()
+    {
+        if (GameplayContent != null)
+            GameplayContent.SetActive(false);
+
+        if (UIContent != null)
+            UIContent.SetActive(true);
+
+        SetTabButtonColors(false);
+    }
+
+    void SetTabButtonColors(bool gameplayActive)
+    {
+        SetButtonColor(gameplayTabButton, gameplayActive ? activeColor : inactiveColor);
+        SetButtonColor(uiTabButton, gameplayActive ? inactiveColor : activeColor);
+    }
+
+    void UpdateTabButtons()
+    {
+        bool gameplayActive = GameplayContent != null && GameplayContent.activeSelf;
+        SetTabButtonColors(gameplayActive);
+    }
+
+    void SetMinimap(bool isOn, bool initializing = false)
     {
         if (minimapObj == null)
             minimapObj = FindObjectByTagIncludeInactive("Minimap");
@@ -38,11 +95,16 @@ public class GameplaySettingUI : MonoBehaviour
         if (minimapObj != null)
             minimapObj.SetActive(isOn);
 
-        PlayerPrefs.SetInt("Minimap", isOn ? 1 : 0);
-        PlayerPrefs.Save();
+        if (!initializing)
+        {
+            PlayerPrefs.SetInt("Minimap", isOn ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        UpdateButtonColors(minimapOnButton, minimapOffButton, isOn);
     }
 
-    void ApplyHealthBar(bool isOn)
+    void SetHealthBar(bool isOn, bool initializing = false)
     {
         if (healthBarObj == null)
             healthBarObj = FindObjectByTagIncludeInactive("HealthBar");
@@ -50,8 +112,28 @@ public class GameplaySettingUI : MonoBehaviour
         if (healthBarObj != null)
             healthBarObj.SetActive(isOn);
 
-        PlayerPrefs.SetInt("HealthBar", isOn ? 1 : 0);
-        PlayerPrefs.Save();
+        if (!initializing)
+        {
+            PlayerPrefs.SetInt("HealthBar", isOn ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        UpdateButtonColors(healthBarOnButton, healthBarOffButton, isOn);
+    }
+
+    void UpdateButtonColors(Button onButton, Button offButton, bool isOn)
+    {
+        SetButtonColor(onButton, isOn ? activeColor : inactiveColor);
+        SetButtonColor(offButton, isOn ? inactiveColor : activeColor);
+    }
+
+    void SetButtonColor(Button button, Color color)
+    {
+        if (button == null)
+            return;
+
+        if (button.targetGraphic != null)
+            button.targetGraphic.color = color;
     }
 
     GameObject FindObjectByTagIncludeInactive(string tag)

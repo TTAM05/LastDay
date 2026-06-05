@@ -60,6 +60,9 @@ public class FPSController : MonoBehaviour
     private Animator animator;
     public bool canLook = true;
 
+    private Vector3 knockbackVector;
+    public float knockbackDecay = 5f;
+
     // ── THÊM MỚI ──
     private bool isSprinting;
 
@@ -151,14 +154,15 @@ public class FPSController : MonoBehaviour
         // ── THÊM MỚI: chọn tốc độ ──
         float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
 
-        Vector3 finalMove = move * currentSpeed;
+        Vector3 finalMove = move * currentSpeed + knockbackVector;
         finalMove.y = velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);
+        knockbackVector = Vector3.Lerp(knockbackVector, Vector3.zero, knockbackDecay * Time.deltaTime);
 
         animator.SetFloat(
         "Speed",
-        finalMove.magnitude);
+        move.magnitude * currentSpeed);
 
     }
 
@@ -283,6 +287,13 @@ public class FPSController : MonoBehaviour
     // ── THÊM MỚI ──
     void OnSprintStarted(InputAction.CallbackContext ctx) => isSprinting = true;
     void OnSprintCanceled(InputAction.CallbackContext ctx) => isSprinting = false;
+
+    public void ApplyKnockback(Vector3 direction, float strength)
+    {
+        direction.y = 0f;
+        if (direction.sqrMagnitude < 0.001f) return;
+        knockbackVector = direction.normalized * strength;
+    }
 
     public void SetLookEnabled(bool enabled)
     {

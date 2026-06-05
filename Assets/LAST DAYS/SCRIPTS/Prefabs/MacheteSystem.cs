@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class MacheteSystem : MonoBehaviour
     private PlayerInputActions inputActions;
     private AudioSource audioSource;
     public AudioClip slideClip;
+    private bool isAttacking = false;
 
     void Reset()
     {
@@ -40,14 +42,26 @@ public class MacheteSystem : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
+        if (isAttacking) return;
+
+        StartCoroutine(Attack());
+    }
+
+    IEnumerator Attack()
+    {
+        isAttacking = true;
+
         if (animator != null)
             animator.SetTrigger("Slide");
+
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>() ?? GetComponentInParent<AudioSource>();
 
         if (audioSource != null && slideClip != null)
             audioSource.PlayOneShot(slideClip);
-        else if (audioSource == null)
-            Debug.LogWarning("MacheteSystem: AudioSource not found for slideClip playback.");
+
+        yield return new WaitForSeconds(0.5f); // thời gian animation chém
+
+        isAttacking = false;
     }
 }

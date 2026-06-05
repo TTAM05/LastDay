@@ -6,26 +6,14 @@ public class AudioUIManager : MonoBehaviour
 {
 
     [Header("Fill Images")]
-    public Image playerFill;
+
     public Image environmentFill;
-    public Image zombieFill;
+    public Image masterFill;
     public Image sfxFill;
 
     void Start()
     {
        RefreshUI();
-    }
-
-      public void PlayerMinus()
-    {
-        AudioManager.Instance.ChangePlayer(-0.1f);
-        RefreshUI();
-    }
-
-    public void PlayerPlus()
-    {
-        AudioManager.Instance.ChangePlayer(0.1f);
-        RefreshUI();
     }
 
     public void EnvironmentMinus()
@@ -40,15 +28,15 @@ public class AudioUIManager : MonoBehaviour
         RefreshUI();
     }
 
-    public void ZombieMinus()
+    public void MasterMinus()
     {
-        AudioManager.Instance.ChangeZombie(-0.1f);
+        AudioManager.Instance.ChangeMaster(-0.1f);
         RefreshUI();
     }
 
-    public void ZombiePlus()
+    public void MasterPlus()
     {
-        AudioManager.Instance.ChangeZombie(0.1f);
+        AudioManager.Instance.ChangeMaster(0.1f);
         RefreshUI();
     }
 
@@ -66,9 +54,9 @@ public class AudioUIManager : MonoBehaviour
 
     void RefreshUI()
     {
-        playerFill.fillAmount = AudioManager.Instance.player;
+    
         environmentFill.fillAmount = AudioManager.Instance.environment;
-        zombieFill.fillAmount = AudioManager.Instance.zombie;
+        masterFill.fillAmount = AudioManager.Instance.master;
         sfxFill.fillAmount = AudioManager.Instance.sfx;
     }
 }

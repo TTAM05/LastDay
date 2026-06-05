@@ -10,6 +10,7 @@ public class AmbientZombieSpawner : MonoBehaviour
     public float spawnInterval=5 ;
 
     private bool spawning;
+    public float maxZombie;
 
     // =====================================================
     // START
@@ -46,18 +47,23 @@ public class AmbientZombieSpawner : MonoBehaviour
 
     void SpawnZombie()
     {
-        if (!spawning) return;
+        if (!spawning)
+            return;
 
-        // random point
+        // Đã đủ số lượng zombie
+        int currentZombie =
+            GameObject.FindGameObjectsWithTag("Enemy").Length;
+
+        if (currentZombie >= maxZombie)
+        {
+            Debug.Log("Đạt max zombie: " + currentZombie);
+            return;
+        }
+
         Transform point =
             spawnPoints[
-                Random.Range(
-                    0,
-                    spawnPoints.Length
-                )
+                Random.Range(0, spawnPoints.Length)
             ];
-
-        Debug.Log("Spawn Point: " + point.position);
 
         if (NavMesh.SamplePosition(
             point.position,
@@ -71,25 +77,15 @@ public class AmbientZombieSpawner : MonoBehaviour
                 Quaternion.identity
             );
 
-            // lấy EnemyAI
-            EnemyAI ai =
-                zombie.GetComponent<EnemyAI>();
+            EnemyAI ai = zombie.GetComponent<EnemyAI>();
 
             if (ai != null)
             {
-                GameObject playerObj =
-                    GameObject.FindGameObjectWithTag("Player");
-
-                if (playerObj != null)
-                {
-                    ai.player = playerObj.transform;
-
-                    ai.SetChaseState();
-                }
+                ai.FindClosestTarget();
+                ai.SetChaseState();
             }
 
             Debug.Log("Zombie Spawned");
-            Debug.Log("Spawn Interval: " + spawnInterval + " seconds");
         }
     }
 }
