@@ -5393,7 +5393,7 @@ MonoBehaviour:
   - {fileID: 266158009}
   - {fileID: 414261429}
   spawnInterval: 4
-  maxZombie: 15
+  maxZombie: 30
 --- !u!4 &111379503
 Transform:
   m_ObjectHideFlags: 0
@@ -66333,7 +66333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e800d7543824bce4f8b8895ef93ce394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionSystem: {fileID: 2006217519}
+  missionSystem: {fileID: 0}
   audioSource: {fileID: 0}
   Clip: {fileID: 0}
 --- !u!1 &1445061837
@@ -93325,7 +93325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e800d7543824bce4f8b8895ef93ce394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionSystem: {fileID: 2006217519}
+  missionSystem: {fileID: 0}
   audioSource: {fileID: 0}
   Clip: {fileID: 8300000, guid: 560cd90a01d7d4040bfc37a476b2a7a3, type: 3}
 --- !u!1 &1942907929
@@ -111780,9 +111780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupSound: {fileID: 8300000, guid: 1235e4cb410676c479e4f05e778afc5d, type: 3}
   audioSource: {fileID: 4604403972381276075}
-  gunData: []
   inventoryData: {fileID: 11400000, guid: 0c025f48bf95e0c4b8bec9674c151c40, type: 2}
-  reserveAmmo: 0
 --- !u!4 &7056355133115438162
 Transform:
   m_ObjectHideFlags: 0

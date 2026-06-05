@@ -115,19 +115,20 @@ public class FPSController : MonoBehaviour
 
     void Update()
     {
-        GroundCheck();
-        Move();
-        ApplyGravity();
-
-        //HandleFootsteps
-        if(isGrounded && controller.velocity.magnitude > 2f && NextfootstepTime <= Time.time)
-        {
-            if(Time.time >= NextfootstepTime)
-            {
-                PlayerFootstepSound();
-                NextfootstepTime = Time.time + footstepInterval;
-            }
+        if (isDead)             
+        {   
+            DieCameraAnimation();
+            return;
         }
+
+        GroundCheck();
+        ApplyGravity();
+        Move();
+
+        if (canLook)
+            Look();
+
+        HandleFootstep();
     }
 
     void LateUpdate()
@@ -206,6 +207,28 @@ public class FPSController : MonoBehaviour
             Quaternion.Euler(0f, yRotation, 0f);
     }
 
+    void HandleFootstep()
+    {   
+        if (!isGrounded)
+            return;
+
+        Vector2 horizontalInput = moveInput;
+
+        if (horizontalInput.magnitude < 0.1f)
+            return;
+
+        if (Time.time < NextfootstepTime)
+            return;
+
+        PlayerFootstepSound();
+
+        float interval = isSprinting
+            ? footstepInterval * 0.6f
+            : footstepInterval;
+
+        NextfootstepTime = Time.time + interval;
+    }
+
     void Jump()
     {
         if (isGrounded)
@@ -229,17 +252,18 @@ public class FPSController : MonoBehaviour
 
     void PlayerFootstepSound()
     {
+        if (footstepSound == null || footstepSound.Length == 0)
+            return;
 
-        AudioClip clip = footstepSound[Random.Range(0, footstepSound.Length)];
-        
-        if(isLeftFoot)
-        {
-            leftfootstep.PlayOneShot(clip);
-        }
-        else
-        {
-            rightfootstep.PlayOneShot(clip);
-        }
+        AudioClip clip =
+            footstepSound[Random.Range(0, footstepSound.Length)];
+
+        AudioSource source = isLeftFoot
+            ? leftfootstep
+            : rightfootstep;
+
+        if (source != null)
+            source.PlayOneShot(clip);
 
         isLeftFoot = !isLeftFoot;
     }

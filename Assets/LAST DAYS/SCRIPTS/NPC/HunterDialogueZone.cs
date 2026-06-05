@@ -424,8 +424,8 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
                 Debug.Log("Talk to jake");
 
-                if (GameManager.Instance != null)
-                    GameManager.Instance.UIMission(3);
+                if (Mission.Instance != null)
+                    Mission.Instance.UIMission(3);
             }
             // Logic thoại 2
             else
@@ -450,21 +450,21 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         if (zombieSpawnCoroutine != null)
             return;
 
-        if (GameManager.Instance == null)
+        if (Mission.Instance == null)
         {
-            Debug.LogWarning("HunterDialogueZone: GameManager instance not found for zombie spawn.");
+            Debug.LogWarning("HunterDialogueZone: Mission instance not found for zombie spawn.");
             return;
         }
 
-        if (GameManager.Instance.ambientSpawner == null)
+        if (Mission.Instance.ambientSpawner == null)
         {
-            Debug.LogWarning("HunterDialogueZone: ambientSpawner reference missing in GameManager.");
+            Debug.LogWarning("HunterDialogueZone: ambientSpawner reference missing in Mission.");
             return;
         }
 
-        GameManager.Instance.ambientSpawner.spawnInterval = zombieSpawnInterval;
-        Debug.Log("HunterDialogueZone: Starting zombie spawn with " + GameManager.Instance.ambientSpawner.spawnInterval + " second interval.");
-        GameManager.Instance.ambientSpawner.StartSpawn();
+        Mission.Instance.ambientSpawner.spawnInterval = zombieSpawnInterval;
+        Debug.Log("HunterDialogueZone: Starting zombie spawn with " + Mission.Instance.ambientSpawner.spawnInterval + " second interval.");
+        Mission.Instance.ambientSpawner.StartSpawn();
 
         Debug.Log("HunterDialogueZone: Zombie spawning started after dialogue completion.");
         zombieSpawnCoroutine = StartCoroutine(StopZombieSpawnAfterDelay(zombieSpawnDuration));
@@ -513,10 +513,10 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
         if (fadeCanvasGroup != null)
             yield return StartCoroutine(FadeCanvas(1f, 0f, fadeDuration));                
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.UIMission(4);
+        if (Mission.Instance != null)
+            Mission.Instance.UIMission(4);
 
-        GameManager.Instance.ambientSpawner.StartSpawn();
+        Mission.Instance.ambientSpawner.StartSpawn();
 
         //hiện npc 
         if (Hunter != null)
@@ -552,9 +552,9 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(delay);
 
-        if (GameManager.Instance != null && GameManager.Instance.ambientSpawner != null)
+        if (Mission.Instance != null && Mission.Instance.ambientSpawner != null)
         {
-            GameManager.Instance.ambientSpawner.StopSpawn();
+            Mission.Instance.ambientSpawner.StopSpawn();
             Debug.Log("Đã dừng spawn zombie sau 90s");
         }
 
@@ -566,13 +566,13 @@ public class HunterDialogueZone : MonoBehaviour, IInteractable
 
         Debug.Log("Đã hết zombie, hoàn thành nhiệm vụ");
 
-        if (MissionSystem.Instance != null)
-            MissionSystem.Instance.CompleteCurrentMission();
+        if (Mission.Instance != null)
+            Mission.Instance.missionSystem.CompleteCurrentMission();
 
 
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.UIMission(1);
+        if (Mission.Instance != null)
+            Mission.Instance.UIMission(1);
 
         zombieSpawnCoroutine = null;
     }

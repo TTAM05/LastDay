@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,7 +6,7 @@ public class AmbientZombieSpawner : MonoBehaviour
 {
     public GameObject zombiePrefab;
 
-    public Transform[] spawnPoints;
+    public List<Transform> spawnPoints;
 
     public float spawnInterval=5 ;
 
@@ -62,7 +63,7 @@ public class AmbientZombieSpawner : MonoBehaviour
 
         Transform point =
             spawnPoints[
-                Random.Range(0, spawnPoints.Length)
+                Random.Range(0, spawnPoints.Count)
             ];
 
         if (NavMesh.SamplePosition(

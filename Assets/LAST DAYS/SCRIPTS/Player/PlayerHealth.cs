@@ -117,7 +117,7 @@ public class Health : MonoBehaviour
             EnemyAI enemyHand = other.GetComponentInParent<EnemyAI>();
 
             if (enemyHand != null)
-                GetComponent<Health>().TakeDamage(enemyHand.zombieData.damage);
+                TakeDamage(enemyHand.zombieData.damage);
 
                 Debug.Log("Player hit by enemy hand");
         }
@@ -128,7 +128,7 @@ public class Health : MonoBehaviour
 
             if (enemyMelee != null)
             {
-                GetComponent<Health>().TakeDamage(enemyMelee.mutantData.damage);
+                TakeDamage(enemyMelee.mutantData.damage);
                 Debug.Log("Player hit by enemy melee");
 
                 // chỉ đẩy một lần mỗi lần va chạm mạnh
@@ -160,7 +160,7 @@ public class Health : MonoBehaviour
             Poison poison = other.GetComponent<Poison>();
             if (poison != null)
             {
-                GetComponent<Health>().TakeDamage(poison.poisonData.damage); // sát thương từ poison, có thể điều chỉnh
+                TakeDamage(poison.poisonData.damage); // sát thương từ poison, có thể điều chỉnh
                 Debug.Log("Player hit by poison");
             }
         }
@@ -170,7 +170,7 @@ public class Health : MonoBehaviour
             GroundPoison poison = other.GetComponent<GroundPoison>();
             if (poison != null)
             {
-                GetComponent<Health>().TakeDamage(poison.poisonData.damage-5f); // sát thương từ poison, có thể điều chỉnh
+                TakeDamage(poison.poisonData.damage-5f); // sát thương từ poison, có thể điều chỉnh
                 Debug.Log("Player hit by ground poison");
             }
         }

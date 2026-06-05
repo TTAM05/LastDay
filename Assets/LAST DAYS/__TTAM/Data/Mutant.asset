@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mutant
   m_EditorClassIdentifier: 
   mutantName: Skeleton_Mutant
-  maxHealth: 2000
+  maxHealth: 8000
   damage: 50
   jumpAttackDamage: 15
   poisonAttackDamage: 10

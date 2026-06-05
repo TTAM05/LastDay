@@ -16,14 +16,14 @@ public class MissionPoint3 : MonoBehaviour
 
             Debug.Log("Explore Triggered (MissionPoint3)");
 
-            if (MissionSystem.Instance != null)
+            if (Mission.Instance != null)
             {
-                MissionSystem.Instance.DisableMaker();
+                Mission.Instance.missionSystem.DisableMaker();
                 Debug.Log("Marker Disabled (MissionPoint3)");
             }
 
-            if (GameManager.Instance != null)
-                GameManager.Instance.UIMission(3);
+            if (Mission.Instance != null)
+                Mission.Instance.UIMission(3);
 
             HunterDialogueZone dialogue = FindObjectOfType<HunterDialogueZone>();
 

@@ -22,12 +22,22 @@ public class AmmoPickup : MonoBehaviour, IInteractable
     public void Interact(PlayerInteract player)
     {
         AmmoInventory inventory = player.GetComponent<AmmoInventory>();
-        if (inventory == null) return;
 
-        // ✅ Clamp weaponIndex về phạm vi hợp lệ
-        int safeIndex = Mathf.Clamp(weaponIndex, 0, inventory.reserveAmmo - 1);
-        inventory.AddAmmo(safeIndex, ammoAmount);
+        if (inventory == null)
+            return;
+
+        inventory.AddAmmo(weaponIndex, ammoAmount);
+
+        GunSystem gun =
+        player.GetComponentInChildren<GunSystem>();
+
+        if (gun != null)
+        {
+            gun.UpdateAmmoUI();
+        }
+
         isPicked = true;
+
         Destroy(gameObject);
     }
 }

@@ -44,16 +44,11 @@ public class GunSystem : MonoBehaviour
     [Header("Gun Data")]
     public GunData gunData;
     public int currentAmmo;
-    // private int reserveAmmo;
     private WeaponManager weaponManager;
     private int weaponIndex;
     private AmmoInventory inventory;
     [Header("Animation")]
     public AnimationClip reloadClip;
-
-    // [Header("Impact")]
-    // public GameObject impactPrefab;   // kéo Prefab Quad vào đây
-    // public float impactLifetime = 2f; // biến mất sau bao giây
 
     [Header("UI")]
     public TMP_Text ammoText;
@@ -81,8 +76,6 @@ public class GunSystem : MonoBehaviour
         startLocalPosition = transform.localPosition;
         startLocalRotation = transform.localRotation;
         startLocalScale = transform.localScale;
-
-        input = new PlayerInputActions();
     }
 
     void Start()
@@ -93,9 +86,7 @@ public class GunSystem : MonoBehaviour
         }
 
         currentAmmo = gunData.maxAmmo;
-        // // ví dụ spawn full ammo
-        // reserveAmmo = gunData.maxReserveAmmo;
-
+   
         inventory = GetComponentInParent<AmmoInventory>();
         weaponManager = GetComponentInParent<WeaponManager>();
 
@@ -124,7 +115,6 @@ public class GunSystem : MonoBehaviour
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(false);
 
-        EnsureUIReferences();
         if (enabled)
             SetUIActive(true);
     }
@@ -152,7 +142,7 @@ public class GunSystem : MonoBehaviour
 
         input.Disable();
 
-        SetUIActive(false);
+        CancelFire();
     }
 
     void EnsureUIReferences()
@@ -172,7 +162,7 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    void SetUIActive(bool active)
+    public void SetUIActive(bool active)
     {
         if (bulletUI != null)
             bulletUI.SetActive(active);
@@ -213,13 +203,7 @@ public class GunSystem : MonoBehaviour
         }
 
         UpdateAmmoUI();
-    }
 
-    void LateUpdate()
-    {
-        if (weaponManager == null) return;
-
-        weaponIndex = weaponManager.currentWeapon;
     }
 
     // =========================================================
@@ -269,179 +253,137 @@ public class GunSystem : MonoBehaviour
     // SHOOT
     // =========================================================
     void Shoot()
-    {   
-
-        if (currentAmmo <= 0)
+    {
+        if (!CanShoot())
             return;
 
-            
-        //hiện vêt đạn bắn trúng
-        if (aimSystem != null)
+        ConsumeAmmo();
+
+        PlayShootEffect();
+
+        ApplyRecoil();
+
+        HandleHit();
+
+        UpdateAmmoUI();
+    }
+
+    public void SetWeaponIndex(int index)
+    {
+        weaponIndex = index;
+    }
+
+    bool CanShoot()
+    {
+        return Time.timeScale > 0f &&
+            !isReloading &&
+            currentAmmo > 0 &&
+            gunData != null;
+    }
+
+    void ConsumeAmmo()
+    {
+        currentAmmo--;
+    }
+
+    void PlayShootEffect()
+    {
+        if (muzzleFlash != null)
+            muzzleFlash.Play();
+
+        if (gunAudio != null)
         {
-            // Ray ray = new Ray(
-            //     aimSystem.FirePoint,
-            //     aimSystem.FireDirection
-            // );
-            Ray ray = cam.ViewportPointToRay(
-                new Vector3(0.5f, 0.5f, 0f)
-            );
+            AudioClip clip = gunData.isAutomatic
+                ? gunData.autoShotClip
+                : gunData.singleShotClip;
 
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, gunData.range))
-            {
-                bool hitenemy = false;
-
-                 // hiện hit crosshair
-                // DAMAGE
-                if (hit.collider.CompareTag("EnemyHead") || hit.collider.CompareTag("MutantHead"))
-                {
-                    hitenemy = true;
-
-                    ParticleSystem blood = Instantiate(
-                        bloodPrefab,
-                        hit.point + hit.normal * 0.01f,
-                        Quaternion.LookRotation(hit.normal)
-                    );
-                    blood.transform.SetParent(hit.collider.transform);
-                    Destroy(blood, 2f);
-
-                    if (hit.collider.CompareTag("MutantHead"))
-                    {
-                        MutantHealth mutant =
-                            hit.collider.GetComponentInParent<MutantHealth>();
-                        if (mutant != null)
-                            mutant.TakeDamage(gunData.damage * 3, true);
-                    }
-                    else
-                    {
-                        EnemyHealth enemy =
-                            hit.collider.GetComponentInParent<EnemyHealth>();
-                        if (enemy != null)
-                            enemy.TakeDamage(gunData.damage * 3, true);
-                    }
-                }
-                else if (hit.collider.CompareTag("EnemyBody") || hit.collider.CompareTag("MutantBody"))
-                {
-                    hitenemy = true;
-
-                    ParticleSystem blood = Instantiate(
-                        bloodPrefab,
-                        hit.point + hit.normal * 0.01f,
-                        Quaternion.LookRotation(hit.normal)
-                    );
-                    blood.transform.SetParent(hit.collider.transform);
-                    Destroy(blood, 2f);
-
-                    if (hit.collider.CompareTag("MutantBody"))
-                    {
-                        MutantHealth mutant =
-                            hit.collider.GetComponentInParent<MutantHealth>();
-                        if (mutant != null)
-                            mutant.TakeDamage(gunData.damage, false);
-                    }
-                    else
-                    {
-                        EnemyHealth enemy =
-                            hit.collider.GetComponentInParent<EnemyHealth>();
-                        if (enemy != null)
-                            enemy.TakeDamage(gunData.damage, false);
-                    }
-                }
-             
-                // IMPACT CHỈ HIỆN KHI KHÔNG PHẢI ENEMY
-                bool isEnemy =
-                hit.collider.CompareTag("Enemy") ||
-                hit.collider.CompareTag("EnemyBody") ||
-                hit.collider.CompareTag("EnemyHead") ||
-                hit.collider.CompareTag("MutantBody") ||
-                hit.collider.CompareTag("MutantHead");
-
-                // if (!isEnemy)
-                // {
-                //     GameObject impact = Instantiate(
-                //         impactPrefab,
-                //         hit.point + hit.normal * 0.01f,
-                //         Quaternion.LookRotation(hit.normal)
-                //     );
-
-                //     Destroy(impact, impactLifetime);
-                // }
-
-                if (hitenemy && !aimSystem.isAiming)
-                {
-                    if (hitRoutine != null)
-                        StopCoroutine(hitRoutine);
-
-                    hitRoutine = StartCoroutine(ShowHitCrosshair());
-                }
-            }
+            gunAudio.PlayOneShot(clip);
         }
 
-        //- arrmor
-        currentAmmo--;
-        // muzzle flash
-        if (muzzleFlash != null) muzzleFlash.Play();
-
-        // âm thanh
-        if (gunAudio != null)
-            gunAudio.PlayOneShot(gunData.isAutomatic ? gunData.autoShotClip : gunData.singleShotClip);
-
-        // animation
         if (animator != null)
         {
-            if (gunData.isAutomatic) 
-            {
+            if (gunData.isAutomatic)
                 animator.SetBool("Auto", true);
-            }
             else
-            {
                 animator.SetTrigger("Fire");
-            }
         }
-        // recoil
-        gunRecoil.Fire(gunData);
+    }
 
-        // =====================================================
-        // HƯỚNG BẮN — lấy từ AimSystem
-        // =====================================================
-        Vector3 fireOrigin;
-        Vector3 fireDirection;
+    void ApplyRecoil()
+    {
+        if (gunRecoil != null)
+            gunRecoil.Fire(gunData);
+    }
 
-        if (aimSystem != null)
+    void HandleHit()
+    {
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, gunData.range))
+            return;
+
+        bool isHeadshot =
+            hit.collider.CompareTag("EnemyHead") ||
+            hit.collider.CompareTag("MutantHead");
+
+        bool isBody =
+            hit.collider.CompareTag("EnemyBody") ||
+            hit.collider.CompareTag("MutantBody");
+
+        if (!isHeadshot && !isBody)
+            return;
+
+        float finalDamage = isHeadshot
+            ? gunData.damage * 3f
+            : gunData.damage;
+
+        EnemyHealth enemy =
+            hit.collider.GetComponentInParent<EnemyHealth>();
+
+        if (enemy != null)
         {
-            // AimSystem đã tính sẵn cho cả hip và ADS
-            fireOrigin    = aimSystem.FirePoint;
-            fireDirection = aimSystem.FireDirection;
+            enemy.TakeDamage(finalDamage, isHeadshot);
+            SpawnBlood(hit);
+            ShowHitMarker();
+            return;
         }
-        else
+
+        MutantHealth mutant =
+            hit.collider.GetComponentInParent<MutantHealth>();
+
+        if (mutant != null)
         {
-            // fallback nếu không có AimSystem
-            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-            Vector3 target = Physics.Raycast(ray, out RaycastHit hit, 1000f)
-                ? hit.point
-                : ray.GetPoint(1000f);
-
-            fireOrigin    = muzzle.position;
-            fireDirection = (target - muzzle.position).normalized;
+            mutant.TakeDamage(finalDamage, isHeadshot);
+            SpawnBlood(hit);
+            ShowHitMarker();
         }
-        // =====================================================
+    }
 
-        // tạo đạn
-        GameObject bullet = Instantiate(
-            bulletPrefab,
-            fireOrigin,
-            Quaternion.LookRotation(fireDirection)
+    void SpawnBlood(RaycastHit hit)
+    {
+        if (bloodPrefab == null)
+            return;
+
+        ParticleSystem blood = Instantiate(
+            bloodPrefab,
+            hit.point + hit.normal * 0.01f,
+            Quaternion.LookRotation(hit.normal)
         );
 
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        if (rb != null)
-            rb.linearVelocity = fireDirection * gunData.bulletSpeed;
+        blood.transform.SetParent(hit.collider.transform);
 
-        //Gán damage cho viên đạn ngay khi bắn
-                 Bullet bulletScript = bullet.GetComponent<Bullet>();
-                 if (bulletScript != null)                 {
-                     bulletScript.damage = gunData.damage;
-                 }
+        Destroy(blood.gameObject, 2f);
+    }
+
+    void ShowHitMarker()
+    {
+        if (aimSystem != null && aimSystem.isAiming)
+            return;
+
+        if (hitRoutine != null)
+            StopCoroutine(hitRoutine);
+
+        hitRoutine = StartCoroutine(ShowHitCrosshair());
     }
 
     IEnumerator ShowHitCrosshair()
@@ -462,70 +404,53 @@ public class GunSystem : MonoBehaviour
         if (isReloading)
             yield break;
 
-        // đầy băng
         if (currentAmmo >= gunData.maxAmmo)
             yield break;
 
-        // hết đạn dự trữ
+        if (inventory == null)
+            yield break;
+
         if (inventory.GetAmmo(weaponIndex) <= 0)
             yield break;
 
         isReloading = true;
+        isFiring = false;
 
-          // ✅ Hiện reloadTimeText
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(true);
 
-        // =================================================
-        // TÍNH TỐC ĐỘ ANIMATION
-        // =================================================
+        if (animator != null && reloadClip != null)
+        {
+            float reloadSpeed = reloadClip.length / gunData.reloadTime;
+            animator.SetFloat("ReloadSpeed", reloadSpeed);
+            animator.SetTrigger("Reload");
+        }
 
-        float animLength = reloadClip.length;
-
-        // tốc độ anim
-        float reloadSpeed = animLength / gunData.reloadTime;
-
-        // set speed vào animator
-        animator.SetFloat("ReloadSpeed", reloadSpeed);
-
-        // play anim
-        animator.SetTrigger("Reload");
-
-         // ✅ Đếm ngược thời gian reload
         float timer = gunData.reloadTime;
+
         while (timer > 0f)
         {
             timer -= Time.deltaTime;
+
             if (reloadTimeText != null)
                 reloadTimeText.text = $"Reloading... {timer:F1}s";
+
             yield return null;
         }
 
-        // =================================================
-
-        // // chờ đúng reloadTime
-        // yield return new WaitForSeconds(gunData.reloadTime);
-        
-        isReloading = false;
-
-        // số đạn cần nạp
         int needAmmo = gunData.maxAmmo - currentAmmo;
         int reserve = inventory.GetAmmo(weaponIndex);
-
-        // số đạn thực sự có thể nạp
         int ammoToLoad = Mathf.Min(needAmmo, reserve);
 
         currentAmmo += ammoToLoad;
-
         inventory.UseAmmo(weaponIndex, ammoToLoad);
 
-        Debug.Log("Reserve ammo: " +  inventory.GetAmmo(weaponIndex));
-
-        // ✅ Ẩn reloadTimeText khi xong
         if (reloadTimeText != null)
-        reloadTimeText.gameObject.SetActive(false);
+            reloadTimeText.gameObject.SetActive(false);
 
-        
+        isReloading = false;
+
+        UpdateAmmoUI();
     }
 
     public bool IsReloading()
@@ -550,18 +475,6 @@ public class GunSystem : MonoBehaviour
             gunAudio.PlayOneShot(gunData.reloadclip);
         }
     }
-
-    // public void AddAmmo(int amount)
-    // {
-    //     reserveAmmo += amount;
-
-    //     reserveAmmo = Mathf.Min(
-    //         reserveAmmo,
-    //         gunData.maxReserveAmmo
-    //     );
-
-    //     Debug.Log("Reserve Ammo: " + reserveAmmo);
-    // }
 
     public void UpdateAmmoUI()
     {
