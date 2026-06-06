@@ -1,8 +1,8 @@
 using UnityEngine;
 using  UnityEngine.UI;
-public class GameManager : MonoBehaviour
+public class Mission : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static Mission Instance;
 
     //Mission 0
     [Header("Phase")]
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public AmbientZombieSpawner ambientSpawner;
 
     [Header("Mission System")]
-    public MissionSystem missionSystem;
+    public MarkerSystem missionSystem;
 
     [Header("UI")]
     public GameObject[] missionUI;
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         missionUI[missionIndex].SetActive(true);
 
         CancelInvoke(nameof(HideMissionUI));
-        Invoke(nameof(HideMissionUI), 8f);
+        Invoke(nameof(HideMissionUI), 6f);
     }
 
     private void HideMissionUI()

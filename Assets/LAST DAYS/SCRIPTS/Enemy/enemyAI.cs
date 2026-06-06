@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     [Header("References")]
-    public Transform player;
+    public Transform target;
     public NavMeshAgent agent;
     public Animator animator;
     public GameObject BloodScreenObj;
@@ -32,67 +32,70 @@ public class EnemyAI : MonoBehaviour
     public float detectionRange = 15f;
     public float loseRange = 20f;
 
+    private float attackRangeSqr;
+    private float loseRangeSqr;
+    private float detectionRangeSqr;
+
     [Header("Attack")]
     public float attackRange = 2f;
     public float attackCooldown = 2f;
-
 
     [Header("Audio")]
     public AudioSource audioSource;
 
     private EnemyState currentState;
 
-    private float waitTimer;
     private float attackTimer;
 
     private bool waiting;
 
     private bool isInitialized = false;
 
-    void Start()
+    void Awake()
     {
-
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
 
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
+    void Start()
+    {
+
+        attackRangeSqr = attackRange * attackRange;
+        loseRangeSqr = loseRange * loseRange;
+        detectionRangeSqr = detectionRange * detectionRange;
+
         agent.updateRotation = false;
 
-        if (player == null)
-        {
-            GameObject playerObj =
-                GameObject.FindGameObjectWithTag("Player");
-
-            if (playerObj != null)
-                player = playerObj.transform;
-        }
-
-        // FindClosestPatrolCenter();
-        // SetNewPatrolPoint();
-        // SetClosestWaypointAsStart();
+        FindClosestTarget();
 
         StartCoroutine(InitWhenReady());
-
 
         currentState = EnemyState.Chase;
     }
 
     void Update()
     {
-        if (!isInitialized || player == null) return;
+        if (!isInitialized || target == null)
+        {
+            FindClosestTarget();
+            return;
+        }
 
         attackTimer += Time.deltaTime;
 
-        float distance =
-            Vector3.Distance(transform.position, player.position);
+        float sqrDistance =
+        (target.position - transform.position)
+        .sqrMagnitude;
 
-        UpdateState(distance);
+        UpdateState(sqrDistance);
 
         switch (currentState)
         {
-            // case EnemyState.Patrol:
-            //     Patrol();
-            //     break;
-
             case EnemyState.Chase:
                 Chase();
                 break;
@@ -103,6 +106,36 @@ public class EnemyAI : MonoBehaviour
         }
 
         animator.SetFloat("Speed", agent.velocity.magnitude);
+    }
+
+    public void FindClosestTarget()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        GameObject hunterObj = GameObject.FindGameObjectWithTag("NPC");
+
+        if (playerObj == null && hunterObj == null)
+            return;
+
+        if (playerObj != null && hunterObj != null)
+        {
+            float playerDistSqr =
+                (playerObj.transform.position - transform.position).sqrMagnitude;
+
+            float hunterDistSqr =
+                (hunterObj.transform.position - transform.position).sqrMagnitude;
+
+            target = playerDistSqr < hunterDistSqr
+                ? playerObj.transform
+                : hunterObj.transform;
+        }
+        else if (playerObj != null)
+        {
+            target = playerObj.transform;
+        }
+        else
+        {
+            target = hunterObj.transform;
+        }
     }
 
 
@@ -151,13 +184,13 @@ public class EnemyAI : MonoBehaviour
         );
     }
 
-    void UpdateState(float distance)
+    void UpdateState(float sqrDistance)
     {
         switch (currentState)
         {
             case EnemyState.Chase:
 
-                if (distance <= attackRange)
+                if (sqrDistance <= attackRange * attackRange)
                 {
                     currentState = EnemyState.Attack;
                 }
@@ -166,7 +199,7 @@ public class EnemyAI : MonoBehaviour
 
             case EnemyState.Attack:
 
-                if (distance > attackRange)
+                if (sqrDistance > attackRange * attackRange)
                 {
                     currentState = EnemyState.Chase;
                 }
@@ -200,69 +233,8 @@ public class EnemyAI : MonoBehaviour
 
         currentState = EnemyState.Chase;
         isInitialized = true;
+        attackTimer = attackCooldown;
     }
-
-    // void FindClosestPatrolCenter()
-    // {
-    //     GameObject[] centers =
-    //         GameObject.FindGameObjectsWithTag("PatrolCenter");
-
-    //     float closestDistance = Mathf.Infinity;
-
-    //     foreach (GameObject center in centers)
-    //     {
-    //         float distance = Vector3.Distance(
-    //             transform.position,
-    //             center.transform.position
-    //         );
-
-    //         if (distance < closestDistance)
-    //         {
-    //             closestDistance = distance;
-
-    //             patrolCenter = center.transform;
-
-    //             patrolCenterData =
-    //                 center.GetComponent<PatrolCenter>();
-    //         }
-    //     }
-    // }
-
-    // void Patrol()
-    // {
-    //     if (agent == null || !agent.isOnNavMesh)
-    //         return;
-
-    //     PlayAudio(zombieData.PatrolSound);
-
-    //     agent.isStopped = false;
-    //     agent.speed = zombieData.Walkspeed;
-
-    //     // ✅ Luôn gọi rotate kể cả khi đang chờ
-    //     RotateToMovement();
-
-    //     if (waiting)
-    //     {
-    //         waitTimer += Time.deltaTime;
-
-    //         if (waitTimer >= patrolWaitTime)
-    //         {
-    //             waiting = false;
-    //             SetNewPatrolPoint();
-    //         }
-
-    //         return;
-    //     }
-
-    //     agent.SetDestination(patrolPoint);
-
-    //     if (!agent.pathPending &&
-    //         agent.remainingDistance <= 0.5f)
-    //     {
-    //         waiting = true;
-    //         waitTimer = 0f;
-    //     }
-    // }
 
     void Chase()
     {
@@ -274,7 +246,7 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = false;
         agent.speed = zombieData.Runspeed;
 
-        agent.SetDestination(player.position);
+        agent.SetDestination(target.position);
 
         RotateToMovement();
     }
@@ -284,7 +256,6 @@ public class EnemyAI : MonoBehaviour
         if (agent == null || !agent.isOnNavMesh)
             return;
 
-        // audioSource.PlayOneShot(attackClip);
         agent.isStopped = true;
 
         RotateToPlayer();
@@ -294,13 +265,13 @@ public class EnemyAI : MonoBehaviour
 
         animator.SetTrigger("Attack");
 
-        //hiện bloodScreen
-        if (bloodCoroutine != null)
+        if (target != null && target.CompareTag("Player"))
         {
-            StopCoroutine(bloodCoroutine);
-        }
+            if (bloodCoroutine != null)
+                StopCoroutine(bloodCoroutine);
 
-        bloodCoroutine = StartCoroutine(ActiveBloodScreen());
+            bloodCoroutine = StartCoroutine(ActiveBloodScreen());
+        }
 
         attackTimer = 0f;
     }
@@ -308,7 +279,7 @@ public class EnemyAI : MonoBehaviour
     void RotateToPlayer()
     {
         Vector3 dir =
-            player.position - transform.position;
+            target.position - transform.position;
 
         dir.y = 0;
 
@@ -325,31 +296,6 @@ public class EnemyAI : MonoBehaviour
             Time.deltaTime * 10f
         );
     }
-
-    // void SetNewPatrolPoint()
-    // {
-    //     if (patrolCenterData == null ||
-    //         patrolCenterData.waypoints == null ||
-    //         patrolCenterData.waypoints.Length == 0)
-    //         return;
-
-    //     // Random index, tránh trùng điểm cũ
-    //     int newIndex;
-
-    //     do
-    //     {
-    //         newIndex = Random.Range(0, patrolCenterData.waypoints.Length);
-    //     }
-    //     while (newIndex == currentWaypointIndex &&
-    //         patrolCenterData.waypoints.Length > 1);
-
-    //     currentWaypointIndex = newIndex;
-
-    //     Transform wp = patrolCenterData.waypoints[currentWaypointIndex];
-
-    //     if (wp != null)
-    //         patrolPoint = wp.position;
-    // }
 
     void PlayAudio(AudioClip clip)
     {
