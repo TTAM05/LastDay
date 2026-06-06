@@ -10,10 +10,11 @@ public class AmmoInventory : MonoBehaviour
     [SerializeField] private InventoryData inventoryData;
 
     private int[] reserveAmmoByWeapon;
+    private WeaponManager weaponManager;
 
     void Start()
     {
-        WeaponManager weaponManager = GetComponentInChildren<WeaponManager>();
+        weaponManager = GetComponentInChildren<WeaponManager>();
 
         if (weaponManager == null)
         {
@@ -25,7 +26,7 @@ public class AmmoInventory : MonoBehaviour
 
         for (int i = 0; i < reserveAmmoByWeapon.Length; i++)
         {
-            reserveAmmoByWeapon[i] = inventoryData.maxReserveAmmo;
+            reserveAmmoByWeapon[i] = GetMaxReserveAmmo(i);
         }
     }
 
@@ -36,8 +37,10 @@ public class AmmoInventory : MonoBehaviour
 
         reserveAmmoByWeapon[weaponIndex] += amount;
 
-        reserveAmmoByWeapon[weaponIndex] =
-            Mathf.Min(reserveAmmoByWeapon[weaponIndex], inventoryData.maxReserveAmmo);
+        reserveAmmoByWeapon[weaponIndex] = Mathf.Min(
+            reserveAmmoByWeapon[weaponIndex],
+            GetMaxReserveAmmo(weaponIndex)
+        );
 
         if (pickupSound != null && audioSource != null)
             audioSource.PlayOneShot(pickupSound);
@@ -57,9 +60,34 @@ public class AmmoInventory : MonoBehaviour
             return;
 
         reserveAmmoByWeapon[weaponIndex] -= amount;
+        reserveAmmoByWeapon[weaponIndex] = Mathf.Max(reserveAmmoByWeapon[weaponIndex], 0);
+    }
 
-        reserveAmmoByWeapon[weaponIndex] =
-            Mathf.Max(reserveAmmoByWeapon[weaponIndex], 0);
+    public int GetMaxReserveAmmo(int weaponIndex)
+    {
+        if (weaponManager == null)
+            return inventoryData != null ? inventoryData.maxReserveAmmo : 0;
+
+        if (weaponIndex < 0 || weaponIndex >= weaponManager.weapons.Length)
+            return inventoryData != null ? inventoryData.maxReserveAmmo : 0;
+
+        GunSystem gunSystem = weaponManager.weapons[weaponIndex].GetComponent<GunSystem>();
+
+        if (gunSystem == null || gunSystem.gunData == null)
+            return inventoryData != null ? inventoryData.maxReserveAmmo : 0;
+
+        return GunUpgradeCalculator.GetMaxReserveAmmo(gunSystem.gunData);
+    }
+
+    public void ClampAmmoToMax(int weaponIndex)
+    {
+        if (!IsValidWeaponIndex(weaponIndex))
+            return;
+
+        reserveAmmoByWeapon[weaponIndex] = Mathf.Min(
+            reserveAmmoByWeapon[weaponIndex],
+            GetMaxReserveAmmo(weaponIndex)
+        );
     }
 
     private bool IsValidWeaponIndex(int index)

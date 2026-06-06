@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccfa92590711e8488c9dd51e68f4a1e, type: 3}
   m_Name: Glock_17
   m_EditorClassIdentifier: 
+  inventoryData: {fileID: 11400000, guid: 0c025f48bf95e0c4b8bec9674c151c40, type: 2}
   gunName: 'Glock '
   damage: 20
   fireRate: 0.1
   isAutomatic: 0
-  range: 100
   reloadTime: 3
   stability: 80
+  range: 100
   maxAmmo: 8
   bulletSpeed: 100
   singleShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
@@ -26,3 +27,28 @@ MonoBehaviour:
   reloadclip: {fileID: 8300000, guid: 7e9876368f2e0364d8ce33e8ec59e8f1, type: 3}
   recoilX: 3
   recoilY: 0.5
+  upgradeLevels:
+  - damageBonus: 0
+    fireRateBonus: 0
+    recoilBonus: 0
+    magBonus: 0
+    reserveBonus: 0
+    reloadBonus: 0
+  - damageBonus: 0
+    fireRateBonus: 0
+    recoilBonus: 0
+    magBonus: 0
+    reserveBonus: 0
+    reloadBonus: 0
+  - damageBonus: 0
+    fireRateBonus: 0
+    recoilBonus: 0
+    magBonus: 0
+    reserveBonus: 0
+    reloadBonus: 0
+  - damageBonus: 0
+    fireRateBonus: 0
+    recoilBonus: 0
+    magBonus: 0
+    reserveBonus: 0
+    reloadBonus: 0
