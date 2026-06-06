@@ -17,12 +17,12 @@ public class MissionPoint2 : MonoBehaviour
             Debug.Log("Explore Triggered (MissionPoint2)");
 
            
-            MissionSystem.Instance.DisableMaker();
+            Mission.Instance.missionSystem.DisableMaker();
             Debug.Log("Marker Disabled (MissionPoint2)");
             
 
             // Hiện UI nhiệm vụ
-            GameManager.Instance.UIMission(1);
+            Mission.Instance.UIMission(1);
         }
     }
 

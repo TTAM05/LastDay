@@ -5393,7 +5393,7 @@ MonoBehaviour:
   - {fileID: 266158009}
   - {fileID: 414261429}
   spawnInterval: 4
-  maxZombie: 15
+  maxZombie: 23
 --- !u!4 &111379503
 Transform:
   m_ObjectHideFlags: 0
@@ -7759,7 +7759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "T\u01B0\u01A1ng t\xE1c [E]"
+  m_text: '[E]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -43458,7 +43458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1014719585
 RectTransform:
   m_ObjectHideFlags: 0
@@ -61653,8 +61653,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -482, y: -6}
-  m_SizeDelta: {x: 278.9019, y: 165.9841}
+  m_AnchoredPosition: {x: -505, y: 2}
+  m_SizeDelta: {x: 164.3785, y: 144.8985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1387319890
 MonoBehaviour:
@@ -61676,7 +61676,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c886a604b48ad5042b62d181b7fced2f, type: 3}
+  m_Sprite: {fileID: -1468681426, guid: f577c96a79ceef84db205398ed8aa4aa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -66333,7 +66333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e800d7543824bce4f8b8895ef93ce394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionSystem: {fileID: 2006217519}
+  missionSystem: {fileID: 0}
   audioSource: {fileID: 0}
   Clip: {fileID: 0}
 --- !u!1 &1445061837
@@ -92059,6 +92059,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4219407822253221571, guid: 416cb5d6a26ef294aaebea91826e0432, type: 3}
+      propertyPath: m_text
+      value: '[E]'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -93325,7 +93329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e800d7543824bce4f8b8895ef93ce394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionSystem: {fileID: 2006217519}
+  missionSystem: {fileID: 0}
   audioSource: {fileID: 0}
   Clip: {fileID: 8300000, guid: 560cd90a01d7d4040bfc37a476b2a7a3, type: 3}
 --- !u!1 &1942907929
@@ -95663,7 +95667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPhase: 0
-  exploreTime: 3
+  exploreTime: 60
   ambientSpawner: {fileID: 111379502}
   missionSystem: {fileID: 2006217519}
   missionUI:
@@ -101703,7 +101707,7 @@ MonoBehaviour:
   disableAimDuringDialogue: 1
   disableMacheteDuringDialogue: 1
   autoHideAfterSeconds: 0
-  zombieSpawnDuration: 3
+  zombieSpawnDuration: 90
   mutantPrefab: {fileID: 7007129346236831287, guid: 609ac76970fbbd14a91dfd1b11884fe8, type: 3}
   mutantSpawnPoint: {fileID: 414261429}
   mutantSpawnDelay: 3
@@ -105789,6 +105793,63 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1001 &4456968123571912707
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4017326696976402822, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_Name
+      value: First_Kit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 378.57715
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 18.258
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 338.2137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.72796226
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.68561727
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -1166.568
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100519879453588415, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
 --- !u!1 &4480379049550251619
 GameObject:
   m_ObjectHideFlags: 0
@@ -111780,9 +111841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupSound: {fileID: 8300000, guid: 1235e4cb410676c479e4f05e778afc5d, type: 3}
   audioSource: {fileID: 4604403972381276075}
-  gunData: []
   inventoryData: {fileID: 11400000, guid: 0c025f48bf95e0c4b8bec9674c151c40, type: 2}
-  reserveAmmo: 0
 --- !u!4 &7056355133115438162
 Transform:
   m_ObjectHideFlags: 0
@@ -113992,3 +114051,4 @@ SceneRoots:
   - {fileID: 118422653}
   - {fileID: 1477886031}
   - {fileID: 5422510342974737715}
+  - {fileID: 4456968123571912707}

@@ -11,14 +11,32 @@ public class EnemyHealth : MonoBehaviour
     private bool isReward = false;
     public GameObject[] item;
 
+    private EnemyAI enemyAI;
+    private NavMeshAgent agent;
+    private Rigidbody rb;
+    private Collider col;
+
     //Sound
     public AudioSource audioSource;
 
     public Transform aimPoint;
 
+
+    void Awake()
+    {
+        enemyAI = GetComponent<EnemyAI>();
+        agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+        anim = GetComponent<Animator>();
+
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
-        anim = GetComponent<Animator>();
         if (zombieData != null)
         {
             currentHealth = zombieData.maxHealth;
@@ -64,35 +82,18 @@ public class EnemyHealth : MonoBehaviour
     void Die(bool isHeadshot)
     {
         Debug.Log("Zombie Die: " + Time.time);
-        // tắt AI
-        EnemyAI ai = GetComponent<EnemyAI>();
 
-        if (ai != null)
-        {
-            ai.enabled = false;
-        }
+        if (enemyAI != null)
+            enemyAI.enabled = false;
 
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
         if (agent != null)
-        {
             agent.enabled = false;
-        }
 
-        Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
             rb.isKinematic = true;
-        }
 
-        // tắt collider nếu muốn
-        foreach (Collider col in GetComponentsInChildren<Collider>())
-        {
+        if (col != null)
             col.enabled = false;
-        }
-
 
         if (isHeadshot)
         {

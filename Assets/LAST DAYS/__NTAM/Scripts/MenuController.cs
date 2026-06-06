@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // Bắt buộc phải có để dùng SceneManager
+using TMPro; // Nếu bạn sử dụng TextMeshPro cho UI Text 
 
 public class MenuController : MonoBehaviour
 {
@@ -7,7 +8,9 @@ public class MenuController : MonoBehaviour
     public GameObject SettingPanel;
     public GameObject MenuPanel;
 
-     void Start()
+  
+
+    void Start()
     {
         // Đảm bảo SettingPanel được ẩn khi bắt đầu
         if (SettingPanel != null)
@@ -18,7 +21,7 @@ public class MenuController : MonoBehaviour
     // Hàm chuyển sang Scene Login
     public void GoMenu()
     {
-        SceneManager.LoadScene("MapMenu"); 
+        SceneManager.LoadScene("Lobby"); 
     }
 
     //Play

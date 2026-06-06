@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class MissionSystem : MonoBehaviour
+public class MarkerSystem : MonoBehaviour
 {
-    public static MissionSystem Instance;
+    public static MarkerSystem Instance;
 
     public Transform[] targets;
     public GameObject markerPrefab;

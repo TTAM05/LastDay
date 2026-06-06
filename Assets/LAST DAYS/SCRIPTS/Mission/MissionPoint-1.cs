@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MissionPoint : MonoBehaviour
 {
-    public MissionSystem missionSystem;
+    public Mission missionSystem;
     private bool activated;
     public AudioSource audioSource;
     public AudioClip Clip;
@@ -21,12 +21,12 @@ public class MissionPoint : MonoBehaviour
         {
             activated = true;
             audioSource.PlayOneShot(audioSource.clip);
-            GameManager.Instance.StartExplore();
+            Mission.Instance.StartExplore();
 
             Debug.Log("Explore Triggered");
 
             // tắt marker
-            missionSystem.DisableMaker();
+            Mission.Instance.missionSystem.DisableMaker();
             Debug.Log("Marker Disabled");
         }
     }
