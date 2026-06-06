@@ -17,10 +17,10 @@ MonoBehaviour:
   damage: 20
   fireRate: 0.1
   isAutomatic: 0
-  reloadTime: 3
+  reloadTime: 1.8
   stability: 80
   range: 100
-  maxAmmo: 8
+  maxAmmo: 15
   bulletSpeed: 100
   singleShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
   autoShotClip: {fileID: 8300000, guid: 27ec2112f2a3c1b4d8dd8a83f8793e6d, type: 3}
@@ -34,21 +34,21 @@ MonoBehaviour:
     magBonus: 0
     reserveBonus: 0
     reloadBonus: 0
-  - damageBonus: 0
+  - damageBonus: 2
     fireRateBonus: 0
-    recoilBonus: 0
-    magBonus: 0
-    reserveBonus: 0
-    reloadBonus: 0
-  - damageBonus: 0
+    recoilBonus: 0.2
+    magBonus: 2
+    reserveBonus: 15
+    reloadBonus: 0.1
+  - damageBonus: 4
     fireRateBonus: 0
-    recoilBonus: 0
-    magBonus: 0
-    reserveBonus: 0
-    reloadBonus: 0
-  - damageBonus: 0
+    recoilBonus: 0.4
+    magBonus: 5
+    reserveBonus: 35
+    reloadBonus: 0.3
+  - damageBonus: 7
     fireRateBonus: 0
-    recoilBonus: 0
-    magBonus: 0
-    reserveBonus: 0
-    reloadBonus: 0
+    recoilBonus: 0.6
+    magBonus: 10
+    reserveBonus: 55
+    reloadBonus: 0.5

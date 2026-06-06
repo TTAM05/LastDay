@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class WeaponUpgradeUI : MonoBehaviour
 {
@@ -41,9 +42,30 @@ public class WeaponUpgradeUI : MonoBehaviour
     [Header("Weapon Preview")]
     public WeaponPreviewUI weaponPreviewUI;
 
+    [Header("Text Popup")]
+    public TextPopup textPopup;
+
+    [Header("Upgrade Shake")]
+    public RectTransform[] shakeSlots;
+    public float shakeDuration = 1f;
+    public float shakeStrength = 10f;
+
+    private bool isUpgrading;
+    private Vector2[] slotStartPositions;
+
+
     void Start()
     {
         insertedShard = 0;
+
+        slotStartPositions = new Vector2[shakeSlots.Length];
+
+        for (int i = 0; i < shakeSlots.Length; i++)
+        {
+            if (shakeSlots[i] != null)
+                slotStartPositions[i] = shakeSlots[i].anchoredPosition;
+        }
+
         SelectGun(0);
     }
 
@@ -96,25 +118,51 @@ public class WeaponUpgradeUI : MonoBehaviour
         RefreshAllUI();
     }
 
+    //Removed Shard
+    public void RemoveShard()
+    {
+        LoadCurrency();
+
+        if (insertedShard <= 0)
+            return;
+
+        shard++;
+        insertedShard--;
+
+        SaveCurrency();
+        RefreshAllUI();
+    }
+
     public void UpgradeWeapon()
+    {
+        if (isUpgrading)
+            return;
+
+        StartCoroutine(UpgradeSequence());
+    }
+
+    IEnumerator UpgradeSequence()
     {
         LoadCurrency();
 
         GunData gun = guns[currentGunIndex];
-
         int level = GetGunLevel(gun);
 
         if (gun.upgradeLevels == null || gun.upgradeLevels.Length == 0)
-            return;
+            yield break;
 
         if (level >= gun.upgradeLevels.Length - 1)
-            return;
+            yield break;
 
         if (insertedShard <= 0 || insertedShard > maxInsertShard)
-            return;
+            yield break;
 
         if (money < upgradeCost)
-            return;
+            yield break;
+
+        isUpgrading = true;
+
+        yield return StartCoroutine(ShakeSlots());
 
         money -= upgradeCost;
 
@@ -124,11 +172,17 @@ public class WeaponUpgradeUI : MonoBehaviour
         {
             SetGunLevel(gun, level + 1);
 
+            if (textPopup != null)
+                textPopup.ShowSuccess();
+
             Debug.Log("Upgrade Success");
         }
         else
         {
             SetGunLevel(gun, 0);
+
+            if (textPopup != null)
+                textPopup.ShowFail();
 
             Debug.Log("Upgrade Failed -> LV0");
         }
@@ -137,6 +191,37 @@ public class WeaponUpgradeUI : MonoBehaviour
 
         SaveCurrency();
         RefreshAllUI();
+
+        isUpgrading = false;
+    }
+
+
+
+    IEnumerator ShakeSlots()
+    {
+        float timer = 0f;
+
+        while (timer < shakeDuration)
+        {
+            timer += Time.deltaTime;
+
+            for (int i = 0; i < shakeSlots.Length; i++)
+            {
+                if (shakeSlots[i] == null)
+                    continue;
+
+                Vector2 randomOffset = Random.insideUnitCircle * shakeStrength;
+                shakeSlots[i].anchoredPosition = slotStartPositions[i] + randomOffset;
+            }
+
+            yield return null;
+        }
+
+        for (int i = 0; i < shakeSlots.Length; i++)
+        {
+            if (shakeSlots[i] != null)
+                shakeSlots[i].anchoredPosition = slotStartPositions[i];
+        }
     }
 
     void RefreshAllUI()
@@ -158,6 +243,7 @@ public class WeaponUpgradeUI : MonoBehaviour
         RefreshOutline(gun);
         RefreshShardSlots();
         RefreshCurrencyUI();
+       
     }
 
     void RefreshStatTable(GunData gun)
@@ -296,22 +382,22 @@ public class WeaponUpgradeUI : MonoBehaviour
                 break;
 
             case 2:
-                randomNumber = Random.Range(1, 7); // 1 -> 6
+                randomNumber = Random.Range(1, 9); // 1 -> 8
                 success = randomNumber == 1;
                 break;
 
             case 3:
-                randomNumber = Random.Range(1, 6); // 1 -> 5
+                randomNumber = Random.Range(1, 8); // 1 -> 7
                 success = randomNumber == 3;
                 break;
 
             case 4:
-                randomNumber = Random.Range(1, 6); // 1 -> 5
+                randomNumber = Random.Range(1, 8); // 1 -> 7
                 success = randomNumber == 2 || randomNumber == 5;
                 break;
 
             case 5:
-                randomNumber = Random.Range(1, 6); // 1 -> 5
+                randomNumber = Random.Range(1, 7); // 1 -> 6
                 success = randomNumber == 1 || randomNumber == 3 || randomNumber == 5;
                 break;
         }

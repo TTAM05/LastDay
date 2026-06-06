@@ -34,21 +34,21 @@ MonoBehaviour:
     magBonus: 0
     reserveBonus: 0
     reloadBonus: 0
-  - damageBonus: 70
+  - damageBonus: 3
     fireRateBonus: 0
-    recoilBonus: 0.1
-    magBonus: 30
+    recoilBonus: 0.2
+    magBonus: 5
+    reserveBonus: 25
+    reloadBonus: 0.2
+  - damageBonus: 6
+    fireRateBonus: 0
+    recoilBonus: 0.4
+    magBonus: 10
     reserveBonus: 50
-    reloadBonus: 2
-  - damageBonus: 0
+    reloadBonus: 0.5
+  - damageBonus: 10
     fireRateBonus: 0
-    recoilBonus: 0
-    magBonus: 0
-    reserveBonus: 0
-    reloadBonus: 0
-  - damageBonus: 100
-    fireRateBonus: 0
-    recoilBonus: 0
-    magBonus: 0
-    reserveBonus: 0
-    reloadBonus: 0
+    recoilBonus: 0.7
+    magBonus: 15
+    reserveBonus: 100
+    reloadBonus: 0.8
