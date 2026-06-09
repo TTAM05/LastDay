@@ -4,7 +4,7 @@ using UnityEngine;
 public class GunData : ScriptableObject
 {   
     [Header("Inventory Data")]
-    InventoryData inventoryData; // chứa maxReserveAmmo để AmmoInventory tham chiếu
+    public InventoryData inventoryData; // chứa maxReserveAmmo để AmmoInventory tham chiếu
 
     [Header("Info")]
     public string gunName;
@@ -16,7 +16,6 @@ public class GunData : ScriptableObject
     public float fireRate = 0.1f;
 
     public bool isAutomatic = true;
-    public float range = 1000f;
 
     [Header("Reload")]
     // public float reloadSpeed = 2f;
@@ -25,6 +24,7 @@ public class GunData : ScriptableObject
     [Header("Stability")]
     [Range(0, 100)]
     public float stability = 80f;
+    public float range=100f;
 
     [Header("Ammo")]
     public int maxAmmo = 30;
@@ -40,5 +40,10 @@ public class GunData : ScriptableObject
     [Header("Recoil")]
     public float recoilX = 1f;
     public float recoilY = 1f;
+ 
+
+    [Header("Upgrade Per Level")]
+    public GunUpgradeLevel[] upgradeLevels = new GunUpgradeLevel[4];
 
 }
+

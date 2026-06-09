@@ -7,6 +7,8 @@ public class DebugDataController : MonoBehaviour
     public TMP_Text dataText;
     public TMP_InputField valueInput;
 
+    public GunData[] guns;
+
     const string MONEY_KEY = "Money";
     const string UPGRADE_SHARD_KEY = "UpgradeShard";
     const string TICKET_KEY = "Ticket";
@@ -64,6 +66,21 @@ public class DebugDataController : MonoBehaviour
         PlayerPrefs.Save();
 
         RefreshUI();
+    }
+
+    public void ResetWeaponUpgradeData()
+    {
+        foreach (GunData gun in guns)
+        {
+            if (gun == null)
+                continue;
+
+            PlayerPrefs.DeleteKey(gun.gunName + "_Level");
+        }
+
+        PlayerPrefs.Save();
+
+        Debug.Log("Reset toàn bộ Weapon Upgrade");
     }
 
     int GetInputValue()
