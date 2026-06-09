@@ -13,12 +13,14 @@ public class PlayerAim : MonoBehaviour
 
     private PlayerInputActions inputActions;
     private Animator anim;
+    public Camera camera;
     private bool isAiming;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         anim = GetComponent<Animator>();
+        camera = GetComponent<Camera>();
     }
 
     private void OnEnable()
@@ -46,6 +48,12 @@ public class PlayerAim : MonoBehaviour
 
         crosshair.SetActive(true);
         anim.SetBool("IsAim", true);
+
+        //Fov 30
+        if (camera != null)
+        {
+            camera.fieldOfView = 30f;
+        }
     }
 
     private void OnAimCanceled(InputAction.CallbackContext context)
@@ -57,5 +65,11 @@ public class PlayerAim : MonoBehaviour
 
         crosshair.SetActive(false);
         anim.SetBool("IsAim", false);
+
+        //Fov 60
+        if (camera != null)
+        {
+            camera.fieldOfView = 60f;
+        }
     }
 }

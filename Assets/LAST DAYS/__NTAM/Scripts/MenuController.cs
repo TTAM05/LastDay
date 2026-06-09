@@ -29,6 +29,11 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("Upgrade");
     }
 
+    public void GoToWheel()
+    {
+        SceneManager.LoadScene("Lucky");
+    }
+
     //Play
     public void PlayGame()
     {
