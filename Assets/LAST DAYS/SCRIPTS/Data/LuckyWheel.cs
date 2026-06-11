@@ -43,6 +43,9 @@ public class LuckyWheel : MonoBehaviour
     public TMP_Text ticketText;
     public TMP_Text shardText;
 
+    [Header("Spin Cost")]
+    public int ticketCost = 1;
+
     void Start()
     {
         UpdateUI();
@@ -63,6 +66,21 @@ public class LuckyWheel : MonoBehaviour
     public void Spin()
     {
         if (isSpinning) return;
+
+        int ticket = PlayerPrefs.GetInt("Ticket", 0);
+
+        if (ticket < ticketCost)
+        {
+            Debug.Log("Không đủ vé quay!");
+            rewardText.text = "Không đủ vé quay!";
+            return;
+        }
+
+        ticket -= ticketCost;
+        PlayerPrefs.SetInt("Ticket", ticket);
+        PlayerPrefs.Save();
+
+        UpdateUI();
 
         int rewardIndex = GetRandomRewardIndex();
 
