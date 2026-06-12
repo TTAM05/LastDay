@@ -6,6 +6,9 @@ public class WeaponManager : MonoBehaviour
     [Header("Weapons")]
     public GameObject[] weapons;
 
+    [Header("Grenade")]
+    public GrenadeSystem grenadeSystem;
+
     public int currentWeapon = -1;
 
     private PlayerInputActions input;
@@ -23,6 +26,7 @@ public class WeaponManager : MonoBehaviour
         input.Player.Weapon2.performed += OnWeapon2;
         input.Player.Weapon3.performed += OnWeapon3;
         input.Player.ScrollWeapon.performed += OnScrollWeapon;
+        input.Player.Grenade.performed += OnGrenade;
     }
 
     void OnDisable()
@@ -31,6 +35,7 @@ public class WeaponManager : MonoBehaviour
         input.Player.Weapon2.performed -= OnWeapon2;
         input.Player.Weapon3.performed -= OnWeapon3;
         input.Player.ScrollWeapon.performed -= OnScrollWeapon;
+        input.Player.Grenade.performed -= OnGrenade;
 
         input.Disable();
     }
@@ -85,6 +90,11 @@ public class WeaponManager : MonoBehaviour
         }
 
         currentWeapon = index;
+
+        if (grenadeSystem != null)
+        {
+            grenadeSystem.SetEquip(false);
+        }
     }
     private bool IsCurrentWeaponReloading()
     {
@@ -136,5 +146,27 @@ public class WeaponManager : MonoBehaviour
     void OnWeapon3(InputAction.CallbackContext ctx)
     {
         SelectWeapon(2);
+    }
+
+    void OnGrenade(InputAction.CallbackContext context)
+    {
+        EquipGrenade();
+    }
+
+    void EquipGrenade()
+    {
+        if (Time.timeScale == 0) return;
+
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].SetActive(false);
+        }
+
+        currentWeapon = -1;
+
+        if (grenadeSystem != null)
+        {
+            grenadeSystem.SetEquip(true);
+        }
     }
 }
