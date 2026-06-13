@@ -42,9 +42,16 @@ public class LuckyWheel : MonoBehaviour
     public TMP_Text moneyText;
     public TMP_Text ticketText;
     public TMP_Text shardText;
+    public TMP_Text costText;
 
     [Header("Spin Cost")]
     public int ticketCost = 1;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+
+    // public AudioClip spinSound;
+    public AudioClip rewardSound;
 
     void Start()
     {
@@ -61,6 +68,8 @@ public class LuckyWheel : MonoBehaviour
 
         shardText.text =
             PlayerPrefs.GetInt("UpgradeShard", 0).ToString();
+
+        costText.text =  ticketCost.ToString();    
     }
 
     public void Spin()
@@ -197,6 +206,11 @@ public class LuckyWheel : MonoBehaviour
     {
         RewardData reward = rewards[index];
 
+        if (rewardSound != null)
+        {
+            audioSource.PlayOneShot(rewardSound);
+        }
+
         ShowRewardPopup(reward);
 
         Debug.Log(
@@ -239,7 +253,7 @@ public class LuckyWheel : MonoBehaviour
         }
 
         //ProtectCard
-        if (reward.rewardName == "ProtectCard")
+        if (reward.rewardName == "Protect Card")
         {
             int protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
             protectCard += reward.amount;

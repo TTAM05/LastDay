@@ -53,9 +53,20 @@ public class WeaponUpgradeUI : MonoBehaviour
     private bool isUpgrading;
     private Vector2[] slotStartPositions;
 
+    [Header("Protect Card")]
+    public GameObject protectShieldPanel; // màng bảo vệ 
+    public Button protectButton;
+    public TMP_Text protectCardText;
+
+    private int protectCard;
+    private bool isProtected;
+
 
     void Start()
-    {
+    {   
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(false);
+
         insertedShard = 0;
 
         slotStartPositions = new Vector2[shakeSlots.Length];
@@ -67,6 +78,8 @@ public class WeaponUpgradeUI : MonoBehaviour
         }
 
         SelectGun(0);
+
+        RefreshAllUI();
     }
 
     public void SelectNextGun()
@@ -77,6 +90,35 @@ public class WeaponUpgradeUI : MonoBehaviour
             currentGunIndex = 0;
 
         insertedShard = 0;
+        RefreshAllUI();
+    }
+
+    public void UseProtectCard()
+    {
+        if (isProtected)
+            return;
+
+        protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
+
+        if (protectCard <= 0)
+        {
+            Debug.Log("Không có Protect Card");
+            return;
+        }
+
+        protectCard--;
+
+        PlayerPrefs.SetInt("ProtectCard", protectCard);
+        PlayerPrefs.Save();
+
+        isProtected = true;
+
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(true);
+
+        if (protectButton != null)
+            protectButton.interactable = false;
+
         RefreshAllUI();
     }
 
@@ -142,7 +184,8 @@ public class WeaponUpgradeUI : MonoBehaviour
     }
 
     IEnumerator UpgradeSequence()
-    {
+    {  
+
         LoadCurrency();
 
         GunData gun = guns[currentGunIndex];
@@ -179,13 +222,22 @@ public class WeaponUpgradeUI : MonoBehaviour
         }
         else
         {
-            SetGunLevel(gun, 0);
+            if (isProtected)
+            {
+                Debug.Log("Upgrade Failed -> Protect Card cứu cấp độ");
+            }
+            else
+            {
+                SetGunLevel(gun, 0);
+
+                Debug.Log("Upgrade Failed -> LV0");
+            }
 
             if (textPopup != null)
                 textPopup.ShowFail();
-
-            Debug.Log("Upgrade Failed -> LV0");
         }
+
+        ConsumeProtectCard();   
 
         insertedShard = 0;
 
@@ -195,10 +247,31 @@ public class WeaponUpgradeUI : MonoBehaviour
         isUpgrading = false;
     }
 
+    void ConsumeProtectCard()
+    {
+        if (!isProtected)
+            return;
 
+        isProtected = false;
+
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(false);
+
+        if (protectButton != null)
+            protectButton.interactable =
+                PlayerPrefs.GetInt("ProtectCard", 0) > 0;
+    }
 
     IEnumerator ShakeSlots()
     {
+        Vector2[] startPositions = new Vector2[shakeSlots.Length];
+
+        for (int i = 0; i < shakeSlots.Length; i++)
+        {
+            if (shakeSlots[i] != null)
+                startPositions[i] = shakeSlots[i].anchoredPosition;
+        }
+
         float timer = 0f;
 
         while (timer < shakeDuration)
@@ -210,8 +283,11 @@ public class WeaponUpgradeUI : MonoBehaviour
                 if (shakeSlots[i] == null)
                     continue;
 
-                Vector2 randomOffset = Random.insideUnitCircle * shakeStrength;
-                shakeSlots[i].anchoredPosition = slotStartPositions[i] + randomOffset;
+                Vector2 randomOffset =
+                    Random.insideUnitCircle * shakeStrength;
+
+                shakeSlots[i].anchoredPosition =
+                    startPositions[i] + randomOffset;
             }
 
             yield return null;
@@ -220,7 +296,7 @@ public class WeaponUpgradeUI : MonoBehaviour
         for (int i = 0; i < shakeSlots.Length; i++)
         {
             if (shakeSlots[i] != null)
-                shakeSlots[i].anchoredPosition = slotStartPositions[i];
+                shakeSlots[i].anchoredPosition = startPositions[i];
         }
     }
 
@@ -330,6 +406,13 @@ public class WeaponUpgradeUI : MonoBehaviour
 
         if (costText != null)
             costText.text = upgradeCost.ToString();
+
+        if (protectCardText != null)
+            protectCardText.text = protectCard.ToString();
+
+        if (protectButton != null)
+            protectButton.interactable = !isProtected && protectCard > 0;
+
     }
 
     void SetText(TMP_Text[] texts, int index, string value)
@@ -359,6 +442,7 @@ public class WeaponUpgradeUI : MonoBehaviour
     {
         money = PlayerPrefs.GetInt("Money", 0);
         shard = PlayerPrefs.GetInt("UpgradeShard", 0);
+        protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
     }
 
     void SaveCurrency()

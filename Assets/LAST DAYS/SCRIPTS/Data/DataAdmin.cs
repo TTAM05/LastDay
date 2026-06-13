@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DebugDataController : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class DebugDataController : MonoBehaviour
     const string MONEY_KEY = "Money";
     const string UPGRADE_SHARD_KEY = "UpgradeShard";
     const string TICKET_KEY = "Ticket";
+    const string GRENADE_KEY = "Grenade";
+    const string PROTECT_CARD_KEY = "ProtectCard";
 
     void Start()
     {
@@ -29,6 +32,25 @@ public class DebugDataController : MonoBehaviour
     public void AddTicket() => AddValue(TICKET_KEY);
     public void SubtractTicket() => SubtractValue(TICKET_KEY);
     public void ResetTicket() => ResetValue(TICKET_KEY);
+
+    public void AddGrenade() => AddValue(GRENADE_KEY);
+    public void SubtractGrenade() => SubtractValue(GRENADE_KEY);
+    public void ResetGrenade() => ResetValue(GRENADE_KEY);
+
+    public void AddProtectCard() => AddValue(PROTECT_CARD_KEY);
+    public void SubtractProtectCard() => SubtractValue(PROTECT_CARD_KEY);
+    public void ResetProtectCard() => ResetValue(PROTECT_CARD_KEY);
+
+    public void LoadSceneByName(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogWarning("Chưa nhập tên scene");
+            return;
+        }
+
+        SceneManager.LoadScene(sceneName);
+    }
 
     public void ResetAllData()
     {
@@ -97,13 +119,17 @@ public class DebugDataController : MonoBehaviour
         int money = PlayerPrefs.GetInt(MONEY_KEY, 0);
         int shard = PlayerPrefs.GetInt(UPGRADE_SHARD_KEY, 0);
         int ticket = PlayerPrefs.GetInt(TICKET_KEY, 0);
+        int grenade = PlayerPrefs.GetInt(GRENADE_KEY, 0);
+        int protectCard = PlayerPrefs.GetInt(PROTECT_CARD_KEY, 0);
 
         if (dataText != null)
         {
             dataText.text =
                 $"Money: {money:N0}\n" +
                 $"Upgrade Shard: {shard:N0}\n" +
-                $"Ticket: {ticket:N0}";
+                $"Ticket: {ticket:N0}\n" +
+                $"Grenade: {grenade:N0}\n" +
+                $"Protect Card: {protectCard:N0}";
         }
     }
 }
