@@ -12,10 +12,45 @@ public class Grenade : MonoBehaviour
     [Header("Effect")]
     public GameObject explosionEffect;
 
+    [Header("Screen Shake")]
+    public float shakeRadius = 10f;
+    public float maxShakeDuration = 0.4f;
+    public float maxShakeMagnitude = 0.3f;
+
+    [Header("Audio")]
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip explosionSound;
+
+
+
+    private CameraShake cameraShake;
+    private Transform player;
     private bool exploded;
+
+
+    void Awake()
+    {
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+    }
 
     void Start()
     {
+        player =
+            GameObject.FindGameObjectWithTag("Player")
+            ?.transform;
+        if(player == null)
+        {
+            Debug.Log("Ko có player");
+
+        }
+
+        cameraShake =
+        Camera.main.GetComponent<CameraShake>();
+
         StartCoroutine(ExplodeAfterDelay());
     }
 
@@ -39,6 +74,33 @@ public class Grenade : MonoBehaviour
             );
         }
 
+
+        if (explosionSound != null)
+        {
+            audioSource.PlayOneShot(explosionSound);
+
+        }
+        
+        if (player != null && cameraShake != null)
+        {
+            float distance =
+                Vector3.Distance(
+                    transform.position,
+                    player.position
+                );
+
+            if (distance <= shakeRadius)
+            {
+                float percent =
+                    1f - (distance / shakeRadius);
+
+                cameraShake.Shake(
+                    maxShakeDuration * percent,
+                    maxShakeMagnitude * percent
+                );
+            }
+        }
+
         Collider[] hits = Physics.OverlapSphere(transform.position, radius);
 
         foreach (Collider hit in hits)
@@ -47,7 +109,7 @@ public class Grenade : MonoBehaviour
 
             Health player = hit.GetComponentInParent<Health>();
 
-            MutantHealth mutant = hit.GetComponentInParent<MutantHealth>();
+            MutantHealth mutant = hit.GetComponent<MutantHealth>();
 
             if (enemy != null)
             {
@@ -76,16 +138,22 @@ public class Grenade : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+       
+        Destroy(gameObject,1f);
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-
         Gizmos.DrawWireSphere(
             transform.position,
             radius
+        );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(
+            transform.position,
+            shakeRadius
         );
     }
 

@@ -112,6 +112,12 @@ public class WeaponManager : MonoBehaviour
         if (Time.timeScale == 0f)
             return;
 
+
+        if (grenadeSystem != null)
+        {
+            grenadeSystem.SetEquip(false);
+        }    
+
         Vector2 scroll = ctx.ReadValue<Vector2>();
 
         if (scroll.y == 0)
@@ -156,6 +162,15 @@ public class WeaponManager : MonoBehaviour
     void EquipGrenade()
     {
         if (Time.timeScale == 0) return;
+
+        int grenadeAmount =
+            PlayerPrefs.GetInt(
+                "Grenade",
+                0
+            );
+
+        if(grenadeAmount <=0)
+            return;
 
         for (int i = 0; i < weapons.Length; i++)
         {
