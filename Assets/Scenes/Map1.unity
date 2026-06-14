@@ -32502,6 +32502,7 @@ MonoBehaviour:
   useKnockback: 1
   pushCooldown: 1
   pushForce: 8
+  Hunter: {fileID: 5422510342974737714}
 --- !u!1 &722544712
 GameObject:
   m_ObjectHideFlags: 0
@@ -47719,7 +47720,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 973605079}
@@ -52788,7 +52789,7 @@ Transform:
   m_GameObject: {fileID: 1285941740}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.000000029802319, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 2.3, z: 2.7}
+  m_LocalPosition: {x: 0.03, y: 2.3, z: 2.974}
   m_LocalScale: {x: 3.3333335, y: 3.333333, z: 3.3333335}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53125,7 +53126,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.03
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -53503,14 +53504,14 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 25
+    angle: 0
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
+    m_Scale: {x: 0.3, y: 0.3, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -106199,7 +106200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &4325271311436796891
 Animator:
   serializedVersion: 7
@@ -112902,7 +112903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7227053250718102373
 GameObject:
   m_ObjectHideFlags: 0
