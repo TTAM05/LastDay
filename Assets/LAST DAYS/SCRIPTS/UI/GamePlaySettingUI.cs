@@ -10,6 +10,7 @@ public class GameplaySettingUI : MonoBehaviour
 
     public Button gameplayTabButton;
     public Button uiTabButton;
+    public Button screenModeTabButton;
 
     public Color activeColor = new Color32(0xC9, 0xFF, 0x2D, 0xFF);
     public Color inactiveColor = Color.white;
@@ -19,6 +20,7 @@ public class GameplaySettingUI : MonoBehaviour
 
     public GameObject GameplayContent;
     public GameObject UIContent;
+    public GameObject ScreenModeContent;
 
     void Start()
     {
@@ -61,7 +63,12 @@ public class GameplaySettingUI : MonoBehaviour
         if (UIContent != null)
             UIContent.SetActive(false);
 
-        SetTabButtonColors(true);
+        if (ScreenModeContent != null)
+            ScreenModeContent.SetActive(false);
+
+        SetButtonColor(gameplayTabButton, activeColor);
+        SetButtonColor(uiTabButton, inactiveColor);
+        SetButtonColor(screenModeTabButton, inactiveColor);
     }
 
     public void ShowUIContent()
@@ -72,7 +79,12 @@ public class GameplaySettingUI : MonoBehaviour
         if (UIContent != null)
             UIContent.SetActive(true);
 
-        SetTabButtonColors(false);
+        if (ScreenModeContent != null)
+            ScreenModeContent.SetActive(false);
+
+        SetButtonColor(gameplayTabButton, inactiveColor);
+        SetButtonColor(uiTabButton, activeColor);
+        SetButtonColor(screenModeTabButton, inactiveColor);
     }
 
     void SetTabButtonColors(bool gameplayActive)
@@ -134,6 +146,22 @@ public class GameplaySettingUI : MonoBehaviour
 
         if (button.targetGraphic != null)
             button.targetGraphic.color = color;
+    }
+
+    public void ShowScreenModeContent()
+    {
+        if (GameplayContent != null)
+            GameplayContent.SetActive(false);
+
+        if (UIContent != null)
+            UIContent.SetActive(false);
+
+        if (ScreenModeContent != null)
+            ScreenModeContent.SetActive(true);
+
+        SetButtonColor(gameplayTabButton, inactiveColor);
+        SetButtonColor(uiTabButton, inactiveColor);
+        SetButtonColor(screenModeTabButton, activeColor);
     }
 
     GameObject FindObjectByTagIncludeInactive(string tag)

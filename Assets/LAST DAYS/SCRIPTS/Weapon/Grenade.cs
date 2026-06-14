@@ -109,7 +109,7 @@ public class Grenade : MonoBehaviour
 
             Health player = hit.GetComponentInParent<Health>();
 
-            MutantHealth mutant = hit.GetComponent<MutantHealth>();
+            MutantHealth mutant = hit.GetComponentInParent<MutantHealth>();
 
             if (enemy != null)
             {
@@ -124,6 +124,8 @@ public class Grenade : MonoBehaviour
             if (mutant != null)
             {
                 mutant.TakeDamage(damage, false);
+
+                Debug.Log("mutant hit boom");
             }
 
             Rigidbody rb = hit.GetComponent<Rigidbody>();
