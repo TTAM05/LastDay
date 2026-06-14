@@ -24,6 +24,21 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("Lobby"); 
     }
 
+    public void GoAdmin()
+    {
+        SceneManager.LoadScene("Admin"); 
+    }
+
+    public void GoToUpgrade()
+    {
+        SceneManager.LoadScene("Upgrade");
+    }
+
+    public void GoToWheel()
+    {
+        SceneManager.LoadScene("Lucky");
+    }
+
     //Play
     public void PlayGame()
     {
@@ -38,6 +53,14 @@ public class MenuController : MonoBehaviour
             SettingPanel.SetActive(true);
             MenuPanel.SetActive(false);
         }
+    }
+
+    public void TogglePanel(GameObject panel)
+    {
+        if (panel == null)
+            return;
+
+        panel.SetActive(!panel.activeSelf);
     }
 
     // Hàm quay lại Menu chính từ Setting

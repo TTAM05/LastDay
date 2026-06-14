@@ -6,47 +6,34 @@ using TMPro;
 public class GunSystem : MonoBehaviour
 {
     [Header("References")]
-
-    // camera FPS
     public Camera cam;
     public AimSystem aimSystem;
-
-    // animator súng
     public Animator animator;
-
-    // muzzle flash
     public ParticleSystem muzzleFlash;
 
-   
-    // input system
     private PlayerInputActions input;
-
-    // đang giữ chuột
     private bool isFiring;
-
-    //đang thay đạn
     private bool isReloading;
-
-    // cooldown bắn
     private float nextFireTime;
+
     public AudioSource gunAudio;
     public GunRecoil gunRecoil;
 
     [Header("Bullet")]
-
     public GameObject bulletPrefab;
 
     [Header("Blood")]
     public ParticleSystem bloodPrefab;
-
     public Transform muzzle;
 
     [Header("Gun Data")]
     public GunData gunData;
     public int currentAmmo;
+
     private WeaponManager weaponManager;
     private int weaponIndex;
     private AmmoInventory inventory;
+
     [Header("Animation")]
     public AnimationClip reloadClip;
 
@@ -60,63 +47,58 @@ public class GunSystem : MonoBehaviour
     [Header("Crosshair")]
     public GameObject normalCrosshair;
     public GameObject hitCrosshair;
-
     public float hitCrosshairTime = 0.1f;
 
     private Coroutine hitRoutine;
-    private Vector3 startLocalPosition;
-    private Quaternion startLocalRotation;
-    private Vector3 startLocalScale;
-
 
     void Awake()
     {
         input = new PlayerInputActions();
-
-        startLocalPosition = transform.localPosition;
-        startLocalRotation = transform.localRotation;
-        startLocalScale = transform.localScale;
     }
 
     void Start()
     {
         if (gunAudio != null)
-        {
             gunAudio.playOnAwake = false;
-        }
 
-        currentAmmo = gunData.maxAmmo;
-   
         inventory = GetComponentInParent<AmmoInventory>();
         weaponManager = GetComponentInParent<WeaponManager>();
 
-        //tự tìm UI theo tên nếu chưa gán
+        currentAmmo = GetMaxAmmo();
+
         if (ammoText == null)
-            ammoText = GameObject.Find("AmmoText").GetComponent<TMP_Text>();    
+        {
+            GameObject obj = GameObject.Find("AmmoText");
+            if (obj != null)
+                ammoText = obj.GetComponent<TMP_Text>();
+        }
 
         if (reserveAmmoText == null)
-            reserveAmmoText = GameObject.Find("ReserveAmmoText").GetComponent<TMP_Text>();    
-       
-        // tìm trước
+        {
+            GameObject obj = GameObject.Find("ReserveAmmoText");
+            if (obj != null)
+                reserveAmmoText = obj.GetComponent<TMP_Text>();
+        }
+
         if (reloadTimeText == null)
         {
-            TMP_Text[] all = Resources.FindObjectsOfTypeAll<TMP_Text>();
-            foreach (TMP_Text t in all)
+            TMP_Text[] allTexts = Resources.FindObjectsOfTypeAll<TMP_Text>();
+
+            foreach (TMP_Text text in allTexts)
             {
-                if (t.name == "ReloadTimeText")
+                if (text.name == "ReloadTimeText")
                 {
-                    reloadTimeText = t;
+                    reloadTimeText = text;
                     break;
                 }
             }
         }
 
-        // ẩn sau
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(false);
 
-        if (enabled)
-            SetUIActive(true);
+        SetUIActive(true);
+        UpdateAmmoUI();
     }
 
     void OnEnable()
@@ -130,160 +112,108 @@ public class GunSystem : MonoBehaviour
         input.Enable();
 
         input.Player.Fire.performed += OnFirePressed;
-        input.Player.Reload.performed += OnReloadPressed;
         input.Player.Fire.canceled += OnFireReleased;
+        input.Player.Reload.performed += OnReloadPressed;
     }
 
     void OnDisable()
     {
         input.Player.Fire.performed -= OnFirePressed;
-        input.Player.Reload.performed -= OnReloadPressed;
         input.Player.Fire.canceled -= OnFireReleased;
+        input.Player.Reload.performed -= OnReloadPressed;
 
         input.Disable();
 
         CancelFire();
     }
 
-    void EnsureUIReferences()
-    {
-        if (bulletUI == null)
-        {
-            GameObject obj = GameObject.Find("BulletUI");
-            if (obj != null) bulletUI = obj;
-        }
-
-        if (crosshairUI == null)
-        {
-            GameObject obj = GameObject.Find("Crosshair");
-            if (obj == null)
-                obj = GameObject.Find("CrossHair");
-            if (obj != null) crosshairUI = obj;
-        }
-    }
-
-    public void SetUIActive(bool active)
-    {
-        if (bulletUI != null)
-            bulletUI.SetActive(active);
-
-        if (crosshairUI != null)
-            crosshairUI.SetActive(active);
-        else
-        {
-            if (normalCrosshair != null)
-                normalCrosshair.SetActive(active);
-            if (!active && hitCrosshair != null)
-                hitCrosshair.SetActive(false);
-        }
-    }
-
-    
-
-    // =========================================================
-    // UPDATE
-    // =========================================================
     void Update()
-    {   
-        if (Time.timeScale == 0f) return;
+    {
+        if (Time.timeScale == 0f)
+            return;
 
-        if (isReloading) return;
+        if (isReloading)
+            return;
+
+        if (gunData == null)
+            return;
 
         if (gunData.isAutomatic && isFiring)
         {
             if (Time.time >= nextFireTime)
             {
                 if (currentAmmo > 0)
-                {
                     Shoot();
-                }
 
-                nextFireTime = Time.time + gunData.fireRate;
+                nextFireTime = Time.time + GetFireRate();
             }
         }
 
         UpdateAmmoUI();
-
     }
 
-    // =========================================================
-    // NHẤN CHUỘT
-    // =========================================================
     void OnFirePressed(InputAction.CallbackContext ctx)
-    {   
-        if(Time.timeScale == 0f) return;
-        if (isReloading) return;
+    {
+        if (Time.timeScale == 0f)
+            return;
+
+        if (isReloading)
+            return;
+
+        if (gunData == null)
+            return;
 
         isFiring = true;
 
-        // single fire
         if (!gunData.isAutomatic && currentAmmo > 0)
         {
-            Shoot();
+            if (Time.time >= nextFireTime)
+            {
+                Shoot();
+                nextFireTime = Time.time + GetFireRate();
+            }
         }
+    }
+
+    void OnFireReleased(InputAction.CallbackContext ctx)
+    {
+        if (Time.timeScale == 0f)
+            return;
+
+        CancelFire();
     }
 
     void OnReloadPressed(InputAction.CallbackContext ctx)
-    {   
-        if(Time.timeScale == 0f) return;
-        if (currentAmmo < gunData.maxAmmo && !isReloading)
-        {
+    {
+        if (Time.timeScale == 0f)
+            return;
+
+        if (isReloading)
+            return;
+
+        if (currentAmmo < GetMaxAmmo())
             StartCoroutine(Reload());
-        }
     }
 
-    // =========================================================
-    // THẢ CHUỘT
-    // =========================================================
-    void OnFireReleased(InputAction.CallbackContext ctx)
-    {   
-        if (Time.timeScale == 0f) return;
-        isFiring = false;
-
-        // tắt anim auto
-        if (animator != null)
-        {
-            animator.SetBool("Auto", false);
-        }
-    }
-
-
-
-    // =========================================================
-    // SHOOT
-    // =========================================================
     void Shoot()
     {
         if (!CanShoot())
             return;
 
-        ConsumeAmmo();
+        currentAmmo--;
 
         PlayShootEffect();
-
         ApplyRecoil();
-
         HandleHit();
-
         UpdateAmmoUI();
-    }
-
-    public void SetWeaponIndex(int index)
-    {
-        weaponIndex = index;
     }
 
     bool CanShoot()
     {
         return Time.timeScale > 0f &&
-            !isReloading &&
-            currentAmmo > 0 &&
-            gunData != null;
-    }
-
-    void ConsumeAmmo()
-    {
-        currentAmmo--;
+               !isReloading &&
+               currentAmmo > 0 &&
+               gunData != null;
     }
 
     void PlayShootEffect()
@@ -297,7 +227,8 @@ public class GunSystem : MonoBehaviour
                 ? gunData.autoShotClip
                 : gunData.singleShotClip;
 
-            gunAudio.PlayOneShot(clip);
+            if (clip != null)
+                gunAudio.PlayOneShot(clip);
         }
 
         if (animator != null)
@@ -317,6 +248,9 @@ public class GunSystem : MonoBehaviour
 
     void HandleHit()
     {
+        if (cam == null)
+            return;
+
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
 
         if (!Physics.Raycast(ray, out RaycastHit hit, gunData.range))
@@ -333,12 +267,13 @@ public class GunSystem : MonoBehaviour
         if (!isHeadshot && !isBody)
             return;
 
-        float finalDamage = isHeadshot
-            ? gunData.damage * 3f
-            : gunData.damage;
+        float damage = GetDamage();
 
-        EnemyHealth enemy =
-            hit.collider.GetComponentInParent<EnemyHealth>();
+        float finalDamage = isHeadshot
+            ? damage * 3f
+            : damage;
+
+        EnemyHealth enemy = hit.collider.GetComponentInParent<EnemyHealth>();
 
         if (enemy != null)
         {
@@ -348,8 +283,7 @@ public class GunSystem : MonoBehaviour
             return;
         }
 
-        MutantHealth mutant =
-            hit.collider.GetComponentInParent<MutantHealth>();
+        MutantHealth mutant = hit.collider.GetComponentInParent<MutantHealth>();
 
         if (mutant != null)
         {
@@ -357,6 +291,67 @@ public class GunSystem : MonoBehaviour
             SpawnBlood(hit);
             ShowHitMarker();
         }
+    }
+
+    IEnumerator Reload()
+    {
+        if (isReloading)
+            yield break;
+
+        if (gunData == null)
+            yield break;
+
+        int maxAmmo = GetMaxAmmo();
+
+        if (currentAmmo >= maxAmmo)
+            yield break;
+
+        if (inventory == null)
+            yield break;
+
+        if (inventory.GetAmmo(weaponIndex) <= 0)
+            yield break;
+
+        isReloading = true;
+        isFiring = false;
+
+        if (reloadTimeText != null)
+            reloadTimeText.gameObject.SetActive(true);
+
+        float reloadTime = GetReloadTime();
+
+        if (animator != null && reloadClip != null)
+        {
+            float reloadSpeed = reloadClip.length / reloadTime;
+            animator.SetFloat("ReloadSpeed", reloadSpeed);
+            animator.SetTrigger("Reload");
+        }
+
+        float timer = reloadTime;
+
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+
+            if (reloadTimeText != null)
+                reloadTimeText.text = $"Reloading... {timer:F1}s";
+
+            yield return null;
+        }
+
+        int needAmmo = maxAmmo - currentAmmo;
+        int reserve = inventory.GetAmmo(weaponIndex);
+        int ammoToLoad = Mathf.Min(needAmmo, reserve);
+
+        currentAmmo += ammoToLoad;
+        inventory.UseAmmo(weaponIndex, ammoToLoad);
+
+        if (reloadTimeText != null)
+            reloadTimeText.gameObject.SetActive(false);
+
+        isReloading = false;
+
+        UpdateAmmoUI();
     }
 
     void SpawnBlood(RaycastHit hit)
@@ -371,13 +366,15 @@ public class GunSystem : MonoBehaviour
         );
 
         blood.transform.SetParent(hit.collider.transform);
-
         Destroy(blood.gameObject, 2f);
     }
 
     void ShowHitMarker()
     {
         if (aimSystem != null && aimSystem.isAiming)
+            return;
+
+        if (normalCrosshair == null || hitCrosshair == null)
             return;
 
         if (hitRoutine != null)
@@ -397,68 +394,15 @@ public class GunSystem : MonoBehaviour
         normalCrosshair.SetActive(true);
     }
 
-    // =========================================================
-    //Nạp đạn
-    IEnumerator Reload()
+    public void SetWeaponIndex(int index)
     {
-        if (isReloading)
-            yield break;
-
-        if (currentAmmo >= gunData.maxAmmo)
-            yield break;
-
-        if (inventory == null)
-            yield break;
-
-        if (inventory.GetAmmo(weaponIndex) <= 0)
-            yield break;
-
-        isReloading = true;
-        isFiring = false;
-
-        if (reloadTimeText != null)
-            reloadTimeText.gameObject.SetActive(true);
-
-        if (animator != null && reloadClip != null)
-        {
-            float reloadSpeed = reloadClip.length / gunData.reloadTime;
-            animator.SetFloat("ReloadSpeed", reloadSpeed);
-            animator.SetTrigger("Reload");
-        }
-
-        float timer = gunData.reloadTime;
-
-        while (timer > 0f)
-        {
-            timer -= Time.deltaTime;
-
-            if (reloadTimeText != null)
-                reloadTimeText.text = $"Reloading... {timer:F1}s";
-
-            yield return null;
-        }
-
-        int needAmmo = gunData.maxAmmo - currentAmmo;
-        int reserve = inventory.GetAmmo(weaponIndex);
-        int ammoToLoad = Mathf.Min(needAmmo, reserve);
-
-        currentAmmo += ammoToLoad;
-        inventory.UseAmmo(weaponIndex, ammoToLoad);
-
-        if (reloadTimeText != null)
-            reloadTimeText.gameObject.SetActive(false);
-
-        isReloading = false;
-
-        UpdateAmmoUI();
+        weaponIndex = index;
     }
 
     public bool IsReloading()
     {
         return isReloading;
     }
-
-    
 
     public void CancelFire()
     {
@@ -470,19 +414,77 @@ public class GunSystem : MonoBehaviour
 
     public void PlayReloadSound()
     {
-        if (gunAudio != null && gunData.reloadclip != null)
-        {
+        if (gunAudio != null && gunData != null && gunData.reloadclip != null)
             gunAudio.PlayOneShot(gunData.reloadclip);
-        }
     }
 
     public void UpdateAmmoUI()
     {
+        if (gunData == null)
+            return;
+
         if (ammoText != null)
-            ammoText.text = $"{currentAmmo} / {gunData.maxAmmo}";
+            ammoText.text = $"{currentAmmo} / {GetMaxAmmo()}";
 
-        if (reserveAmmoText != null)
+        if (reserveAmmoText != null && inventory != null)
             reserveAmmoText.text = inventory.GetAmmo(weaponIndex).ToString();
+    }
 
+    void EnsureUIReferences()
+    {
+        if (bulletUI == null)
+        {
+            GameObject obj = GameObject.Find("BulletUI");
+            if (obj != null)
+                bulletUI = obj;
+        }
+
+        if (crosshairUI == null)
+        {
+            GameObject obj = GameObject.Find("Crosshair");
+
+            if (obj == null)
+                obj = GameObject.Find("CrossHair");
+
+            if (obj != null)
+                crosshairUI = obj;
+        }
+    }
+
+    public void SetUIActive(bool active)
+    {
+        if (bulletUI != null)
+            bulletUI.SetActive(active);
+
+        if (crosshairUI != null)
+            crosshairUI.SetActive(active);
+        else
+        {
+            if (normalCrosshair != null)
+                normalCrosshair.SetActive(active);
+
+            if (!active && hitCrosshair != null)
+                hitCrosshair.SetActive(false);
+        }
+    }
+
+    float GetDamage()
+    {
+        return GunUpgradeCalculator.GetDamage(gunData);
+    }
+
+    float GetFireRate()
+    {
+        return GunUpgradeCalculator.GetFireRate(gunData);
+    }
+
+    int GetMaxAmmo()
+    {
+        return GunUpgradeCalculator.GetMaxAmmo(gunData);
+    }
+
+    float GetReloadTime()
+    {
+        return GunUpgradeCalculator.GetReloadTime(gunData);
     }
 }

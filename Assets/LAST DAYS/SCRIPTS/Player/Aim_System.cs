@@ -6,6 +6,10 @@ public class AimSystem : MonoBehaviour
 {
     [Header("References")]
     public Camera cam;
+    public Camera CamReddot;
+
+    [Header("Aim Point")]
+    public Transform aimPoint; // đặt ở tâm ống ngắm
     public Animator animator;
     public Transform muzzle;           // đầu nòng súng
     public Image crosshairImage;       // UI crosshair
@@ -100,6 +104,10 @@ public class AimSystem : MonoBehaviour
 
         if (animator != null)
             animator.SetBool("Aim", true);
+
+        //fov 40
+        if (CamReddot != null)
+            CamReddot.fieldOfView = 40f;
     }
 
     // =====================================================
@@ -115,6 +123,10 @@ public class AimSystem : MonoBehaviour
 
         if (animator != null)
             animator.SetBool("Aim", false);
+
+        //fov 60
+        if (CamReddot != null)
+            CamReddot.fieldOfView = 60f;
     }
 
 

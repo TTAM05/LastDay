@@ -56,21 +56,21 @@ public class RewardManager : MonoBehaviour
             star = 5;
             money = Random.Range(250, 351);
             ticket = Random.Range(2, 4);
-            upgradeShard = 20;
+            upgradeShard = 5;
         }
         else if (totalPlayerDamage < 400f)
         {
             star = 3;
             money = Random.Range(100, 201);
             ticket = 1;
-            upgradeShard = 10;
+            upgradeShard = 2;
         }
         else
         {
             star = 1;
             money = Random.Range(50, 91);
             ticket = 0;
-            upgradeShard = 5;
+            upgradeShard = 1;
         }
 
         SaveReward();

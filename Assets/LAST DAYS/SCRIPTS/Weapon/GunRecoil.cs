@@ -6,13 +6,19 @@ public class GunRecoil : MonoBehaviour
 
     public void Fire(GunData gunData)
     {
+        if (gunData == null || fps == null)
+            return;
+
+        float recoilX =
+            GunUpgradeCalculator.GetRecoilX(gunData);
+
+        float recoilY =
+            GunUpgradeCalculator.GetRecoilY(gunData);
+
         float recoilHorizontal =
-            Random.Range(-gunData.recoilY, gunData.recoilY);
+            Random.Range(-recoilY, recoilY);
 
-        fps.wantedCameraXRotation -= gunData.recoilX;
-
+        fps.wantedCameraXRotation -= recoilX;
         fps.wantedYRotation += recoilHorizontal;
-
-        // Debug.Log("RECOIL");
     }
 }
