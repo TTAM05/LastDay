@@ -2,8 +2,9 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class LuckyWheel : MonoBehaviour
-{   
+{
     [System.Serializable]
     public class RewardData
     {
@@ -21,14 +22,22 @@ public class LuckyWheel : MonoBehaviour
     [Header("Wheel UI")]
     public RectTransform wheel;
     public Button spinButton;
+    public Button spin5Button;
+    public Button spin10Button;
     public TMP_Text rewardText;
 
     [Header("Reward")]
     public RewardData[] rewards;
-    
+
+    [Header("Popup")]
+    public float popupAutoCloseTime = 1.5f;
 
     [Header("Spin Setting")]
     public float spinDuration = 4f;
+    public float x5SpinDuration = 1.2f;
+    public float x10SpinDuration = 0.7f;
+    public float delayBetweenSpin = 0.1f;
+
     public int spinRound = 5;
     public float pointerAngle = 0f;
     public float offsetAngle = 0f;
@@ -43,14 +52,14 @@ public class LuckyWheel : MonoBehaviour
     public TMP_Text ticketText;
     public TMP_Text shardText;
     public TMP_Text costText;
+    public TMP_Text cost5Text;
+    public TMP_Text cost10Text;
 
     [Header("Spin Cost")]
     public int ticketCost = 1;
 
     [Header("Audio")]
     public AudioSource audioSource;
-
-    // public AudioClip spinSound;
     public AudioClip rewardSound;
 
     void Start()
@@ -60,40 +69,85 @@ public class LuckyWheel : MonoBehaviour
 
     public void UpdateUI()
     {
-        moneyText.text =
-            PlayerPrefs.GetInt("Money", 0).ToString();
+        moneyText.text = PlayerPrefs.GetInt("Money", 0).ToString();
+        ticketText.text = PlayerPrefs.GetInt("Ticket", 0).ToString();
+        shardText.text = PlayerPrefs.GetInt("UpgradeShard", 0).ToString();
 
-        ticketText.text =
-            PlayerPrefs.GetInt("Ticket", 0).ToString();
+        costText.text = ticketCost.ToString();
 
-        shardText.text =
-            PlayerPrefs.GetInt("UpgradeShard", 0).ToString();
+        if (cost5Text != null)
+            cost5Text.text = "X"+(ticketCost * 5).ToString();
 
-        costText.text =  ticketCost.ToString();    
+        if (cost10Text != null)
+            cost10Text.text = "X"+(ticketCost * 10).ToString();
     }
 
     public void Spin()
     {
-        if (isSpinning) return;
+        StartCoroutine(MultiSpin(1, spinDuration));
+    }
 
+    public void SpinX5()
+    {
+        StartCoroutine(MultiSpin(5, x5SpinDuration));
+    }
+
+    public void SpinX10()
+    {
+        StartCoroutine(MultiSpin(10, x10SpinDuration));
+    }
+
+    IEnumerator MultiSpin(int spinCount, float duration)
+    {
+        if (isSpinning) yield break;
+
+        int totalCost = ticketCost * spinCount;
         int ticket = PlayerPrefs.GetInt("Ticket", 0);
 
-        if (ticket < ticketCost)
+        if (ticket < totalCost)
         {
-            Debug.Log("Không đủ vé quay!");
-            rewardText.text = "Không đủ vé quay!";
-            return;
+            rewardText.text = "Not enough tickets!";
+            yield break;
         }
 
-        ticket -= ticketCost;
+        ticket -= totalCost;
         PlayerPrefs.SetInt("Ticket", ticket);
         PlayerPrefs.Save();
 
         UpdateUI();
 
-        int rewardIndex = GetRandomRewardIndex();
+        isSpinning = true;
 
-        StartCoroutine(SpinToReward(rewardIndex));
+        SetButtons(false);
+
+        for (int i = 0; i < spinCount; i++)
+        {
+            int rewardIndex = GetRandomRewardIndex();
+
+            bool autoClose = spinCount > 1;
+
+            yield return StartCoroutine(
+                SpinToReward(rewardIndex, duration, autoClose)
+            );
+
+            yield return new WaitForSeconds(delayBetweenSpin);
+        }
+
+        SetButtons(true);
+
+        isSpinning = false;
+    }
+
+    void SetButtons(bool value)
+    {
+        if (spinButton != null)
+            spinButton.interactable = value;
+
+        if (spin5Button != null)
+            spin5Button.interactable = value;
+
+        if (spin10Button != null)
+            spin10Button.interactable = value;
     }
 
     int GetRandomRewardIndex()
@@ -106,7 +160,6 @@ public class LuckyWheel : MonoBehaviour
         }
 
         int random = Random.Range(0, totalWeight);
-
         int currentWeight = 0;
 
         for (int i = 0; i < rewards.Length; i++)
@@ -114,28 +167,19 @@ public class LuckyWheel : MonoBehaviour
             currentWeight += rewards[i].weight;
 
             if (random < currentWeight)
-            {
                 return i;
-            }
         }
 
         return 0;
     }
 
-    IEnumerator SpinToReward(int rewardIndex)
+    IEnumerator SpinToReward(int rewardIndex, float duration, bool autoClosePopup)
     {
-        isSpinning = true;
-        spinButton.interactable = false;
         rewardText.text = "";
 
-       float anglePerSlot = 360f / rewards.Length;
+        float anglePerSlot = 360f / rewards.Length;
 
-        // index ô trúng
-        float slotCenterAngle =
-            rewardIndex * anglePerSlot;
-
-        // nếu vòng quay lệch nửa ô thì bật dòng này
-        // slotCenterAngle += anglePerSlot / 2f;
+        float slotCenterAngle = rewardIndex * anglePerSlot;
 
         float targetRotation =
             pointerAngle - slotCenterAngle + offsetAngle;
@@ -149,31 +193,75 @@ public class LuckyWheel : MonoBehaviour
 
         float timer = 0f;
 
-        while (timer < spinDuration)
+        while (timer < duration)
         {
             timer += Time.deltaTime;
 
-            float t = timer / spinDuration;
+            float t = timer / duration;
             t = Mathf.SmoothStep(0f, 1f, t);
 
             float z = Mathf.Lerp(startZ, endZ, t);
 
-            wheel.eulerAngles =
-                new Vector3(0, 0, z);
+            wheel.eulerAngles = new Vector3(0, 0, z);
 
             yield return null;
         }
 
-        wheel.eulerAngles =
-            new Vector3(0, 0, endZ);
+        wheel.eulerAngles = new Vector3(0, 0, endZ);
 
-        GiveReward(rewardIndex);
-
-        isSpinning = false;
-        spinButton.interactable = true;
+        GiveReward(rewardIndex,autoClosePopup);
     }
 
-    void ShowRewardPopup(RewardData reward)
+    void GiveReward(int index, bool autoClosePopup = false)
+    {
+        RewardData reward = rewards[index];
+
+        if (rewardSound != null && audioSource != null)
+            audioSource.PlayOneShot(rewardSound);
+
+        ShowRewardPopup(reward, autoClosePopup);
+
+        AddReward(reward);
+
+        PlayerPrefs.Save();
+        UpdateUI();
+    }
+
+    void AddReward(RewardData reward)
+    {
+        if (reward.rewardName == "Money")
+        {
+            int value = PlayerPrefs.GetInt("Money", 0);
+            PlayerPrefs.SetInt("Money", value + reward.amount);
+        }
+        else if (reward.rewardName == "Ticket")
+        {
+            int value = PlayerPrefs.GetInt("Ticket", 0);
+            PlayerPrefs.SetInt("Ticket", value + reward.amount);
+        }
+        else if (reward.rewardName == "UpgradeShard")
+        {
+            int value = PlayerPrefs.GetInt("UpgradeShard", 0);
+            PlayerPrefs.SetInt("UpgradeShard", value + reward.amount);
+        }
+        else if (reward.rewardName == "Grenade")
+        {
+            int value = PlayerPrefs.GetInt("Grenade", 0);
+            PlayerPrefs.SetInt("Grenade", value + reward.amount);
+        }
+        else if (reward.rewardName == "Protect Card")
+        {
+            int value = PlayerPrefs.GetInt("ProtectCard", 0);
+            PlayerPrefs.SetInt("ProtectCard", value + reward.amount);
+        }
+        else if (reward.rewardName == "Mutant Crystal")
+        {
+            int value = PlayerPrefs.GetInt("MutantCrystal", 0);
+            PlayerPrefs.SetInt("MutantCrystal", value + reward.amount);
+        }
+    }
+
+    void ShowRewardPopup(RewardData reward, bool autoClose = false)
     {
         if (currentPopup != null)
             currentPopup.SetActive(false);
@@ -187,9 +275,21 @@ public class LuckyWheel : MonoBehaviour
                 currentPopup.GetComponentInChildren<TMP_Text>();
 
             if (text != null)
-            {
                 text.text = reward.popupMessage;
-            }
+
+            if (autoClose)
+                StartCoroutine(AutoClosePopup());
+        }
+    }
+
+    IEnumerator AutoClosePopup()
+    {
+        yield return new WaitForSeconds(popupAutoCloseTime);
+
+        if (currentPopup != null)
+        {
+            currentPopup.SetActive(false);
+            currentPopup = null;
         }
     }
 
@@ -200,75 +300,5 @@ public class LuckyWheel : MonoBehaviour
             currentPopup.SetActive(false);
             currentPopup = null;
         }
-    }
-
-    void GiveReward(int index)
-    {
-        RewardData reward = rewards[index];
-
-        if (rewardSound != null)
-        {
-            audioSource.PlayOneShot(rewardSound);
-        }
-
-        ShowRewardPopup(reward);
-
-        Debug.Log(
-            "Reward: " +
-            reward.rewardName +
-            " x" +
-            reward.amount
-        );
-
-        // Ví dụ cộng coin
-        if (reward.rewardName == "Money")
-        {
-            int money = PlayerPrefs.GetInt("Money", 0);
-            money += reward.amount;
-            PlayerPrefs.SetInt("Money", money);
-        }
-
-        // Ví dụ cộng ticket
-        if (reward.rewardName == "Ticket")
-        {
-            int ticket = PlayerPrefs.GetInt("Ticket", 0);
-            ticket += reward.amount;
-            PlayerPrefs.SetInt("Ticket", ticket);
-        }
-
-        //upgradeshard
-        if (reward.rewardName == "UpgradeShard")
-        {
-            int shard = PlayerPrefs.GetInt("UpgradeShard", 0);
-            shard += reward.amount;
-            PlayerPrefs.SetInt("UpgradeShard", shard);
-        }
-
-        //Grenade
-        if (reward.rewardName == "Grenade")
-        {
-            int grenade = PlayerPrefs.GetInt("Grenade", 0);
-            grenade += reward.amount;
-            PlayerPrefs.SetInt("Grenade", grenade);
-        }
-
-        //ProtectCard
-        if (reward.rewardName == "Protect Card")
-        {
-            int protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
-            protectCard += reward.amount;
-            PlayerPrefs.SetInt("ProtectCard", protectCard);
-        }
-
-        //Kar98
-        if (reward.rewardName == "Kar98")
-        {
-            int kar98 = PlayerPrefs.GetInt("Kar98", 0);
-            kar98 += reward.amount;
-            PlayerPrefs.SetInt("Kar98", kar98);
-        }
-
-        PlayerPrefs.Save();
-        UpdateUI();
     }
 }

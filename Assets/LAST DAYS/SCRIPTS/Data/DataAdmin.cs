@@ -15,6 +15,7 @@ public class DebugDataController : MonoBehaviour
     const string TICKET_KEY = "Ticket";
     const string GRENADE_KEY = "Grenade";
     const string PROTECT_CARD_KEY = "ProtectCard";
+    const string MUTANT_CRYSTAL_KEY = "MutantCrystal";
 
     void Start()
     {
@@ -40,6 +41,10 @@ public class DebugDataController : MonoBehaviour
     public void AddProtectCard() => AddValue(PROTECT_CARD_KEY);
     public void SubtractProtectCard() => SubtractValue(PROTECT_CARD_KEY);
     public void ResetProtectCard() => ResetValue(PROTECT_CARD_KEY);
+
+    public void AddMutantCrystal() => AddValue(MUTANT_CRYSTAL_KEY);
+    public void SubtractMutantCrystal() => SubtractValue(MUTANT_CRYSTAL_KEY);
+    public void ResetMutantCrystal() => ResetValue(MUTANT_CRYSTAL_KEY);
 
     public void LoadSceneByName(string sceneName)
     {
@@ -121,6 +126,7 @@ public class DebugDataController : MonoBehaviour
         int ticket = PlayerPrefs.GetInt(TICKET_KEY, 0);
         int grenade = PlayerPrefs.GetInt(GRENADE_KEY, 0);
         int protectCard = PlayerPrefs.GetInt(PROTECT_CARD_KEY, 0);
+        int mutantCrystal = PlayerPrefs.GetInt(MUTANT_CRYSTAL_KEY, 0);
 
         if (dataText != null)
         {
@@ -129,7 +135,8 @@ public class DebugDataController : MonoBehaviour
                 $"Upgrade Shard: {shard:N0}\n" +
                 $"Ticket: {ticket:N0}\n" +
                 $"Grenade: {grenade:N0}\n" +
-                $"Protect Card: {protectCard:N0}";
+                $"Protect Card: {protectCard:N0}\n" +
+                $"Mutant Crystal: {mutantCrystal:N0}";
         }
     }
 }

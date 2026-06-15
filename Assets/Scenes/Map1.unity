@@ -4097,8 +4097,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: 51, y: 0}
+  m_SizeDelta: {x: 3277.1484, y: 1843.396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &84914243
 CanvasGroup:
@@ -17434,7 +17434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 237068627}
   missionText: {fileID: 1569225434}
-  textToShow: "\u0110\u1EBFn ch\u1ED7 c\u1EE7a Jake."
+  textToShow: Go to Jake
   hiddenPos: {x: -831, y: 350}
   showPos: {x: 1097, y: 350}
 --- !u!1 &345119720
@@ -28231,7 +28231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1706836219}
   missionText: {fileID: 679056874}
-  textToShow: "Ti\xEAu di\u1EC7t Mutant v\xE0 \u0111\xE1m zombie"
+  textToShow: Kill the Mutant and Clear the Area of Zombies.
   hiddenPos: {x: -831, y: 350}
   showPos: {x: 1097, y: 350}
 --- !u!1 &614054126
@@ -37678,7 +37678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1803227530}
   missionText: {fileID: 1926358821}
-  textToShow: "N\xF3i chuy\u1EC7n v\u1EDBi Jake"
+  textToShow: Find and Talk to Jake
   hiddenPos: {x: -831, y: 350}
   showPos: {x: 1097, y: 350}
 --- !u!1 &869973850
@@ -46407,7 +46407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1917958775}
   missionText: {fileID: 264547412}
-  textToShow: "Ti\xEAu di\u1EC7t \u0111\xE1m zombie"
+  textToShow: Kill the Zombies
   hiddenPos: {x: -831, y: 350}
   showPos: {x: 1097, y: 350}
 --- !u!1001 &1100697299
@@ -98768,7 +98768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1573084246}
   missionText: {fileID: 1735130301}
-  textToShow: "Kh\xE1m ph\xE1 khu r\u1EEBng v\xE0 nh\u0103t \u0111\u1EA1n d\u01B0\u1EE3c"
+  textToShow: Explore the Forest and Collect Ammo
   hiddenPos: {x: -831, y: 350}
   showPos: {x: 1097, y: 350}
 --- !u!224 &2080937846
@@ -102232,20 +102232,17 @@ MonoBehaviour:
   dialogueText: {fileID: 2081819620}
   nextButton: {fileID: 1849154382}
   dialogueLines:
-  - "Khoan\u2026 \u0111\u1EEBng b\u1EAFn n\u1EEFa\u2026"
-  - "Ch\xFAng \u0111i r\u1ED3i ph\u1EA3i kh\xF4ng\u2026?"
-  - "T\xF4i t\u01B0\u1EDFng m\xECnh ch\u1EBFt ch\u1EAFc r\u1ED3i\u2026"
-  - "B\u1ECDn ch\xFAng xu\u1EA5t hi\u1EC7n t\u1EEB trong r\u1EEBng\u2026 qu\xE1 nhi\u1EC1u\u2026"
-  - "\xD4ng b\u1ECB c\u1EAFn \xE0?"
-  - "Kh\xF4ng\u2026 ch\u1EC9 b\u1ECB c\xE0o th\xF4i\u2026"
-  - "C\xF2n th\u1EE9 kinh kh\u1EE7ng h\u01A1n \u0111\xE1m v\u1EEBa n\xE3y n\u1EEFa..."
-  - "L\xE0 sao?"
-  - "T\xF4i c\xF3 linh c\u1EA3m th\u1EE9 \u0111\xF3 s\u1EAFp xu\u1EA5t hi\u1EC7n
-    r\u1ED3i."
-  - "Nhanh..H\xE3y gi\xFAp t\xF4i \u0111\u1EE9ng d\u1EADy!"
+  - Wait... don't shoot...
+  - "They're gone... aren't they?\t"
+  - I thought I was done for...
+  - Did they bite you?
+  - No... just a few scratches.
+  - But there's something much worse than those zombies...
+  - What do you mean?
+  - I can feel it... it's coming.
+  - Hurry... help me up!**
   useSpeakerLabels: 1
   dialogueSpeakers:
-  - Jake
   - Jake
   - Jake
   - Jake
@@ -102256,10 +102253,10 @@ MonoBehaviour:
   - Jake
   - Jake
   dialogueLines2:
-  - "C\u1EA3m \u01A1n \u0111\xE3 c\u1EE9u t\xF4i..."
-  - "B\u1ECDn ch\xFAng \u1EDF \u0111\xE2u m\xE0 nhi\u1EC1u v\u1EADy?"
-  - "T\xF4i ngh\u0129 th\u1EE9 \u0111\xF3 s\u1EAFp xu\u1EA5t hi\u1EC7n r\u1ED3i..."
-  - "Gi\xFAp t\xF4i \u0111\u1EE9ng d\u1EADy n\xE0o!"
+  - Thank you for saving me...
+  - Where did all those things come from?
+  - I think that thing is about to appear...
+  - Help me up!
   useSpeakerLabels2: 1
   dialogueSpeakers2:
   - Jake

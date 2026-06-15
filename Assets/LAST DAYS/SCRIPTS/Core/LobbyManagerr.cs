@@ -54,4 +54,9 @@ public class LobbyManagerr : MonoBehaviour
     {
         SceneManager.LoadScene("Start");
     }
+
+    public void LoadStore()
+    {
+        SceneManager.LoadScene("Store");
+    }
 }
