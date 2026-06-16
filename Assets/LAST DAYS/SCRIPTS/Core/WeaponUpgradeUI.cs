@@ -53,9 +53,29 @@ public class WeaponUpgradeUI : MonoBehaviour
     private bool isUpgrading;
     private Vector2[] slotStartPositions;
 
+    [Header("Protect Card")]
+    public GameObject protectShieldPanel; // màng bảo vệ 
+    public Button protectButton;
+    public TMP_Text protectCardText;
+
+    private int protectCard;
+    private bool isProtected;
+
+    [Header("Mutant Crystal")]
+    public Button mutantCrystalButton;
+    public TMP_Text mutantCrystalText;
+
+    public GameObject mutantCrystalPanel; // hiệu ứng tím
+
+    private int mutantCrystal;
+    private bool isMutantCrystalActive;
+
 
     void Start()
-    {
+    {   
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(false);
+
         insertedShard = 0;
 
         slotStartPositions = new Vector2[shakeSlots.Length];
@@ -67,6 +87,8 @@ public class WeaponUpgradeUI : MonoBehaviour
         }
 
         SelectGun(0);
+
+        RefreshAllUI();
     }
 
     public void SelectNextGun()
@@ -77,6 +99,74 @@ public class WeaponUpgradeUI : MonoBehaviour
             currentGunIndex = 0;
 
         insertedShard = 0;
+        RefreshAllUI();
+    }
+
+    public void UseProtectCard()
+    {
+
+        if (isProtected)
+            return;
+
+        if (isMutantCrystalActive)
+        {
+            Debug.Log("Mutant Crystal đang được kích hoạt");
+            return;
+        }
+
+        protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
+
+        if (protectCard <= 0)
+        {
+            Debug.Log("Không có Protect Card");
+            return;
+        }
+
+        protectCard--;
+
+        PlayerPrefs.SetInt("ProtectCard", protectCard);
+        PlayerPrefs.Save();
+
+        isProtected = true;
+
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(true);
+
+        if (protectButton != null)
+            protectButton.interactable = false;
+
+        RefreshAllUI();
+    }
+
+    public void UseMutantCrystal()
+    {
+        if (isMutantCrystalActive)
+            return;
+
+        if (isProtected)
+        {
+            Debug.Log("Protect Card đang được kích hoạt");
+            return;
+        }    
+
+        mutantCrystal = PlayerPrefs.GetInt("MutantCrystal", 0);
+
+        if (mutantCrystal <= 0)
+            return;
+
+        mutantCrystal--;
+
+        PlayerPrefs.SetInt("MutantCrystal", mutantCrystal);
+        PlayerPrefs.Save();
+
+        isMutantCrystalActive = true;
+
+        if (mutantCrystalPanel != null)
+            mutantCrystalPanel.SetActive(true);
+
+        if (mutantCrystalButton != null)
+            mutantCrystalButton.interactable = false;
+
         RefreshAllUI();
     }
 
@@ -142,7 +232,8 @@ public class WeaponUpgradeUI : MonoBehaviour
     }
 
     IEnumerator UpgradeSequence()
-    {
+    {  
+
         LoadCurrency();
 
         GunData gun = guns[currentGunIndex];
@@ -166,11 +257,35 @@ public class WeaponUpgradeUI : MonoBehaviour
 
         money -= upgradeCost;
 
-        bool success = RollUpgradeSuccess(insertedShard);
+        bool success;
+
+        if (isMutantCrystalActive)
+        {
+            success = true;
+        }
+        else
+        {
+            success = RollUpgradeSuccess(insertedShard);
+        }
 
         if (success)
         {
-            SetGunLevel(gun, level + 1);
+            if (isMutantCrystalActive)
+            {
+                int targetLevel =
+                    Mathf.Min(
+                        level + 5,
+                        gun.upgradeLevels.Length - 1
+                    );
+
+                SetGunLevel(gun, targetLevel);
+
+                Debug.Log("Mutant Crystal +3 Level");
+            }
+            else
+            {
+                SetGunLevel(gun, level + 1);
+            }
 
             if (textPopup != null)
                 textPopup.ShowSuccess();
@@ -179,13 +294,23 @@ public class WeaponUpgradeUI : MonoBehaviour
         }
         else
         {
-            SetGunLevel(gun, 0);
+            if (isProtected)
+            {
+                Debug.Log("Upgrade Failed -> Protect Card cứu cấp độ");
+            }
+            else
+            {
+                SetGunLevel(gun, 0);
+
+                Debug.Log("Upgrade Failed -> LV0");
+            }
 
             if (textPopup != null)
                 textPopup.ShowFail();
-
-            Debug.Log("Upgrade Failed -> LV0");
         }
+
+        ConsumeProtectCard(); 
+        ConsumeMutantCrystal();  
 
         insertedShard = 0;
 
@@ -195,10 +320,42 @@ public class WeaponUpgradeUI : MonoBehaviour
         isUpgrading = false;
     }
 
+    void ConsumeProtectCard()
+    {
+        if (!isProtected)
+            return;
 
+        isProtected = false;
+
+        if (protectShieldPanel != null)
+            protectShieldPanel.SetActive(false);
+
+        if (protectButton != null)
+            protectButton.interactable =
+                PlayerPrefs.GetInt("ProtectCard", 0) > 0;
+    }
+
+    void ConsumeMutantCrystal()
+    {
+        if (!isMutantCrystalActive)
+            return;
+
+        isMutantCrystalActive = false;
+
+        if (mutantCrystalPanel != null)
+            mutantCrystalPanel.SetActive(false);
+    }
 
     IEnumerator ShakeSlots()
     {
+        Vector2[] startPositions = new Vector2[shakeSlots.Length];
+
+        for (int i = 0; i < shakeSlots.Length; i++)
+        {
+            if (shakeSlots[i] != null)
+                startPositions[i] = shakeSlots[i].anchoredPosition;
+        }
+
         float timer = 0f;
 
         while (timer < shakeDuration)
@@ -210,8 +367,11 @@ public class WeaponUpgradeUI : MonoBehaviour
                 if (shakeSlots[i] == null)
                     continue;
 
-                Vector2 randomOffset = Random.insideUnitCircle * shakeStrength;
-                shakeSlots[i].anchoredPosition = slotStartPositions[i] + randomOffset;
+                Vector2 randomOffset =
+                    Random.insideUnitCircle * shakeStrength;
+
+                shakeSlots[i].anchoredPosition =
+                    startPositions[i] + randomOffset;
             }
 
             yield return null;
@@ -220,7 +380,7 @@ public class WeaponUpgradeUI : MonoBehaviour
         for (int i = 0; i < shakeSlots.Length; i++)
         {
             if (shakeSlots[i] != null)
-                shakeSlots[i].anchoredPosition = slotStartPositions[i];
+                shakeSlots[i].anchoredPosition = startPositions[i];
         }
     }
 
@@ -330,6 +490,30 @@ public class WeaponUpgradeUI : MonoBehaviour
 
         if (costText != null)
             costText.text = upgradeCost.ToString();
+
+        if (protectCardText != null)
+            protectCardText.text = protectCard.ToString();
+
+        if (protectButton != null)
+        {
+            protectButton.interactable =
+                !isProtected &&
+                !isMutantCrystalActive &&
+                protectCard > 0;
+        }
+
+        if (mutantCrystalButton != null)
+        {
+            mutantCrystalButton.interactable =
+                !isMutantCrystalActive &&
+                !isProtected &&
+                mutantCrystal > 0;
+        }
+
+        if (mutantCrystalText != null)
+            mutantCrystalText.text = mutantCrystal.ToString();
+
+
     }
 
     void SetText(TMP_Text[] texts, int index, string value)
@@ -359,6 +543,8 @@ public class WeaponUpgradeUI : MonoBehaviour
     {
         money = PlayerPrefs.GetInt("Money", 0);
         shard = PlayerPrefs.GetInt("UpgradeShard", 0);
+        protectCard = PlayerPrefs.GetInt("ProtectCard", 0);
+        mutantCrystal = PlayerPrefs.GetInt("MutantCrystal", 0);
     }
 
     void SaveCurrency()

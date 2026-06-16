@@ -24,6 +24,8 @@ public class NPCHealth : MonoBehaviour
     public float pushForce = 8f;
     private float lastPushTime;
 
+    public GameObject Hunter;
+
     void Start()
     {
         currentHealth = charData.maxHealth;
@@ -163,8 +165,8 @@ public class NPCHealth : MonoBehaviour
             animator.SetTrigger(dieTrigger);
 
         //xóa tag
-        gameObject.tag = "Untagged";    
+        Hunter.tag = "Untagged";    
 
-        Destroy(gameObject, 4f);
+        Destroy(Hunter, 4f);
     }
 }
