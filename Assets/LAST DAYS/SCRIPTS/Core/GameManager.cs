@@ -9,7 +9,6 @@ public class GameSetting : MonoBehaviour
     [Header("UI")]
     public GameObject optionPanel;
     public GameObject loadingObj;
-
     [Header("Pause")]
     public bool pauseWhenOpen = true;
     private bool isOptionOpen;
@@ -125,5 +124,9 @@ public class GameSetting : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+    public void LoadScene(string scene)
+    {
+        SceneManager.LoadScene(scene);
     }
 }

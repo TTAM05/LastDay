@@ -1,0 +1,40 @@
+ScalarParameterValues[2] =
+{
+    ScalarParameterValues[0] =
+    {
+        ParameterName = Opacity
+        ParameterValue = 1
+        ParameterInfo = { Name=None }
+    }
+    ScalarParameterValues[1] =
+    {
+        ParameterName = RefractionDepthBias
+        ParameterValue = 0
+        ParameterInfo = { Name=None }
+    }
+}
+TextureParameterValues[1] =
+{
+    TextureParameterValues[0] =
+    {
+        ParameterName = BaseColor
+        ParameterValue = Texture2D'/ShadowTrackerExtra/Content/Arts_Player/Weapon/MainWeapon/Sniper/VSS/Texture/T_WEP_VSS_Reticle.T_WEP_VSS_Reticle'
+        ParameterInfo = { Name=None }
+    }
+}
+VectorParameterValues[0] = {}
+Parent = Material3'/ShadowTrackerExtra/Content/Arts/Characters/COMMON/MatMaster/Master_Sight_Base/Master_Opacity_Sight.Master_Opacity_Sight'
+BasePropertyOverrides =
+{
+    bOverride_BlendMode = false
+    BlendMode = BLEND_Opaque (0)
+    bOverride_TwoSided = false
+    TwoSided = false
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
