@@ -8,6 +8,11 @@ public class GunData : ScriptableObject
 
     [Header("Info")]
     public string gunName;
+    
+    [Header("Shop")]
+    public int previewIndex;
+    public CurrencyType currencyType;
+    public int Price;
 
     [Header("Damage")]
     public float damage = 20f;

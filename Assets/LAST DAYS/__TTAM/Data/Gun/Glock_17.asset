@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryData: {fileID: 11400000, guid: 0c025f48bf95e0c4b8bec9674c151c40, type: 2}
   gunName: 'Glock '
+  Price: 0
+  previewIndex: 1
   damage: 20
   fireRate: 0.1
   isAutomatic: 0
