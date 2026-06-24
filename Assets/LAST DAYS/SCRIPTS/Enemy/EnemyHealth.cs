@@ -20,6 +20,7 @@ public class EnemyHealth : MonoBehaviour
     public AudioSource audioSource;
 
     public Transform aimPoint;
+    public Transform Rewardpoint;
 
 
     void Awake()
@@ -48,7 +49,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
         //random rewward
-        int rand = Random.Range(0, 3);
+        int rand = Random.Range(0, 2);
         if(rand == 1)
         {
             isReward = true;
@@ -130,7 +131,7 @@ public class EnemyHealth : MonoBehaviour
         if (isReward && item.Length > 0)
         {
             int randItem = Random.Range(0, item.Length);
-            Instantiate(item[randItem], transform.position, Quaternion.identity);
+            Instantiate(item[randItem], Rewardpoint.position, Quaternion.identity);
         }
 
         //tắt icon minimap
