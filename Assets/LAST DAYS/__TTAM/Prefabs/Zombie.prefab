@@ -1367,6 +1367,7 @@ Transform:
   - {fileID: 2251787175929063012}
   - {fileID: 6448160864304395377}
   - {fileID: 5799198992933476493}
+  - {fileID: 4270960240490144092}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5976653687684800497
@@ -1483,6 +1484,7 @@ MonoBehaviour:
   - {fileID: 4017326696976402822, guid: 1bf9a19bb7a04804db0b43502d487121, type: 3}
   audioSource: {fileID: 5766816416229391321}
   aimPoint: {fileID: 3240847988382387379}
+  Rewardpoint: {fileID: 4270960240490144092}
 --- !u!82 &5766816416229391321
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2442,6 +2444,37 @@ Transform:
   - {fileID: 6464821457998388112}
   - {fileID: 406209786850976537}
   m_Father: {fileID: 7959474790162075836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8552389252340004172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4270960240490144092}
+  m_Layer: 7
+  m_Name: RewardPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4270960240490144092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8552389252340004172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.424, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5244977686168558014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8696659952195766958
 GameObject:

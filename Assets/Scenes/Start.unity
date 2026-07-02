@@ -2033,7 +2033,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1850658236}
   - component: {fileID: 1850658235}
-  - component: {fileID: 1850658234}
   m_Layer: 0
   m_Name: MusicBackground
   m_TagString: Untagged
@@ -2041,18 +2040,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1850658234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850658233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b5aeca265b48cf4ea4334881b682fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1850658235
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2064,7 +2051,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -693020981012941401, guid: 6fcebce87e1953c4db470ef456bf67d0, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 34327db13b389a34ba5661d764f586d7, type: 3}
+  m_Resource: {fileID: 8300000, guid: a30b80ae514a4bd46802d9a733d6c9c0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2704,6 +2691,12 @@ PrefabInstance:
     - target: {fileID: 509112993251092908, guid: 71a87d0826e8cd647a2f1bca15ab40a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 654202777129115533, guid: 71a87d0826e8cd647a2f1bca15ab40a2, type: 3}
+      propertyPath: m_text
+      value: 'Screen Mode
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 950908223539163779, guid: 71a87d0826e8cd647a2f1bca15ab40a2, type: 3}
       propertyPath: m_IsActive

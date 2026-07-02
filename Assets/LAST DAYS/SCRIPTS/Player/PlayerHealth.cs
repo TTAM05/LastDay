@@ -34,6 +34,7 @@ public class Health : MonoBehaviour
 
     private float pushCooldown = 0.5f;
     private float lastPushTime = -999f;
+    public ParticleSystem HealEffect;
 
     void Awake()
     {
@@ -80,6 +81,9 @@ public class Health : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, charData.maxHealth);
+
+        //effect
+        HealEffect.Play();
 
         UpdateHealthBar();
     }
