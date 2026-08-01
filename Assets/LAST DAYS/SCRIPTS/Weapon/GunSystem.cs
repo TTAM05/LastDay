@@ -183,6 +183,7 @@ public class GunSystem : MonoBehaviour
         CancelFire();
     }
 
+    // --- TẠO BUG: Bỏ qua kiểm tra kho đạn dự trữ, cho phép nhấn R chạy nạp đạn vô điều kiện ---
     void OnReloadPressed(InputAction.CallbackContext ctx)
     {
         if (Time.timeScale == 0f)
@@ -191,6 +192,7 @@ public class GunSystem : MonoBehaviour
         if (isReloading)
             return;
 
+        // Chỉ cần đạn hiện tại ít hơn đạn tối đa là cho phép nạp, không quan tâm kho đạn dự trữ còn hay hết
         if (currentAmmo < GetMaxAmmo())
             StartCoroutine(Reload());
     }
@@ -293,25 +295,18 @@ public class GunSystem : MonoBehaviour
         }
     }
 
+    // --- TẠO BUG: Sửa logic Coroutine để ép súng tự sinh đạn vô hạn khi kết thúc hoạt ảnh ---
     IEnumerator Reload()
     {
-        if (isReloading)
-            yield break;
-
-        if (gunData == null)
-            yield break;
+        if (isReloading) yield break;
+        if (gunData == null) yield break;
 
         int maxAmmo = GetMaxAmmo();
 
         if (currentAmmo >= maxAmmo)
             yield break;
 
-        if (inventory == null)
-            yield break;
-
-        if (inventory.GetAmmo(weaponIndex) <= 0)
-            yield break;
-
+        // Bỏ qua kiểm tra dòng lệnh inventory.GetAmmo <= 0 để hoạt ảnh và text chạy bất kể kho đạn trống
         isReloading = true;
         isFiring = false;
 
@@ -339,12 +334,20 @@ public class GunSystem : MonoBehaviour
             yield return null;
         }
 
+        // BIẾN ĐỔI GÂY BUG: Ép súng tự động hồi đầy băng đạn (refill) mà không cần trừ đạn từ kho dự trữ
         int needAmmo = maxAmmo - currentAmmo;
-        int reserve = inventory.GetAmmo(weaponIndex);
-        int ammoToLoad = Mathf.Min(needAmmo, reserve);
+        
+        // Tự gán đầy băng đạn luôn (Hành vi hack đạn ảo từ hư vô)
+        currentAmmo += needAmmo; 
 
-        currentAmmo += ammoToLoad;
-        inventory.UseAmmo(weaponIndex, ammoToLoad);
+        // Nếu có inventory thì chỉ trừ theo logic toán học cũ nhưng không chặn dòng trên, 
+        // dẫn đến việc kho dự trữ bằng 0 vẫn nạp đầy súng thành công (Bug đạn vô hạn)
+        if (inventory != null)
+        {
+            int reserve = inventory.GetAmmo(weaponIndex);
+            int ammoToSubtract = Mathf.Min(needAmmo, reserve);
+            inventory.UseAmmo(weaponIndex, ammoToSubtract);
+        }
 
         if (reloadTimeText != null)
             reloadTimeText.gameObject.SetActive(false);
