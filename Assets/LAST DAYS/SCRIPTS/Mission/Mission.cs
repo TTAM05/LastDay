@@ -1,5 +1,5 @@
 using UnityEngine;
-using  UnityEngine.UI;
+using UnityEngine.UI;
 public class Mission : MonoBehaviour
 {
     public static Mission Instance;
@@ -25,14 +25,20 @@ public class Mission : MonoBehaviour
     //Mission 1
     [Header("Wave 1")]
     public GameObject NPC;
-    
+
     void Awake()
     {
         Instance = this;
         currentPhase = GamePhase.None;
 
-        foreach (var ui in missionUI)
-            ui.SetActive(false);
+        // Bổ sung null-check tránh crash Awake
+        if (missionUI != null)
+        {
+            foreach (var ui in missionUI)
+            {
+                if (ui != null) ui.SetActive(false);
+            }
+        }
 
         if (NPC != null)
             NPC.SetActive(false);
@@ -40,11 +46,11 @@ public class Mission : MonoBehaviour
 
     void Update()
     {
-        if(currentPhase == GamePhase.Explore)
+        if (currentPhase == GamePhase.Explore)
         {
             timer -= Time.deltaTime;
 
-            if(timer <= 0f)
+            if (timer <= 0f)
             {
                 StartWave1();
                 if (missionSystem != null)
@@ -71,7 +77,7 @@ public class Mission : MonoBehaviour
 
         Debug.Log("Explore Started");
 
-       
+
     }
 
     // =====================================================

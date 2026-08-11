@@ -3,7 +3,12 @@
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "Demo.Test.Scripts",
+        "NewAssembly"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
