@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2823877392657712607}
   - component: {fileID: 2396506568488225980}
-  m_Layer: 0
+  - component: {fileID: 1054053834286954742}
+  - component: {fileID: 2369156110202272100}
+  m_Layer: 3
   m_Name: Ash_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -58, y: -444, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6039573562770346626}
@@ -50,31 +52,72 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.47798914
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1995667773526841586}
     - renderer: {fileID: 3793084667539650015}
     - renderer: {fileID: 2826171393597872495}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.25468168
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3669249966963877990}
     - renderer: {fileID: 3169444411528523533}
     - renderer: {fileID: 5066695998024623517}
-  - screenRelativeHeight: 0.0625
+  - screenRelativeHeight: 0.11200232
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5317674858846304631}
     - renderer: {fileID: 3379580967580127219}
     - renderer: {fileID: 7758618962431678280}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.03271477
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5306916309406120508}
     - renderer: {fileID: 7916197536521891915}
     - renderer: {fileID: 3738173296778823809}
   m_Enabled: 1
+--- !u!65 &1054053834286954742
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286843239281355918}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4867046, y: 2.0230374, z: 0.52062166}
+  m_Center: {x: -0.063198134, y: 0.9977654, z: 0.10661312}
+--- !u!114 &2369156110202272100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286843239281355918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &2876446658582732794
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +129,7 @@ GameObject:
   - component: {fileID: 6725967616054655249}
   - component: {fileID: 4838364192861230088}
   - component: {fileID: 2826171393597872495}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +215,7 @@ GameObject:
   - component: {fileID: 2050230745765810474}
   - component: {fileID: 2833320176660556333}
   - component: {fileID: 7758618962431678280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +301,7 @@ GameObject:
   - component: {fileID: 7297672752978373946}
   - component: {fileID: 418255985159292346}
   - component: {fileID: 7916197536521891915}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +388,7 @@ GameObject:
   - component: {fileID: 6757877755868262404}
   - component: {fileID: 2703064254405101608}
   - component: {fileID: 3169444411528523533}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +475,7 @@ GameObject:
   - component: {fileID: 5543153751728132597}
   - component: {fileID: 4835644740542822326}
   - component: {fileID: 5306916309406120508}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash4_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,7 +562,7 @@ GameObject:
   - component: {fileID: 6555779359074757190}
   - component: {fileID: 8248234944970175579}
   - component: {fileID: 3669249966963877990}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash4_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +649,7 @@ GameObject:
   - component: {fileID: 1327504044055224331}
   - component: {fileID: 2579355819859519036}
   - component: {fileID: 3738173296778823809}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +735,7 @@ GameObject:
   - component: {fileID: 6984996543778718478}
   - component: {fileID: 239074090431320687}
   - component: {fileID: 5066695998024623517}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,7 +821,7 @@ GameObject:
   - component: {fileID: 2340169416377119318}
   - component: {fileID: 7306915252043368930}
   - component: {fileID: 3379580967580127219}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +908,7 @@ GameObject:
   - component: {fileID: 4577151757851893605}
   - component: {fileID: 6229321051133095594}
   - component: {fileID: 5317674858846304631}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash4_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -952,7 +995,7 @@ GameObject:
   - component: {fileID: 6039573562770346626}
   - component: {fileID: 4007836462869868842}
   - component: {fileID: 1995667773526841586}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ash4_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1039,7 +1082,7 @@ GameObject:
   - component: {fileID: 555855664510945092}
   - component: {fileID: 2432707351723822484}
   - component: {fileID: 3793084667539650015}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leaves1_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
