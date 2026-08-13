@@ -26,8 +26,6 @@ public class AudioManager : MonoBehaviour
         ApplyAll();
     }
 
-   
-
     public void ChangeEnvironment(float amount)
     {
         environment = Mathf.Clamp01(environment + amount);
@@ -36,7 +34,7 @@ public class AudioManager : MonoBehaviour
 
     public void ChangeMaster(float amount)
     {
-        master = Mathf.Clamp01(master+ amount);
+        master = Mathf.Clamp01(master + amount);
         SaveAndApply("MasterVolume", master);
     }
 
@@ -49,7 +47,7 @@ public class AudioManager : MonoBehaviour
     void Load()
     {
         environment = PlayerPrefs.GetFloat("EnvironmentVolume", 0.5f);
-        master= PlayerPrefs.GetFloat("MasterVolume", 0.5f);
+        master = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
         sfx = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
     }
 
@@ -69,7 +67,11 @@ public class AudioManager : MonoBehaviour
 
     void SetMixer(string key, float value)
     {
-        mixer.SetFloat(key, value <= 0.0001f ? -80f : Mathf.Log10(value) * 20f);
+        // Kiểm tra null an toàn khi chạy Test Runner
+        if (mixer != null)
+        {
+            mixer.SetFloat(key, value <= 0.0001f ? -80f : Mathf.Log10(value) * 20f);
+        }
     }
 
     void OnApplicationQuit()
@@ -79,7 +81,6 @@ public class AudioManager : MonoBehaviour
 
     void SaveAll()
     {
-
         PlayerPrefs.SetFloat("EnvironmentVolume", environment);
         PlayerPrefs.SetFloat("MasterVolume", master);
         PlayerPrefs.SetFloat("SFXVolume", sfx);
@@ -91,5 +92,4 @@ public class AudioManager : MonoBehaviour
         if (pause)
             SaveAll();
     }
-
 }
